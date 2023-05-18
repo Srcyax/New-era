@@ -23,6 +23,7 @@ public class PlayerMainController : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         playerCamera.enabled = isLocalPlayer;
+        playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
         characterController = GetComponent<CharacterController>();
         for (int i = 0; i < playerObjs.Length; i++ ) {
             playerObjs[ i ].SetActive(isLocalPlayer);
