@@ -7,6 +7,9 @@ public class PlayerMainController : NetworkBehaviour
     private CharacterController characterController;
     [SerializeField] private Animator animator;
     [SerializeField] private Camera playerCamera;
+    [Header("Components to hide")]
+    [SerializeField] private GameObject playerBody;
+    [SerializeField] private GameObject[] playerObjs;
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
 
@@ -21,6 +24,11 @@ public class PlayerMainController : NetworkBehaviour
 
         playerCamera.enabled = isLocalPlayer;
         characterController = GetComponent<CharacterController>();
+        for (int i = 0; i < playerObjs.Length; i++ ) {
+            playerObjs[ i ].SetActive(isLocalPlayer);
+        }
+
+        playerBody.SetActive(!isLocalPlayer);
     }
 
     void Update() {
@@ -65,8 +73,13 @@ public class PlayerMainController : NetworkBehaviour
         bool walkStrafeLeft = Input.GetKey(KeyCode.A);
         bool run = Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
         bool idle = !walkForward && !walkBackward && !walkStrafeRight && !walkStrafeLeft && !run;
+        bool aim = Input.GetMouseButton(1);
         animator.SetBool("idle", idle);
         animator.SetBool("walk", walkForward);
         animator.SetBool("run", run);
+        animator.SetBool("up_idle", idle && !aim);
+        animator.SetBool("up_walk", walkForward && !aim);
+        animator.SetBool("up_run", run && !aim);
+        animator.SetBool("aim", aim);
     }
 }
