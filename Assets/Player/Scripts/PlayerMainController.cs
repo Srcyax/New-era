@@ -8,7 +8,7 @@ public class PlayerMainController : NetworkBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Camera playerCamera;
     [Header("Components to hide")]
-    [SerializeField] private GameObject playerBody;
+    [SerializeField] private GameObject[] playerBody;
     [SerializeField] private GameObject[] playerObjs;
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
@@ -29,7 +29,9 @@ public class PlayerMainController : NetworkBehaviour
             playerObjs[ i ].SetActive(isLocalPlayer);
         }
 
-        playerBody.SetActive(!isLocalPlayer);
+        for ( int i = 0; i < playerBody.Length; i++ ) {
+            playerBody[ i ].SetActive(!isLocalPlayer);
+        }
     }
 
     void Update() {

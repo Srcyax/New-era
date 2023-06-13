@@ -1665,7 +1665,9 @@ MonoBehaviour:
   syncInterval: 0
   animator: {fileID: 5973855315423973376}
   playerCamera: {fileID: 5489888840854102939}
-  playerBody: {fileID: 7987172990307407557}
+  playerBody:
+  - {fileID: 7987172990307407557}
+  - {fileID: 6008270621152567019}
   playerObjs:
   - {fileID: 4344121744427191913}
 --- !u!114 &4741863310284994542
@@ -1680,6 +1682,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b66cdafa5b8189444847794b88b8a1c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Bullet: {fileID: 6772200605655598736, guid: 0e307fc43cb99a2449c7c84c9808ba64, type: 3}
+  Bocal: {fileID: 5489888840854102940}
 --- !u!136 &5489888839778044660
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2698,6 +2702,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15acc1f936714b847a8e181a89e6c85d, type: 3}
+--- !u!1 &6008270621152567019 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7358860560762846400, guid: 15acc1f936714b847a8e181a89e6c85d, type: 3}
+  m_PrefabInstance: {fileID: 3854596375258882603}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6353025358568522833 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7877987741036111482, guid: 15acc1f936714b847a8e181a89e6c85d, type: 3}

@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponSystem : MonoBehaviour
 {
+    [SerializeField] private GameObject Bullet;
+    [SerializeField] private Transform Bocal;
     void Start()
     {
         
@@ -16,7 +16,7 @@ public class WeaponSystem : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit)) {
             if ( Input.GetMouseButton(0) ) {
-                print(hit.collider.name);
+                Instantiate(Bullet, Bocal).transform.parent = null;
             }
         }
     }
