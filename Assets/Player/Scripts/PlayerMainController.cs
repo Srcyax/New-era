@@ -1,9 +1,11 @@
 using UnityEngine;
 using Mirror;
 using TMPro;
-using Newtonsoft.Json.Bson;
+using System;
+using System.Collections.Generic;
+using System.Collections;
 
-public class PlayerMainController : NetworkBehaviour
+public class PlayerMainController : NetworkBehaviour, IDamageable
 {
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController characterController;
@@ -15,17 +17,19 @@ public class PlayerMainController : NetworkBehaviour
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
 
-    [SyncVar] public int playerHealth = 100;
+    [SyncVar] public float playerHealth = 100;
     [SerializeField] TextMeshProUGUI healthTextPro;
     [SerializeField] GameObject playerRagdoll;
     GameObject[] spawnPoints;
 
+    public static Action shootInput;
+    public static Action reloadInput;
+
     void Start() {
+
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoints");
-        {
-            Destroy(lobby);
-        }
+        Destroy(lobby);
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -48,25 +52,39 @@ public class PlayerMainController : NetworkBehaviour
         PlayerControler();
         Animations();
         healthTextPro.text = playerHealth.ToString();
+
+        if ( Input.GetMouseButton(0) ) {
+            shootInput?.Invoke();
+        }
+
+        if ( Input.GetKeyDown(KeyCode.R) ) {
+            reloadInput?.Invoke();
+        }
     }
 
+
     [Command(requiresAuthority = false)]
-    public void CmdLessHealth() {
-        RpcLessHealth();
+    public void CmdDamage(float damage) {
+        RpcDamage(damage);
     }
 
     [ClientRpc]
-    public void RpcLessHealth() {
-        playerHealth--;
-
+    void RpcDamage(float damage) {
+        playerHealth -= damage;
         if ( playerHealth < 0 ) {
-            GameObject obj = Instantiate(playerRagdoll, transform.position, transform.rotation);
-            NetworkServer.Spawn(obj);
-            playerHealth = 100;
-            int r = Random.Range(spawnPoints.Length - spawnPoints.Length, spawnPoints.Length);
-            transform.localPosition = spawnPoints[ r ].transform.position;
+            StartCoroutine(Respawn());
         }
     }
+
+    IEnumerator Respawn() {
+        animator.enabled = false;
+        yield return new WaitForSeconds(5.0f);
+        playerHealth = 100;
+        int r = UnityEngine.Random.Range(spawnPoints.Length - spawnPoints.Length, spawnPoints.Length);
+        transform.localPosition = spawnPoints[ r ].transform.position;
+        animator.enabled = true;
+    }
+
 
     void PlayerControler() {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -103,8 +121,10 @@ public class PlayerMainController : NetworkBehaviour
         bool run = Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
         bool idle = !walkForward && !walkBackward && !walkStrafeRight && !walkStrafeLeft && !run;
         bool aim = Input.GetMouseButton(1);
-        animator.SetBool("idle", idle);
-        animator.SetBool("walk", walkForward);
+        bool shoot = Input.GetMouseButton(0);
+        animator.SetBool("idle", idle && !shoot);
+        animator.SetBool("shooting", shoot);
+        animator.SetBool("walk", walkForward || walkBackward || walkStrafeRight || walkStrafeLeft);
         animator.SetBool("run", run);
         animator.SetBool("up_idle", idle && !aim);
         animator.SetBool("up_walk", walkForward && !aim);

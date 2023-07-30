@@ -6,6 +6,12 @@ TagManager:
   tags:
   - Lobby
   - SpawnPoints
+  - Head
+  - Chest
+  - Legs
+  - Arms
+  - LowerChest
+  - Foot
   layers:
   - Default
   - TransparentFX

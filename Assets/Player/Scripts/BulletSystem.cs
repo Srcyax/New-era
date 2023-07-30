@@ -20,7 +20,7 @@ public class BulletSystem : MonoBehaviour
         if ( other.gameObject == gameObject )
             return;
 
-        other.GetComponent<PlayerMainController>().CmdLessHealth();
+        //other.GetComponent<PlayerMainController>().CmdLessHealth();
         Destroy(gameObject);
     }
 }
