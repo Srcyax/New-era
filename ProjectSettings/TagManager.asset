@@ -5,14 +5,15 @@ TagManager:
   serializedVersion: 2
   tags:
   - Lobby
+  - SpawnPoints
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ragdoll
   - Water
   - UI
-  - 
+  - World
   - 
   - 
   - 

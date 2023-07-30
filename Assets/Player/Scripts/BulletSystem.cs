@@ -1,15 +1,26 @@
 using UnityEngine;
+using Mirror;
 
 public class BulletSystem : MonoBehaviour
 {
-    [SerializeField] private Rigidbody rigidbody;
+    Rigidbody rigdBody => GetComponent<Rigidbody>();
 
     private void Start() {
-        rigidbody.velocity = transform.forward * 10f;
+        //rigdBody.velocity = transform.forward * 100f;
     }
 
     void Update()
     {
         
+    }
+    private void OnTriggerEnter(Collider other) {
+        if ( !other.CompareTag("Player") )
+            return;
+
+        if ( other.gameObject == gameObject )
+            return;
+
+        other.GetComponent<PlayerMainController>().CmdLessHealth();
+        Destroy(gameObject);
     }
 }

@@ -1,5 +1,7 @@
 using UnityEngine;
 using Mirror;
+using TMPro;
+using Newtonsoft.Json.Bson;
 
 public class PlayerMainController : NetworkBehaviour
 {
@@ -13,15 +15,20 @@ public class PlayerMainController : NetworkBehaviour
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
 
+    [SyncVar] public int playerHealth = 100;
+    [SerializeField] TextMeshProUGUI healthTextPro;
+    [SerializeField] GameObject playerRagdoll;
+    GameObject[] spawnPoints;
+
     void Start() {
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
+        spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoints");
         {
             Destroy(lobby);
         }
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
         playerCamera.enabled = isLocalPlayer;
         playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
         characterController = GetComponent<CharacterController>();
@@ -40,6 +47,25 @@ public class PlayerMainController : NetworkBehaviour
 
         PlayerControler();
         Animations();
+        healthTextPro.text = playerHealth.ToString();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdLessHealth() {
+        RpcLessHealth();
+    }
+
+    [ClientRpc]
+    public void RpcLessHealth() {
+        playerHealth--;
+
+        if ( playerHealth < 0 ) {
+            GameObject obj = Instantiate(playerRagdoll, transform.position, transform.rotation);
+            NetworkServer.Spawn(obj);
+            playerHealth = 100;
+            int r = Random.Range(spawnPoints.Length - spawnPoints.Length, spawnPoints.Length);
+            transform.localPosition = spawnPoints[ r ].transform.position;
+        }
     }
 
     void PlayerControler() {
