@@ -52,12 +52,9 @@ public class WeaponSystem : NetworkBehaviour
         gunData.reloading = false;
     }
 
-    private bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / ( gunData.fireRate / 60.0f );
+    private bool CanShoot() => !gunData.reloading && gunData.currentAmmo > 0 && timeSinceLastShot > 1f / ( gunData.fireRate / 60.0f );
 
     void Shoot() {
-
-        if ( gunData.currentAmmo <= 0 )
-            return;
 
         if ( !CanShoot() )
             return;

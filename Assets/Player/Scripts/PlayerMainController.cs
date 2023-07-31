@@ -93,10 +93,10 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && 2 > 1;
+        bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W);
 
-        float curSpeedX = (isRunning ? 4f : 1.5f) * Input.GetAxis("Vertical");
-        float curSpeedY = (isRunning ? 4f : 1.5f) * Input.GetAxis("Horizontal");
+        float curSpeedX = (isRunning ? 10f : 2f) * Input.GetAxis("Vertical");
+        float curSpeedY = (isRunning ? 10f : 2f) * Input.GetAxis("Horizontal");
         moveDirection = ( ( forward * curSpeedX ) + ( right * curSpeedY ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
@@ -106,10 +106,10 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
-        rotationX += -Input.GetAxis("Mouse Y") * 10f;
+        rotationX += -Input.GetAxis("Mouse Y") * 3f;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * 10f, 0);
+        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * 3f, 0);
 
         if ( transform.localPosition.y <= -10 )
             transform.localPosition = new Vector3(69.2f, 15.6f, 46f);
