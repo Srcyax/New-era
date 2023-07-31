@@ -22,6 +22,8 @@ public class PlayerMainController : NetworkBehaviour, IDamageable
     [SerializeField] GameObject playerRagdoll;
     GameObject[] spawnPoints;
 
+    Vector2 playerInput;
+
     public static Action shootInput;
     public static Action reloadInput;
 
@@ -46,7 +48,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable
     }
 
     void Update() {
-        if ( !isLocalPlayer )
+        if ( !isLocalPlayer || playerHealth <= 0)
             return;
 
         PlayerControler();
@@ -92,8 +94,8 @@ public class PlayerMainController : NetworkBehaviour, IDamageable
 
         bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && 2 > 1;
 
-        float curSpeedX = (isRunning ? 5f : 2f) * Input.GetAxis("Vertical");
-        float curSpeedY = (isRunning ? 5f : 2f) * Input.GetAxis("Horizontal");
+        float curSpeedX = (isRunning ? 5f : 1.5f) * Input.GetAxis("Vertical");
+        float curSpeedY = (isRunning ? 5f : 1.5f) * Input.GetAxis("Horizontal");
         moveDirection = ( ( forward * curSpeedX ) + ( right * curSpeedY ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
@@ -114,21 +116,9 @@ public class PlayerMainController : NetworkBehaviour, IDamageable
 
     void Animations() {
 
-        bool walkForward = Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.LeftShift);
-        bool walkBackward = Input.GetKey(KeyCode.S);
-        bool walkStrafeRight = Input.GetKey(KeyCode.D);
-        bool walkStrafeLeft = Input.GetKey(KeyCode.A);
-        bool run = Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
-        bool idle = !walkForward && !walkBackward && !walkStrafeRight && !walkStrafeLeft && !run;
-        bool aim = Input.GetMouseButton(1);
-        bool shoot = Input.GetMouseButton(0);
-        animator.SetBool("idle", idle && !shoot);
-        animator.SetBool("shooting", shoot);
-        animator.SetBool("walk", walkForward || walkBackward || walkStrafeRight || walkStrafeLeft);
-        animator.SetBool("run", run);
-        animator.SetBool("up_idle", idle && !aim);
-        animator.SetBool("up_walk", walkForward && !aim);
-        animator.SetBool("up_run", run && !aim);
-        animator.SetBool("aim", aim);
+        playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        animator.SetFloat("inputX", playerInput.x);
+        animator.SetFloat("inputY", playerInput.y);
     }
 }
