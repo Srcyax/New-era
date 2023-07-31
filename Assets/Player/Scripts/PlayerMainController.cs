@@ -14,7 +14,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     [Header("Components to hide")]
     [SerializeField] private GameObject[] playerBody;
     [SerializeField] private GameObject[] playerObjs;
-    
+
     [SerializeField] private TextMeshProUGUI healthTextPro;
     [SerializeField] private GameObject playerDeadUI;
     [SerializeField] private GameObject playerRagdoll;
@@ -26,6 +26,9 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
+
+    private float runSpeed = 7f;
+    private float walkSpeed = 2f;
 
     void Start() {
 
@@ -95,8 +98,8 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
         bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W);
 
-        float curSpeedX = (isRunning ? 10f : 2f) * Input.GetAxis("Vertical");
-        float curSpeedY = (isRunning ? 10f : 2f) * Input.GetAxis("Horizontal");
+        float curSpeedX = (isRunning ? runSpeed : 2f) * Input.GetAxis("Vertical");
+        float curSpeedY = (isRunning ? runSpeed : 2f) * Input.GetAxis("Horizontal");
         moveDirection = ( ( forward * curSpeedX ) + ( right * curSpeedY ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
@@ -123,5 +126,15 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
         animator.SetFloat("inputX", playerInput.x);
         animator.SetFloat("inputY", isRunning ? 2 : playerInput.y);
+
+        if ( isRunning ) {
+            animator.speed = characterController.velocity.magnitude / runSpeed;
+        }
+        else if ( !isRunning && characterController.velocity.magnitude > 0 ) {
+            animator.speed = characterController.velocity.magnitude / walkSpeed;
+        }
+        else {
+            animator.speed = 1;
+        }
     }
 }
