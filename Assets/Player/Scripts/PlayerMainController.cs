@@ -38,13 +38,13 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         playerCamera.enabled = isLocalPlayer;
         playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
         characterController = GetComponent<CharacterController>();
-        /*for ( int i = 0; i < playerObjs.Length; i++ ) {
+        for ( int i = 0; i < playerObjs.Length; i++ ) {
             playerObjs[ i ].SetActive(isLocalPlayer);
         }
 
         for ( int i = 0; i < playerBody.Length; i++ ) {
             playerBody[ i ].SetActive(!isLocalPlayer);
-        }*/
+        }
     }
 
     void Update() {
