@@ -8,12 +8,15 @@ public class WeaponSystem : NetworkBehaviour
     [SerializeField] GunData gunData;
     [SerializeField] Transform muzzle; 
     [SerializeField] Animator animator;
+    [SerializeField] Animator Playeranimator;
 
     float timeSinceLastShot;
 
     private void Start() {
         PlayerMainController.shootInput += Shoot;
         PlayerMainController.reloadInput += StartReload;
+
+        gunData.reloading = false;
     }
 
     void Update() {
@@ -23,6 +26,11 @@ public class WeaponSystem : NetworkBehaviour
         timeSinceLastShot += Time.deltaTime;
 
         Debug.DrawRay(muzzle.position, muzzle.forward, Color.green);
+
+        print(CanShoot());
+
+        Playeranimator.SetBool("shooting", Input.GetMouseButton(0) && CanShoot());
+        Playeranimator.SetBool("idle", !Input.GetMouseButton(0));
     }
 
     void StartReload() {
@@ -33,6 +41,7 @@ public class WeaponSystem : NetworkBehaviour
             return;
 
         animator.Play("Reload");
+        Playeranimator.Play("Reload");
         StartCoroutine(Reload());
     }
 
@@ -73,7 +82,7 @@ public class WeaponSystem : NetworkBehaviour
         RaycastHit hit;
 
         if ( Physics.Raycast(ray, out hit, gunData.maxDistance) ) {
-            if ( hit.collider.CompareTag("Player") ) {
+            if ( hit.collider.CompareTag("Player") && hit.collider.gameObject != gameObject ) {
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 damageable?.CmdDamage(gunData.damage);
             }

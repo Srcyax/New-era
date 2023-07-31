@@ -1,31 +1,31 @@
-using UnityEngine;
 using Mirror;
-using TMPro;
 using System;
-using System.Collections.Generic;
 using System.Collections;
+using TMPro;
+using UnityEngine;
 
-public class PlayerMainController : NetworkBehaviour, IDamageable
-{
-    private Vector3 moveDirection = Vector3.zero;
-    private CharacterController characterController;
+public class PlayerMainController : NetworkBehaviour, IDamageable {
     [SerializeField] private Animator animator;
     [SerializeField] private Camera playerCamera;
+    [SerializeField] public static Action shootInput;
+    [SerializeField] public static Action reloadInput;
+    [SyncVar] public float playerHealth = 100;
+
     [Header("Components to hide")]
     [SerializeField] private GameObject[] playerBody;
     [SerializeField] private GameObject[] playerObjs;
+    
+    [SerializeField] private TextMeshProUGUI healthTextPro;
+    [SerializeField] private GameObject playerDeadUI;
+    [SerializeField] private GameObject playerRagdoll;
+
+    private GameObject[] spawnPoints;
+    private Vector3 moveDirection = Vector3.zero;
+    private Vector2 playerInput;
+    private CharacterController characterController;
+
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
-
-    [SyncVar] public float playerHealth = 100;
-    [SerializeField] TextMeshProUGUI healthTextPro;
-    [SerializeField] GameObject playerRagdoll;
-    GameObject[] spawnPoints;
-
-    Vector2 playerInput;
-
-    public static Action shootInput;
-    public static Action reloadInput;
 
     void Start() {
 
@@ -38,17 +38,17 @@ public class PlayerMainController : NetworkBehaviour, IDamageable
         playerCamera.enabled = isLocalPlayer;
         playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
         characterController = GetComponent<CharacterController>();
-        for (int i = 0; i < playerObjs.Length; i++ ) {
+        /*for ( int i = 0; i < playerObjs.Length; i++ ) {
             playerObjs[ i ].SetActive(isLocalPlayer);
         }
 
         for ( int i = 0; i < playerBody.Length; i++ ) {
             playerBody[ i ].SetActive(!isLocalPlayer);
-        }
+        }*/
     }
 
     void Update() {
-        if ( !isLocalPlayer || playerHealth <= 0)
+        if ( !isLocalPlayer || playerHealth <= 0 )
             return;
 
         PlayerControler();
@@ -73,20 +73,21 @@ public class PlayerMainController : NetworkBehaviour, IDamageable
     [ClientRpc]
     void RpcDamage(float damage) {
         playerHealth -= damage;
-        if ( playerHealth < 0 ) {
+        if ( playerHealth <= 0 ) {
             StartCoroutine(Respawn());
         }
     }
 
     IEnumerator Respawn() {
         animator.enabled = false;
-        yield return new WaitForSeconds(5.0f);
-        playerHealth = 100;
+        playerDeadUI.SetActive(true);
         int r = UnityEngine.Random.Range(spawnPoints.Length - spawnPoints.Length, spawnPoints.Length);
-        transform.localPosition = spawnPoints[ r ].transform.position;
+        yield return new WaitForSeconds(5.0f);
         animator.enabled = true;
+        playerHealth = 100;
+        transform.localPosition = spawnPoints[ r ].transform.localPosition;
+        playerDeadUI.SetActive(false);
     }
-
 
     void PlayerControler() {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -94,8 +95,8 @@ public class PlayerMainController : NetworkBehaviour, IDamageable
 
         bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && 2 > 1;
 
-        float curSpeedX = (isRunning ? 5f : 1.5f) * Input.GetAxis("Vertical");
-        float curSpeedY = (isRunning ? 5f : 1.5f) * Input.GetAxis("Horizontal");
+        float curSpeedX = (isRunning ? 4f : 1.5f) * Input.GetAxis("Vertical");
+        float curSpeedY = (isRunning ? 4f : 1.5f) * Input.GetAxis("Horizontal");
         moveDirection = ( ( forward * curSpeedX ) + ( right * curSpeedY ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
@@ -110,7 +111,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * 10f, 0);
 
-        if ( transform.localPosition.y < 0 )
+        if ( transform.localPosition.y <= -10 )
             transform.localPosition = new Vector3(69.2f, 15.6f, 46f);
     }
 
@@ -118,7 +119,9 @@ public class PlayerMainController : NetworkBehaviour, IDamageable
 
         playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
+        bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W);
+
         animator.SetFloat("inputX", playerInput.x);
-        animator.SetFloat("inputY", playerInput.y);
+        animator.SetFloat("inputY", isRunning ? 2 : playerInput.y);
     }
 }

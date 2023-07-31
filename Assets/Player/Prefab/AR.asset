@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: AR
   m_EditorClassIdentifier: 
   name: AR
-  animator: {fileID: 7782317102399552358, guid: 15acc1f936714b847a8e181a89e6c85d, type: 3}
   damage: 10
   maxDistance: 200
-  currentAmmo: 31
+  currentAmmo: 22
   magSize: 31
   fireRate: 600
-  reloadTime: 1.2
+  reloadTime: 3
   reloading: 0
