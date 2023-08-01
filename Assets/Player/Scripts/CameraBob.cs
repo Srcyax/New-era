@@ -34,8 +34,8 @@ public class CameraBob : MonoBehaviour {
             }
         }
         else {
-            timer = 0f; // Reinicia o timer quando o movimento do jogador para
-            isStartingMovement = true; // Habilita a suavização novamente quando o jogador iniciar o movimento
+            timer = 0f;
+            isStartingMovement = true;
         }
 
         float verticalBob = Mathf.Sin(timer) * currentBobAmount;

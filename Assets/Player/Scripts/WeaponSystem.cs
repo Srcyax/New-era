@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 using System;
 using System.Collections;
@@ -9,6 +10,15 @@ public class WeaponSystem : NetworkBehaviour
     [SerializeField] Transform muzzle; 
     [SerializeField] Animator animator;
     [SerializeField] Animator Playeranimator;
+    [SerializeField] GameObject impactShot;
+
+    [Header("Spread System")]
+    [SerializeField] float maxSpread;
+    [SerializeField] float spreadIncreaseRate;
+    [SerializeField] float spreadDecreaseRate;
+    private float currentSpread = 0f;
+    [SerializeField] Image spreadImage;
+  
 
     float timeSinceLastShot;
 
@@ -25,12 +35,10 @@ public class WeaponSystem : NetworkBehaviour
 
         timeSinceLastShot += Time.deltaTime;
 
-        Debug.DrawRay(muzzle.position, muzzle.forward, Color.green);
-
-        print(CanShoot());
-
         Playeranimator.SetBool("shooting", Input.GetMouseButton(0) && CanShoot());
         Playeranimator.SetBool("idle", !Input.GetMouseButton(0));
+
+        Spread();
     }
 
     void StartReload() {
@@ -76,13 +84,31 @@ public class WeaponSystem : NetworkBehaviour
 
     [ClientRpc]
     void RpcShoot(Ray ray) {
+
+        Vector3 raycastDirection = ray.direction;
+
+        Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * currentSpread;
+        raycastDirection += Camera.main.transform.right * randomSpread.x + Camera.main.transform.up * randomSpread.y;
+
         RaycastHit hit;
 
-        if ( Physics.Raycast(ray, out hit, gunData.maxDistance) ) {
+        if ( Physics.Raycast(ray.origin, raycastDirection.normalized, out hit, gunData.maxDistance) ) {
+            Instantiate(impactShot, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity);
+            Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
             if ( hit.collider.CompareTag("Player") && hit.collider.gameObject != gameObject ) {
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 damageable?.CmdDamage(gunData.damage);
             }
         }
+    }
+
+
+    void Spread() {
+        float currentSpreadRatio = Mathf.Clamp01(currentSpread / maxSpread);
+        float circleSize = currentSpreadRatio;
+        bool isMoving = Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0;
+
+        spreadImage.rectTransform.sizeDelta = new Vector2(circleSize, circleSize);
+        currentSpread = isMoving ? Mathf.Clamp(currentSpread + spreadIncreaseRate * Time.deltaTime, 0f, maxSpread) : Mathf.Clamp(currentSpread - spreadDecreaseRate * Time.deltaTime, 0f, maxSpread);
     }
 }
