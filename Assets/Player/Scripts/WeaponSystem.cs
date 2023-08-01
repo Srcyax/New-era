@@ -19,9 +19,13 @@ public class WeaponSystem : NetworkBehaviour
     [SerializeField] float spreadDecreaseRate;
     private float currentSpread = 0f;
     [SerializeField] Image spreadImage;
-  
+
+    [Header("Screen Shake")]
+    [SerializeField] private float screenShakeDuration = 0.1f;
+    [SerializeField] private float screenShakeMagnitude = 0.1f;
 
     float timeSinceLastShot;
+    private bool isScreenShaking = false;
 
     private void Start() {
         PlayerMainController.shootInput += Shoot;
@@ -71,10 +75,14 @@ public class WeaponSystem : NetworkBehaviour
         CmdShoot(Camera.main.ScreenPointToRay(Input.mousePosition));
         gunData.currentAmmo--;
         timeSinceLastShot = 0.0f;
+        if ( !isScreenShaking ) {
+            StartScreenShake();
+        }
         OnGunShot();
     }
 
     private void OnGunShot() {
+        animator.Play("Fire");
         animator.Play("Fire");
     }
 
@@ -109,6 +117,31 @@ public class WeaponSystem : NetworkBehaviour
         }
     }
 
+    void StartScreenShake() {
+        if ( !isScreenShaking ) {
+            isScreenShaking = true;
+            StartCoroutine(ShakeScreen());
+        }
+    }
+
+    IEnumerator ShakeScreen() {
+        Vector3 originalPosition = Camera.main.transform.localPosition;
+        float elapsedTime = 0f;
+
+        while ( elapsedTime < screenShakeDuration ) {
+            //float x = UnityEngine.Random.Range(-3f, 3f) * screenShakeMagnitude;
+            //float y = UnityEngine.Random.Range(-3f, -1f) * screenShakeMagnitude;
+            float z = UnityEngine.Random.Range(3f, 1f) * screenShakeMagnitude;
+
+            Camera.main.transform.localPosition = originalPosition + new Vector3(0, 0, z);
+
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForSeconds(.01f);
+        }
+
+        Camera.main.transform.localPosition = originalPosition;
+        isScreenShaking = false;
+    }
 
     void Spread() {
         float currentSpreadRatio = Mathf.Clamp01(currentSpread / gunData.spread);
