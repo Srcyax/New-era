@@ -19,7 +19,7 @@ public class CameraBob : MonoBehaviour {
 
     private void Update() {
         isPlayerMoving = characterController.velocity.magnitude > 0.1f;
-        isPlayerRunning = Input.GetKey(KeyCode.LeftShift);
+        isPlayerRunning = Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
 
         float currentBobFrequency = isPlayerRunning ? runBobFrequency : walkBobFrequency;
         float currentBobAmount = isPlayerRunning ? runBobAmount : walkBobAmount;

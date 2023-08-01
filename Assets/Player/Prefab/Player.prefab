@@ -229,10 +229,10 @@ MonoBehaviour:
   walkBobFrequency: 3
   walkBobAmount: 0.05
   runBobFrequency: 7
-  runBobAmount: 0.2
+  runBobAmount: 0.1
   midpoint: 2
-  smoothTime: 0.1
-  rotationBobAmount: 1
+  smoothTime: 1.47
+  rotationBobAmount: 0.1
   characterController: {fileID: 5489888839778044663}
 --- !u!1 &435588308773683737
 GameObject:
@@ -3139,10 +3139,10 @@ MonoBehaviour:
   gunData: {fileID: 11400000, guid: f9d93f3498d997d48b0c01fac9ef5940, type: 2}
   muzzle: {fileID: 6625264015484888986}
   animator: {fileID: 6862242722442588129}
-  Playeranimator: {fileID: 5973855315423973376}
-  impactShot: {fileID: 6602994203424834243, guid: 53f427cf9a951a34f8a9f39611687e32, type: 3}
-  baseSpread: 5
-  maxSpread: 0.2
+  playerAnimator: {fileID: 5973855315423973376}
+  playerController: {fileID: 5489888839778044663}
+  muzzleFlash: {fileID: 2493514122087063217, guid: 704ff12eb934cba4c86587dc8178bd00, type: 3}
+  soundEffect: {fileID: 2247494191393872209, guid: 8d3f125a6d5bf72468a10236584c696a, type: 3}
   spreadIncreaseRate: 1
   spreadDecreaseRate: 15
   spreadImage: {fileID: 2578442740325073074}

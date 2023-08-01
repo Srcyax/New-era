@@ -15,6 +15,7 @@ MonoBehaviour:
   name: AR
   damage: 10
   maxDistance: 200
+  spread: 15
   currentAmmo: 22
   magSize: 31
   fireRate: 600

@@ -9,11 +9,12 @@ public class WeaponSystem : NetworkBehaviour
     [SerializeField] GunData gunData;
     [SerializeField] Transform muzzle; 
     [SerializeField] Animator animator;
-    [SerializeField] Animator Playeranimator;
-    [SerializeField] GameObject impactShot;
+    [SerializeField] Animator playerAnimator;
+    [SerializeField] CharacterController playerController;
+    [SerializeField] GameObject muzzleFlash;
+    [SerializeField] GameObject soundEffect;
 
     [Header("Spread System")]
-    [SerializeField] float maxSpread;
     [SerializeField] float spreadIncreaseRate;
     [SerializeField] float spreadDecreaseRate;
     private float currentSpread = 0f;
@@ -35,8 +36,8 @@ public class WeaponSystem : NetworkBehaviour
 
         timeSinceLastShot += Time.deltaTime;
 
-        Playeranimator.SetBool("shooting", Input.GetMouseButton(0) && CanShoot());
-        Playeranimator.SetBool("idle", !Input.GetMouseButton(0));
+        playerAnimator.SetBool("shooting", Input.GetMouseButton(0) && CanShoot());
+        playerAnimator.SetBool("idle", !Input.GetMouseButton(0));
 
         Spread();
     }
@@ -49,7 +50,7 @@ public class WeaponSystem : NetworkBehaviour
             return;
 
         animator.Play("Reload");
-        Playeranimator.Play("Reload");
+        playerAnimator.Play("Reload");
         StartCoroutine(Reload());
     }
 
@@ -79,6 +80,10 @@ public class WeaponSystem : NetworkBehaviour
 
     [Command(requiresAuthority = true)]
     void CmdShoot(Ray ray) {
+        Instantiate(muzzleFlash, muzzle);
+        GameObject obj = Instantiate(soundEffect, muzzle);
+        obj.transform.parent = null;
+        NetworkServer.Spawn(obj);
         RpcShoot(ray);
     }
 
@@ -93,8 +98,10 @@ public class WeaponSystem : NetworkBehaviour
         RaycastHit hit;
 
         if ( Physics.Raycast(ray.origin, raycastDirection.normalized, out hit, gunData.maxDistance) ) {
-            Instantiate(impactShot, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity);
+#if UNITY_EDITOR
+           // Instantiate(muzzleFlash, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity);
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
+#endif
             if ( hit.collider.CompareTag("Player") && hit.collider.gameObject != gameObject ) {
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 damageable?.CmdDamage(gunData.damage);
@@ -104,11 +111,11 @@ public class WeaponSystem : NetworkBehaviour
 
 
     void Spread() {
-        float currentSpreadRatio = Mathf.Clamp01(currentSpread / maxSpread);
+        float currentSpreadRatio = Mathf.Clamp01(currentSpread / gunData.spread);
         float circleSize = currentSpreadRatio;
         bool isMoving = Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0;
-
+        print(currentSpread);
         spreadImage.rectTransform.sizeDelta = new Vector2(circleSize, circleSize);
-        currentSpread = isMoving ? Mathf.Clamp(currentSpread + spreadIncreaseRate * Time.deltaTime, 0f, maxSpread) : Mathf.Clamp(currentSpread - spreadDecreaseRate * Time.deltaTime, 0f, maxSpread);
+        currentSpread = isMoving ? Mathf.Clamp(currentSpread + playerController.velocity.magnitude * Time.deltaTime, 0f, playerController.velocity.magnitude / gunData.spread) : Mathf.Clamp(currentSpread - spreadDecreaseRate * Time.deltaTime, 0f, playerController.velocity.magnitude / gunData.spread);
     }
 }
