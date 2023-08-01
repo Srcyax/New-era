@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: AR
   m_EditorClassIdentifier: 
   name: AR
-  damage: 10
+  damage: 20
   maxDistance: 200
   spread: 15
-  currentAmmo: 22
+  currentAmmo: 31
   magSize: 31
   fireRate: 600
   reloadTime: 3

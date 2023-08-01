@@ -20,12 +20,7 @@ public class WeaponSystem : NetworkBehaviour
     private float currentSpread = 0f;
     [SerializeField] Image spreadImage;
 
-    [Header("Screen Shake")]
-    [SerializeField] private float screenShakeDuration = 0.1f;
-    [SerializeField] private float screenShakeMagnitude = 0.1f;
-
     float timeSinceLastShot;
-    private bool isScreenShaking = false;
 
     private void Start() {
         PlayerMainController.shootInput += Shoot;
@@ -75,9 +70,6 @@ public class WeaponSystem : NetworkBehaviour
         CmdShoot(Camera.main.ScreenPointToRay(Input.mousePosition));
         gunData.currentAmmo--;
         timeSinceLastShot = 0.0f;
-        if ( !isScreenShaking ) {
-            StartScreenShake();
-        }
         OnGunShot();
     }
 
@@ -110,44 +102,38 @@ public class WeaponSystem : NetworkBehaviour
            // Instantiate(muzzleFlash, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity);
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
 #endif
-            if ( hit.collider.CompareTag("Player") && hit.collider.gameObject != gameObject ) {
-                IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-                damageable?.CmdDamage(gunData.damage);
+
+            string[] hitboxes = {
+                "Head",
+                "Chest",
+                "LowerChest",
+                "Arms",
+                "Legs"
+            };
+
+            int[] damages = {
+                80,
+                40,
+                25,
+                15,
+                10
+            };
+
+            for ( int i = 0; i < hitboxes.Length; i++ ) {
+                if ( hit.collider.CompareTag(hitboxes[i]) && hit.collider.gameObject != gameObject ) {
+                    print(hit.collider.tag + " : " + damages[i]);
+                    IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
+                    damageable?.CmdDamage(gunData.damage + damages[i]);
+                }
             }
         }
-    }
-
-    void StartScreenShake() {
-        if ( !isScreenShaking ) {
-            isScreenShaking = true;
-            StartCoroutine(ShakeScreen());
-        }
-    }
-
-    IEnumerator ShakeScreen() {
-        Vector3 originalPosition = Camera.main.transform.localPosition;
-        float elapsedTime = 0f;
-
-        while ( elapsedTime < screenShakeDuration ) {
-            //float x = UnityEngine.Random.Range(-3f, 3f) * screenShakeMagnitude;
-            //float y = UnityEngine.Random.Range(-3f, -1f) * screenShakeMagnitude;
-            float z = UnityEngine.Random.Range(3f, 1f) * screenShakeMagnitude;
-
-            Camera.main.transform.localPosition = originalPosition + new Vector3(0, 0, z);
-
-            elapsedTime += Time.deltaTime;
-            yield return new WaitForSeconds(.01f);
-        }
-
-        Camera.main.transform.localPosition = originalPosition;
-        isScreenShaking = false;
     }
 
     void Spread() {
         float currentSpreadRatio = Mathf.Clamp01(currentSpread / gunData.spread);
         float circleSize = currentSpreadRatio;
         bool isMoving = Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0;
-        print(currentSpread);
+        //print(currentSpread);
         spreadImage.rectTransform.sizeDelta = new Vector2(circleSize, circleSize);
         currentSpread = isMoving ? Mathf.Clamp(currentSpread + playerController.velocity.magnitude * Time.deltaTime, 0f, playerController.velocity.magnitude / gunData.spread) : Mathf.Clamp(currentSpread - spreadDecreaseRate * Time.deltaTime, 0f, playerController.velocity.magnitude / gunData.spread);
     }
