@@ -18,6 +18,6 @@ MonoBehaviour:
   spread: 15
   currentAmmo: 31
   magSize: 31
-  fireRate: 600
+  fireRate: 700
   reloadTime: 3
   reloading: 0

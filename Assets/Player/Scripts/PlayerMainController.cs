@@ -85,7 +85,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         animator.enabled = false;
         playerDeadUI.SetActive(true);
         int r = UnityEngine.Random.Range(spawnPoints.Length - spawnPoints.Length, spawnPoints.Length);
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(7.0f);
         animator.enabled = true;
         playerHealth = 100;
         transform.localPosition = spawnPoints[ r ].transform.localPosition;
