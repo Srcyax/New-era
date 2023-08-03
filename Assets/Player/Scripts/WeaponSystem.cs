@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Animations.Rigging;
 using Mirror;
 using System;
 using System.Collections;
@@ -19,6 +20,9 @@ public class WeaponSystem : NetworkBehaviour
     [SerializeField] float spreadDecreaseRate;
     private float currentSpread = 0f;
     [SerializeField] Image spreadImage;
+
+    [SerializeField] TwoBoneIKConstraintData twoBoneIKConstraintDatas;
+    [SerializeField] Transform realodClip;
 
     float timeSinceLastShot;
 
@@ -51,6 +55,10 @@ public class WeaponSystem : NetworkBehaviour
         animator.Play("Reload");
         playerAnimator.Play("Reload");
         StartCoroutine(Reload());
+    }
+
+    public void SetRealodTargetTransform(Transform transform) {
+        twoBoneIKConstraintDatas.target = transform;
     }
 
     IEnumerator Reload() {
