@@ -21,9 +21,6 @@ public class WeaponSystem : NetworkBehaviour
     private float currentSpread = 0f;
     [SerializeField] Image spreadImage;
 
-    [SerializeField] TwoBoneIKConstraintData twoBoneIKConstraintDatas;
-    [SerializeField] Transform realodClip;
-
     float timeSinceLastShot;
 
     private void Start() {
@@ -55,10 +52,6 @@ public class WeaponSystem : NetworkBehaviour
         animator.Play("Reload");
         playerAnimator.Play("Reload");
         StartCoroutine(Reload());
-    }
-
-    public void SetRealodTargetTransform(Transform transform) {
-        twoBoneIKConstraintDatas.target = transform;
     }
 
     IEnumerator Reload() {
