@@ -17,6 +17,9 @@ public class Sway : MonoBehaviour
     public bool rotationY = true;
     public bool rotationZ = true;
 
+    [SerializeField] CharacterController characterController;
+    private Vector3 lastPosition;
+
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
@@ -26,21 +29,20 @@ public class Sway : MonoBehaviour
     {
         initialPosition = transform.localPosition;
         initialRotation = transform.localRotation;
+        lastPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Cursor.visible)
-        {
-            transform.localPosition = new Vector3(0, 0, 0);
-            return;
-        }
-
         CalculateSway();
 
         MoveSway();
         TiltSway();
+
+        if ( characterController.velocity.magnitude > 0.01f ) {
+            MoveBackSway();
+        }
     }
 
     private void CalculateSway()
@@ -67,5 +69,12 @@ public class Sway : MonoBehaviour
         Quaternion finalRotation = Quaternion.Euler(new Vector3(rotationX ? -tiltX : 0f, rotationY ? tiltY : 0f, rotationZ ? tiltY : 0f));
 
         transform.localRotation = Quaternion.Slerp(transform.localRotation, finalRotation * initialRotation, Time.deltaTime * smoothRotation);
+    }
+
+    public void MoveBackSway() {
+        float moveBackAmount = 0.1f;
+        float moveBackZ = -moveBackAmount;
+        Vector3 finalPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, moveBackZ);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition + finalPosition, Time.deltaTime * (smoothAmount* 1.5f));
     }
 }

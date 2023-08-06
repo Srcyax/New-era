@@ -3610,6 +3610,7 @@ MonoBehaviour:
   rotationX: 1
   rotationY: 1
   rotationZ: 1
+  characterController: {fileID: 1445762460512427184}
 --- !u!1 &6752428044261430914
 GameObject:
   m_ObjectHideFlags: 0

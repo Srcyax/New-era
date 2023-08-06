@@ -27,8 +27,8 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
 
-    private float runSpeed = 7f;
-    private float walkSpeed = 2f;
+    private float shifitingSpeed = 2f;
+    private float walkSpeed = 4f;
 
     void Start() {
 
@@ -96,10 +96,10 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W);
+        bool isShifiting = Input.GetKey(KeyCode.LeftShift);
 
-        float curSpeedX = (isRunning ? runSpeed : 2f) * Input.GetAxis("Vertical");
-        float curSpeedY = (isRunning ? runSpeed : 2f) * Input.GetAxis("Horizontal");
+        float curSpeedX = (isShifiting ? shifitingSpeed : walkSpeed) * Input.GetAxis("Vertical");
+        float curSpeedY = (isShifiting ? shifitingSpeed : walkSpeed) * Input.GetAxis("Horizontal");
         moveDirection = ( ( forward * curSpeedX ) + ( right * curSpeedY ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
@@ -122,19 +122,16 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
         playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W);
+        bool isShifiting = Input.GetKey(KeyCode.LeftShift);
 
         animator.SetFloat("inputX", playerInput.x);
-        animator.SetFloat("inputY", isRunning ? 2 : playerInput.y);
+        animator.SetFloat("inputY", playerInput.y);
 
-        if ( isRunning ) {
-            animator.speed = characterController.velocity.magnitude / runSpeed;
-        }
-        else if ( !isRunning && characterController.velocity.magnitude > 0 ) {
-            animator.speed = characterController.velocity.magnitude / walkSpeed;
+        /*if ( isShifiting ) {
+            animator.speed = characterController.velocity.magnitude / (shifitingSpeed * 2);
         }
         else {
             animator.speed = 1;
-        }
+        }*/
     }
 }
