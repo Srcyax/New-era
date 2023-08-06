@@ -1,9 +1,10 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Animations.Rigging;
 using Mirror;
 using System;
 using System.Collections;
+using TMPro;
 
 public class WeaponSystem : NetworkBehaviour
 {
@@ -13,6 +14,7 @@ public class WeaponSystem : NetworkBehaviour
     [SerializeField] Animator playerAnimator;
     [SerializeField] CharacterController playerController;
     [SerializeField] GameObject muzzleFlash;
+    [SerializeField] GameObject bulletImpact;
     [SerializeField] GameObject soundEffect;
 
     [Header("Spread System")]
@@ -20,6 +22,7 @@ public class WeaponSystem : NetworkBehaviour
     [SerializeField] float spreadDecreaseRate;
     private float currentSpread = 0f;
     [SerializeField] Image spreadImage;
+    [SerializeField] TextMeshProUGUI ammoUI;
 
     float timeSinceLastShot;
 
@@ -40,6 +43,8 @@ public class WeaponSystem : NetworkBehaviour
         playerAnimator.SetBool("idle", !Input.GetMouseButton(0));
 
         Spread();
+
+        ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
     void StartReload() {
@@ -47,6 +52,9 @@ public class WeaponSystem : NetworkBehaviour
             return;
 
         if ( gunData.reloading )
+            return;
+
+        if (gunData.currentAmmo >= gunData.magSize ) 
             return;
 
         animator.Play("Reload");
@@ -100,7 +108,8 @@ public class WeaponSystem : NetworkBehaviour
 
         if ( Physics.Raycast(ray.origin, raycastDirection.normalized, out hit, gunData.maxDistance) ) {
 #if UNITY_EDITOR
-           // Instantiate(muzzleFlash, new Vector3(hit.point.x, hit.point.y, hit.point.z), Quaternion.identity);
+            GameObject obj = Instantiate(bulletImpact, new Vector3(hit.point.x, hit.point.y, hit.point.z+ -.05f), Quaternion.identity);
+            obj.transform.localRotation = hit.transform.localRotation;
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
 #endif
 
