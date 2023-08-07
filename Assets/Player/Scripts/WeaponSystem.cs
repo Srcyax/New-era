@@ -84,7 +84,6 @@ public class WeaponSystem : NetworkBehaviour
 
     private void OnGunShot() {
         animator.Play("Fire");
-        animator.Play("Fire");
     }
 
     [Command(requiresAuthority = true)]

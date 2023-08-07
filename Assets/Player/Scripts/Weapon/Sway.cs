@@ -72,9 +72,10 @@ public class Sway : MonoBehaviour
     }
 
     public void MoveBackSway() {
-        float moveBackAmount = 0.1f;
+        float moveBackAmount = !Input.GetKey(KeyCode.LeftShift) ? characterController.velocity.magnitude * 0.020f : characterController.velocity.magnitude * 0.025f;
+        print(moveBackAmount);
         float moveBackZ = -moveBackAmount;
         Vector3 finalPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, moveBackZ);
-        transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition + finalPosition, Time.deltaTime * (smoothAmount* 1.5f));
+        transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition + finalPosition, Time.deltaTime * (smoothAmount* 2f));
     }
 }
