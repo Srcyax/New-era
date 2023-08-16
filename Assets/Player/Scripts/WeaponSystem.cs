@@ -18,17 +18,35 @@ public class WeaponSystem : NetworkBehaviour
     [SerializeField] GameObject soundEffect;
 
     [Header("Spread System")]
-    [SerializeField] float spreadIncreaseRate;
-    [SerializeField] float spreadDecreaseRate;
-    private float currentSpread = 0f;
+    [SerializeField]  float spreadIncreaseRate;
+    [SerializeField]  float spreadDecreaseRate;
+    [HideInInspector] float currentSpread = 0f;
+
     [SerializeField] Image spreadImage;
     [SerializeField] TextMeshProUGUI ammoUI;
 
     float timeSinceLastShot;
 
-    private void Start() {
+    string[] hitboxes = {
+                "Head",
+                "Chest",
+                "LowerChest",
+                "Arms",
+                "Legs"
+            };
+
+    int[] damages = {
+                80,
+                40,
+                25,
+                15,
+                10
+            };
+
+    void Start() {
         PlayerMainController.shootInput += Shoot;
         PlayerMainController.reloadInput += StartReload;
+        PlayerMainController.playerDied += WeaponReset;
 
         gunData.reloading = false;
     }
@@ -69,10 +87,9 @@ public class WeaponSystem : NetworkBehaviour
         gunData.reloading = false;
     }
 
-    private bool CanShoot() => !gunData.reloading && gunData.currentAmmo > 0 && timeSinceLastShot > 1f / ( gunData.fireRate / 60.0f );
+    bool CanShoot() => !gunData.reloading && gunData.currentAmmo > 0 && timeSinceLastShot > 1f / ( gunData.fireRate / 60.0f );
 
     void Shoot() {
-
         if ( !CanShoot() )
             return;
 
@@ -82,9 +99,15 @@ public class WeaponSystem : NetworkBehaviour
         OnGunShot();
     }
 
-    private void OnGunShot() {
+    void OnGunShot() {
         animator.Play("Fire");
     }
+
+    void WeaponReset() {
+        gunData.reloading = false;
+        gunData.currentAmmo = gunData.magSize;
+    }
+
 
     [Command(requiresAuthority = true)]
     void CmdShoot(Ray ray) {
@@ -111,22 +134,6 @@ public class WeaponSystem : NetworkBehaviour
             obj.transform.localRotation = hit.transform.localRotation;
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
 #endif
-
-            string[] hitboxes = {
-                "Head",
-                "Chest",
-                "LowerChest",
-                "Arms",
-                "Legs"
-            };
-
-            int[] damages = {
-                80,
-                40,
-                25,
-                15,
-                10
-            };
 
             for ( int i = 0; i < hitboxes.Length; i++ ) {
                 if ( hit.collider.CompareTag(hitboxes[i]) && hit.collider.gameObject != gameObject ) {

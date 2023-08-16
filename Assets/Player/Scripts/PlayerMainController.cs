@@ -9,6 +9,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     [SerializeField] private Camera playerCamera;
     [SerializeField] public static Action shootInput;
     [SerializeField] public static Action reloadInput;
+    [SerializeField] public static Action playerDied;
     [SyncVar] public float playerHealth = 100;
 
     [Header("Components to hide")]
@@ -90,6 +91,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         playerHealth = 100;
         transform.localPosition = spawnPoints[ r ].transform.localPosition;
         playerDeadUI.SetActive(false);
+        playerDied?.Invoke();
     }
 
     void PlayerControler() {

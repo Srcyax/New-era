@@ -267,9 +267,9 @@ RectTransform:
   m_Children:
   - {fileID: 7124601522940728546}
   - {fileID: 868918245189076240}
-  - {fileID: 8029284755133410009}
   - {fileID: 2982998427507714497}
   - {fileID: 3442289798589015148}
+  - {fileID: 8029284755133410009}
   m_Father: {fileID: 1445762460512427188}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -798,13 +798,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 0.74
-  m_Radius: 0.29
+  m_Height: 1.8
+  m_Radius: 0.03
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: -0.56, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1445762460512427148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1398,7 +1398,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2704313208235153176}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -5261,7 +5261,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2704313208235153176}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5563,7 +5563,7 @@ RectTransform:
   m_Children:
   - {fileID: 9075142178832168758}
   m_Father: {fileID: 2704313208235153176}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
