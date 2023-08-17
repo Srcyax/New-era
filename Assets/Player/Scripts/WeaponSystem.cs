@@ -27,22 +27,6 @@ public class WeaponSystem : NetworkBehaviour
 
     float timeSinceLastShot;
 
-    string[] hitboxes = {
-                "Head",
-                "Chest",
-                "LowerChest",
-                "Arms",
-                "Legs"
-            };
-
-    int[] damages = {
-                80,
-                40,
-                25,
-                15,
-                10
-            };
-
     void Start() {
         PlayerMainController.shootInput += Shoot;
         PlayerMainController.reloadInput += StartReload;
@@ -120,26 +104,23 @@ public class WeaponSystem : NetworkBehaviour
 
     [ClientRpc]
     void RpcShoot(Ray ray) {
-
         Vector3 raycastDirection = ray.direction;
-
         Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * currentSpread;
         raycastDirection += Camera.main.transform.right * randomSpread.x + Camera.main.transform.up * randomSpread.y;
 
-        RaycastHit hit;
-
-        if ( Physics.Raycast(ray.origin, raycastDirection.normalized, out hit, gunData.maxDistance) ) {
-#if UNITY_EDITOR
-            GameObject obj = Instantiate(bulletImpact, new Vector3(hit.point.x, hit.point.y, hit.point.z+ -.05f), Quaternion.identity);
-            obj.transform.localRotation = hit.transform.localRotation;
+        if ( Physics.Raycast(ray.origin, raycastDirection.normalized, out RaycastHit hit, gunData.maxDistance) ) {
+            GameObject obj = Instantiate(bulletImpact, new Vector3(hit.point.x, hit.point.y, hit.point.z + -.04f), Quaternion.identity);
+            obj.transform.rotation = Camera.main.transform.localRotation;
+            obj.transform.parent = hit.transform;
+/*#if UNITY_EDITOR
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
-#endif
+#endif*/
 
-            for ( int i = 0; i < hitboxes.Length; i++ ) {
-                if ( hit.collider.CompareTag(hitboxes[i]) && hit.collider.gameObject != gameObject ) {
-                    print(hit.collider.tag + " : " + damages[i]);
+            for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
+                if ( hit.collider.CompareTag(gunData.hitboxes[ i]) && hit.collider.transform.root != gameObject ) {
+                    print(hit.collider.tag + " : " + gunData.damages[ i]);
                     IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
-                    damageable?.CmdDamage(gunData.damage + damages[i]);
+                    damageable?.CmdDamage(gunData.damage + gunData.damages[ i]);
                 }
             }
         }

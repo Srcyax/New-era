@@ -18,4 +18,6 @@ public class GunData : ScriptableObject {
 
     [HideInInspector]
     public bool reloading;
+    public string[] hitboxes = {"Head", "Chest", "LowerChest", "Arms", "Legs"};
+    public int[] damages = {80, 40, 25, 15, 10};
 }
