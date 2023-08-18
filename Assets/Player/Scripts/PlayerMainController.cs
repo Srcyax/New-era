@@ -28,8 +28,8 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
 
-    private float shifitingSpeed = 2f;
-    private float walkSpeed = 4f;
+    private float shifitingSpeed = 3f;
+    private float walkSpeed = 6f;
 
     void Start() {
 
@@ -129,11 +129,11 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         animator.SetFloat("inputX", playerInput.x);
         animator.SetFloat("inputY", playerInput.y);
 
-        /*if ( isShifiting ) {
-            animator.speed = characterController.velocity.magnitude / (shifitingSpeed * 2);
+        if ( isShifiting ) {
+            animator.speed = characterController.velocity.magnitude * ((shifitingSpeed * .2f) / characterController.velocity.magnitude);
         }
         else {
-            animator.speed = 1;
-        }*/
+            animator.speed = 1.2f;
+        }
     }
 }

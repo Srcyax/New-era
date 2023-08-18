@@ -29,7 +29,7 @@ public class WeaponSystem : NetworkBehaviour
 
     void Start() {
         PlayerMainController.shootInput += Shoot;
-        PlayerMainController.reloadInput += StartReload;
+        PlayerMainController.reloadInput += CmdStartReload;
         PlayerMainController.playerDied += WeaponReset;
 
         gunData.reloading = false;
@@ -41,15 +41,22 @@ public class WeaponSystem : NetworkBehaviour
 
         timeSinceLastShot += Time.deltaTime;
 
-        playerAnimator.SetBool("shooting", Input.GetMouseButton(0) && CanShoot());
-        playerAnimator.SetBool("idle", !Input.GetMouseButton(0));
+        /*playerAnimator.SetBool("shooting", Input.GetMouseButton(0) && CanShoot());
+        playerAnimator.SetBool("idle", !Input.GetMouseButton(0));*/
 
         Spread();
 
         ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
-    void StartReload() {
+    [Command(requiresAuthority = true)]
+    void CmdStartReload() {
+        RpcStartReload();
+        playerAnimator.Play("Reload");
+    }
+
+    [ClientRpc]
+    void RpcStartReload() {
         if ( !isLocalPlayer )
             return;
 
@@ -60,7 +67,6 @@ public class WeaponSystem : NetworkBehaviour
             return;
 
         animator.Play("Reload");
-        playerAnimator.Play("Reload");
         StartCoroutine(Reload());
     }
 
@@ -107,7 +113,7 @@ public class WeaponSystem : NetworkBehaviour
         Vector3 raycastDirection = ray.direction;
         Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * currentSpread;
         raycastDirection += Camera.main.transform.right * randomSpread.x + Camera.main.transform.up * randomSpread.y;
-
+        playerAnimator.Play("shooting");
         if ( Physics.Raycast(ray.origin, raycastDirection.normalized, out RaycastHit hit, gunData.maxDistance) ) {
             GameObject obj = Instantiate(bulletImpact, new Vector3(hit.point.x, hit.point.y, hit.point.z + -.04f), Quaternion.identity);
             obj.transform.rotation = Camera.main.transform.localRotation;
@@ -115,9 +121,8 @@ public class WeaponSystem : NetworkBehaviour
 /*#if UNITY_EDITOR
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
 #endif*/
-
             for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
-                if ( hit.collider.CompareTag(gunData.hitboxes[ i]) && hit.collider.transform.root != gameObject ) {
+                if ( hit.collider.CompareTag(gunData.hitboxes[ i]) && hit.collider.transform.root != gameObject.transform ) {
                     print(hit.collider.tag + " : " + gunData.damages[ i]);
                     IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
                     damageable?.CmdDamage(gunData.damage + gunData.damages[ i]);
