@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DeleteAfter : NetworkBehaviour
 {
+    [SerializeField] float destroyTime = 3;
     private void Start() {
         CmdDestroy();
     }
@@ -14,7 +15,7 @@ public class DeleteAfter : NetworkBehaviour
     }
 
     IEnumerator destroy() {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(destroyTime);
         NetworkServer.Destroy(gameObject);
     }
 }

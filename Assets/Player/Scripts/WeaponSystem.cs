@@ -29,7 +29,7 @@ public class WeaponSystem : NetworkBehaviour
 
     void Start() {
         PlayerMainController.shootInput += Shoot;
-        PlayerMainController.reloadInput += CmdStartReload;
+        PlayerMainController.reloadInput += StartReload;
         PlayerMainController.playerDied += WeaponReset;
 
         gunData.reloading = false;
@@ -49,14 +49,8 @@ public class WeaponSystem : NetworkBehaviour
         ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
-    [Command(requiresAuthority = true)]
-    void CmdStartReload() {
-        RpcStartReload();
-        playerAnimator.Play("Reload");
-    }
 
-    [ClientRpc]
-    void RpcStartReload() {
+    void StartReload() {
         if ( !isLocalPlayer )
             return;
 
@@ -66,6 +60,7 @@ public class WeaponSystem : NetworkBehaviour
         if (gunData.currentAmmo >= gunData.magSize ) 
             return;
 
+        playerAnimator.Play("Reload");
         animator.Play("Reload");
         StartCoroutine(Reload());
     }
@@ -118,9 +113,7 @@ public class WeaponSystem : NetworkBehaviour
             GameObject obj = Instantiate(bulletImpact, new Vector3(hit.point.x, hit.point.y, hit.point.z + -.04f), Quaternion.identity);
             obj.transform.rotation = Camera.main.transform.localRotation;
             obj.transform.parent = hit.transform;
-/*#if UNITY_EDITOR
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
-#endif*/
             for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
                 if ( hit.collider.CompareTag(gunData.hitboxes[ i]) && hit.collider.transform.root != gameObject.transform ) {
                     print(hit.collider.tag + " : " + gunData.damages[ i]);
@@ -134,9 +127,7 @@ public class WeaponSystem : NetworkBehaviour
     void Spread() {
         float currentSpreadRatio = Mathf.Clamp01(currentSpread / gunData.spread);
         float circleSize = currentSpreadRatio;
-        bool isMoving = Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0;
-        //print(currentSpread);
         spreadImage.rectTransform.sizeDelta = new Vector2(circleSize, circleSize);
-        currentSpread = isMoving ? Mathf.Clamp(currentSpread + playerController.velocity.magnitude * Time.deltaTime, 0f, playerController.velocity.magnitude / gunData.spread) : Mathf.Clamp(currentSpread - spreadDecreaseRate * Time.deltaTime, 0f, playerController.velocity.magnitude / gunData.spread);
+        currentSpread = Mathf.Clamp(currentSpread + playerController.velocity.magnitude * Time.deltaTime, 0f, playerController.velocity.magnitude / gunData.spread);
     }
 }

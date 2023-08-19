@@ -28,8 +28,9 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
 
-    private float shifitingSpeed = 3f;
-    private float walkSpeed = 6f;
+    bool isRunning => Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
+    private float shifitingSpeed = 8f;
+    private float walkSpeed = 4f;
 
     void Start() {
 
@@ -98,11 +99,10 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isShifiting = Input.GetKey(KeyCode.LeftShift);
-
-        float curSpeedX = (isShifiting ? shifitingSpeed : walkSpeed) * Input.GetAxis("Vertical");
-        float curSpeedY = (isShifiting ? shifitingSpeed : walkSpeed) * Input.GetAxis("Horizontal");
-        moveDirection = ( ( forward * curSpeedX ) + ( right * curSpeedY ) );
+        float curSpeedX = (isRunning ? shifitingSpeed : walkSpeed) * Input.GetAxis("Vertical");
+        float curSpeedY = (isRunning ? shifitingSpeed - Input.GetAxis("Horizontal") : walkSpeed) * Input.GetAxis("Horizontal");
+        print(Mathf.Clamp(curSpeedY, -5, 5));
+        moveDirection = ( ( forward * Mathf.Clamp(curSpeedX, -8, 8) ) + ( right * Mathf.Clamp(curSpeedY, -5, 5) ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
 
@@ -120,20 +120,18 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
             transform.localPosition = new Vector3(69.2f, 15.6f, 46f);
     }
 
+    float smoothing = 0.1f;
+    float smoothInputX;
+    float smoothInputY;
+
     void Animations() {
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
 
-        playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        smoothInputX = Mathf.Lerp(smoothInputX, horizontalInput, smoothing);
+        smoothInputY = Mathf.Lerp(smoothInputY, isRunning ? 2 : verticalInput, smoothing);
 
-        bool isShifiting = Input.GetKey(KeyCode.LeftShift);
-
-        animator.SetFloat("inputX", playerInput.x);
-        animator.SetFloat("inputY", playerInput.y);
-
-        if ( isShifiting ) {
-            animator.speed = characterController.velocity.magnitude * ((shifitingSpeed * .2f) / characterController.velocity.magnitude);
-        }
-        else {
-            animator.speed = 1.2f;
-        }
+        animator.SetFloat("inputX", smoothInputX);
+        animator.SetFloat("inputY", smoothInputY);
     }
 }
