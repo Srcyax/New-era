@@ -12,6 +12,7 @@ TagManager:
   - Arms
   - LowerChest
   - Foot
+  - WaitingPlayersCanvas
   layers:
   - Default
   - TransparentFX

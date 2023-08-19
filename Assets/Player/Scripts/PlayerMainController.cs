@@ -5,6 +5,10 @@ using TMPro;
 using UnityEngine;
 
 public class PlayerMainController : NetworkBehaviour, IDamageable {
+    private LobbyPlayers lobbyManager;
+
+    [Space(10)]
+
     [SerializeField] private Animator animator;
     [SerializeField] private Camera playerCamera;
     [SerializeField] public static Action shootInput;
@@ -17,6 +21,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     [SerializeField] private GameObject[] playerObjs;
 
     [SerializeField] private TextMeshProUGUI healthTextPro;
+    [SerializeField] private GameObject waitingPlayers;
     [SerializeField] private GameObject playerDeadUI;
     [SerializeField] private GameObject playerRagdoll;
 
@@ -36,6 +41,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
         spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoints");
+        lobbyManager = FindObjectOfType<LobbyPlayers>();
         Destroy(lobby);
 
         Cursor.visible = false;
@@ -54,6 +60,12 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
     void Update() {
         if ( !isLocalPlayer || playerHealth <= 0 )
+            return;
+
+        if ( lobbyManager.canStart && waitingPlayers )
+            Destroy(waitingPlayers, 5f);
+
+        if ( waitingPlayers )
             return;
 
         PlayerControler();
@@ -101,7 +113,6 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
         float curSpeedX = (isRunning ? shifitingSpeed : walkSpeed) * Input.GetAxis("Vertical");
         float curSpeedY = (isRunning ? shifitingSpeed - Input.GetAxis("Horizontal") : walkSpeed) * Input.GetAxis("Horizontal");
-        print(Mathf.Clamp(curSpeedY, -5, 5));
         moveDirection = ( ( forward * Mathf.Clamp(curSpeedX, -8, 8) ) + ( right * Mathf.Clamp(curSpeedY, -5, 5) ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
