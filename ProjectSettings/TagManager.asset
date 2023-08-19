@@ -13,6 +13,8 @@ TagManager:
   - LowerChest
   - Foot
   - WaitingPlayersCanvas
+  - ICE_SpawPoints
+  - FIRE_SpawPoints
   layers:
   - Default
   - TransparentFX

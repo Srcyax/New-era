@@ -11,6 +11,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
     [SerializeField] private Animator animator;
     [SerializeField] private Camera playerCamera;
+    [SyncVar] public int playerTeam = -1;
     [SerializeField] public static Action shootInput;
     [SerializeField] public static Action reloadInput;
     [SerializeField] public static Action playerDied;
@@ -40,13 +41,13 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     void Start() {
 
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
-        spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoints");
+        spawnPoints = playerTeam > 0 ? GameObject.FindGameObjectsWithTag("FIRE_SpawPoints") : GameObject.FindGameObjectsWithTag("ICE_SpawPoints");
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         Destroy(lobby);
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        playerCamera.enabled = isLocalPlayer;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        playerCamera.enabled = isLocalPlayer && playerTeam >= 0;
         playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
         characterController = GetComponent<CharacterController>();
         for ( int i = 0; i < playerObjs.Length; i++ ) {
@@ -65,8 +66,10 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         if ( lobbyManager.canStart && waitingPlayers )
             Destroy(waitingPlayers, 5f);
 
-        if ( waitingPlayers )
+        if ( waitingPlayers || playerTeam < 0 )
             return;
+
+        playerCamera.enabled = isLocalPlayer && playerTeam >= 0;
 
         PlayerControler();
         Animations();
@@ -99,10 +102,10 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         animator.enabled = false;
         playerDeadUI.SetActive(true);
         int r = UnityEngine.Random.Range(spawnPoints.Length - spawnPoints.Length, spawnPoints.Length);
-        yield return new WaitForSeconds(7.0f);
+        yield return new WaitForSeconds(5.0f);
         animator.enabled = true;
         playerHealth = 100;
-        transform.localPosition = spawnPoints[ r ].transform.localPosition;
+        transform.position = spawnPoints[ r ].transform.localPosition;
         playerDeadUI.SetActive(false);
         playerDied?.Invoke();
     }
@@ -128,7 +131,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * 3f, 0);
 
         if ( transform.localPosition.y <= -10 )
-            transform.localPosition = new Vector3(69.2f, 15.6f, 46f);
+            CmdDamage(100);
     }
 
     float smoothing = 0.1f;

@@ -962,6 +962,7 @@ MonoBehaviour:
   syncInterval: 0
   animator: {fileID: 776594263730734663}
   playerCamera: {fileID: 1445762459437069788}
+  playerTeam: -1
   playerHealth: 100
   playerBody:
   - {fileID: 3960988543822856322}
