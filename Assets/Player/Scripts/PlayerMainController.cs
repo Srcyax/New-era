@@ -37,7 +37,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
     private bool isRunning => Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
     private float shifitingSpeed = 8f;
-    private float walkSpeed = 4f;
+    private float walkSpeed = 2f;
 
     void Start() {
 
@@ -159,7 +159,6 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
         animator.SetFloat("inputX", smoothInputX);
         animator.SetFloat("inputY", smoothInputY);
-        print(isGrounded());
     }
 
     bool isGrounded() {

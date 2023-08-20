@@ -125,8 +125,6 @@ public class WeaponSystem : NetworkBehaviour
     }
 
     void Spread() {
-        float currentSpreadRatio = Mathf.Clamp01(currentSpread / gunData.spread);
-        float circleSize = currentSpreadRatio;
         currentSpread = Mathf.Clamp(currentSpread + playerController.velocity.magnitude * Time.deltaTime, 0f, playerController.velocity.magnitude / gunData.spread);
     }
 }
