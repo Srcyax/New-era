@@ -1,29 +1,27 @@
 using TMPro;
 using UnityEngine;
 using Mirror;
+using System.Collections;
 
-
-public class ChooseTeam : NetworkBehaviour
-{
+public class ChooseTeam : NetworkBehaviour {
     [SyncVar] public int ice, fire;
     GameObject[] players;
 
     [Header("UI settings")]
     [SerializeField] TextMeshProUGUI[] teamsPlayers;
 
-    void Start()
-    {
-        
+    void Start() {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
-    void Update()
-    {
+    void Update() {
         CmdTeamsInfo(ice, fire);
 
-        players = GameObject.FindGameObjectsWithTag("Player");
+       
     }
 
-    [Command(requiresAuthority =false)]
+    [Command(requiresAuthority = false)]
     void CmdTeamsInfo(int ice, int fire) {
         RpcTeamsInfo(ice, fire);
     }
@@ -35,36 +33,33 @@ public class ChooseTeam : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdJoinTeamIce() {
+    public void CmdJoinTeamIce(int team) {
         ice++;
-        RpcSetPlayerTeam(0);
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdJoinTeamFire() {
+    public void CmdJoinTeamFire(int team) {
         fire++;
-        RpcSetPlayerTeam(1);
     }
 
     public void JoinTeam() {
         gameObject.SetActive(false);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    [ClientRpc]
-    void RpcSetPlayerTeam(int team) {
-        GameObject[] spawnPoints = team == 0 ? GameObject.FindGameObjectsWithTag("ICE_SpawPoints") : GameObject.FindGameObjectsWithTag("FIRE_SpawPoints");
+    public void SetPlayerTeam(int team) {
+        players = GameObject.FindGameObjectsWithTag("Player");
         for ( int i = 0; i < players.Length; i++ ) {
             if ( !players[ i ] )
                 continue;
+            
+            if ( !players[ i ].GetComponent<PlayerMainController>().localPlayer )
+                continue;
 
-            if ( players[ i ].GetComponent<PlayerMainController>().isLocalPlayer ) {
-                players[ i ].GetComponent<PlayerMainController>().playerTeam = team;
-               // players[ i ].GetComponent<PlayerMainController>().CmdDamage(100);
-
-                int r = Random.Range(0, spawnPoints.Length);
-                print(spawnPoints[ r ].transform.localPosition);
-                players[ i ].transform.localPosition = spawnPoints[ r ].transform.localPosition;
-            }
+            players[ i ].GetComponent<PlayerMainController>().playerTeam = team;
+            players[ i ].GetComponent<PlayerMainController>().CmdDamage(100);
+            break;
         }
     }
 }

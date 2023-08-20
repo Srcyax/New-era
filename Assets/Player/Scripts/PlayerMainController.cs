@@ -11,11 +11,12 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
     [SerializeField] private Animator animator;
     [SerializeField] private Camera playerCamera;
-    [SyncVar] public int playerTeam = -1;
     [SerializeField] public static Action shootInput;
     [SerializeField] public static Action reloadInput;
     [SerializeField] public static Action playerDied;
     [SyncVar] public float playerHealth = 100;
+    [SyncVar] public int playerTeam = -1;
+    [SyncVar] public bool localPlayer;
 
     [Header("Components to hide")]
     [SerializeField] private GameObject[] playerBody;
@@ -41,12 +42,9 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     void Start() {
 
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
-        spawnPoints = playerTeam > 0 ? GameObject.FindGameObjectsWithTag("FIRE_SpawPoints") : GameObject.FindGameObjectsWithTag("ICE_SpawPoints");
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         Destroy(lobby);
-
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
+        localPlayer = isLocalPlayer;
         playerCamera.enabled = isLocalPlayer && playerTeam >= 0;
         playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
         characterController = GetComponent<CharacterController>();
@@ -99,13 +97,17 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     }
 
     IEnumerator Respawn() {
+        spawnPoints = playerTeam == 1 ? GameObject.FindGameObjectsWithTag("FIRE_SpawPoints") : GameObject.FindGameObjectsWithTag("ICE_SpawPoints");
         animator.enabled = false;
         playerDeadUI.SetActive(true);
-        int r = UnityEngine.Random.Range(spawnPoints.Length - spawnPoints.Length, spawnPoints.Length);
+        characterController.enabled = false;
         yield return new WaitForSeconds(5.0f);
+        int r = UnityEngine.Random.Range(0, spawnPoints.Length);
+        transform.position = spawnPoints[ r ].transform.position;
+        yield return new WaitForSeconds(.5f);
+        characterController.enabled = true;
         animator.enabled = true;
         playerHealth = 100;
-        transform.position = spawnPoints[ r ].transform.localPosition;
         playerDeadUI.SetActive(false);
         playerDied?.Invoke();
     }
