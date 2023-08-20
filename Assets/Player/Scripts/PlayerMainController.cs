@@ -37,7 +37,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
     private bool isRunning => Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
     private float shifitingSpeed = 8f;
-    private float walkSpeed = 2f;
+    private float walkSpeed = 3.5f;
 
     void Start() {
 
