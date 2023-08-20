@@ -1,19 +1,19 @@
 using Mirror;
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using System;
 
 public class PlayerMainController : NetworkBehaviour, IDamageable {
     private LobbyPlayers lobbyManager;
 
     [Space(10)]
 
-    [SerializeField] private Animator animator;
-    [SerializeField] private Camera playerCamera;
     [SerializeField] public static Action shootInput;
     [SerializeField] public static Action reloadInput;
     [SerializeField] public static Action playerDied;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Camera playerCamera;
     [SyncVar] public float playerHealth = 100;
     [SyncVar] public int playerTeam = -1;
     [SyncVar] public bool localPlayer;
@@ -21,6 +21,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     [Header("Components to hide")]
     [SerializeField] private GameObject[] playerBody;
     [SerializeField] private GameObject[] playerObjs;
+    [SerializeField] private Transform footPos;
 
     [SerializeField] private TextMeshProUGUI healthTextPro;
     [SerializeField] private GameObject waitingPlayers;
@@ -29,13 +30,12 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
     private GameObject[] spawnPoints;
     private Vector3 moveDirection = Vector3.zero;
-    private Vector2 playerInput;
     private CharacterController characterController;
 
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
 
-    bool isRunning => Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
+    private bool isRunning => Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
     private float shifitingSpeed = 8f;
     private float walkSpeed = 4f;
 
@@ -45,7 +45,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         Destroy(lobby);
         localPlayer = isLocalPlayer;
-        playerCamera.enabled = isLocalPlayer && playerTeam >= 0;
+        playerCamera.enabled = isLocalPlayer && playerHasTeam;
         playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
         characterController = GetComponent<CharacterController>();
         for ( int i = 0; i < playerObjs.Length; i++ ) {
@@ -58,16 +58,23 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     }
 
     void Update() {
-        if ( !isLocalPlayer || playerHealth <= 0 )
+        if ( !isLocalPlayer )
+            return;
+
+        if ( isLocalPlayerDead )
             return;
 
         if ( lobbyManager.canStart && waitingPlayers )
-            Destroy(waitingPlayers, 5f);
+            Destroy(waitingPlayers, 4f);
 
-        if ( waitingPlayers || playerTeam < 0 )
+        if ( isWaitingForPlayers )
             return;
 
-        playerCamera.enabled = isLocalPlayer && playerTeam >= 0;
+        if ( !playerHasTeam )
+            return;
+
+
+        playerCamera.enabled = playerHasTeam;
 
         PlayerControler();
         Animations();
@@ -82,7 +89,6 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         }
     }
 
-
     [Command(requiresAuthority = false)]
     public void CmdDamage(float damage) {
         RpcDamage(damage);
@@ -91,7 +97,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     [ClientRpc]
     void RpcDamage(float damage) {
         playerHealth -= damage;
-        if ( playerHealth <= 0 ) {
+        if ( isLocalPlayerDead ) {
             StartCoroutine(Respawn());
         }
     }
@@ -123,7 +129,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
 
         if ( !characterController.isGrounded ) {
-            moveDirection.y -= 20f; // gravity
+            moveDirection.y -= 8f; // gravity
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
@@ -136,18 +142,44 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
             CmdDamage(100);
     }
 
-    float smoothing = 0.1f;
+    float smoothing = 0.2f;
     float smoothInputX;
     float smoothInputY;
-
     void Animations() {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
         smoothInputX = Mathf.Lerp(smoothInputX, horizontalInput, smoothing);
-        smoothInputY = Mathf.Lerp(smoothInputY, isRunning ? 2 : verticalInput, smoothing);
+        if ( isGrounded()) {
+            smoothInputY = Mathf.Lerp(smoothInputY, isRunning ? 2 : verticalInput, smoothing);
+        }
+        else {
+            smoothInputY = Mathf.Lerp(smoothInputY, -2, smoothing);
+        }
 
         animator.SetFloat("inputX", smoothInputX);
         animator.SetFloat("inputY", smoothInputY);
+        print(isGrounded());
+    }
+
+    bool isGrounded() {
+        if ( Physics.Raycast(footPos.transform.position, footPos.transform.forward, out RaycastHit hit, .5f) ) {        
+            Debug.DrawLine(footPos.transform.position, hit.point, Color.red, 1);
+            if (hit.collider.gameObject.layer == 6)
+                return true;
+        }
+        return false;
+    }
+
+    public bool playerHasTeam {
+        get { return playerTeam is 0 or 1; }
+    }
+
+    public bool isLocalPlayerDead {
+        get { return playerHealth <= 0; }
+    }
+
+    public bool isWaitingForPlayers {
+        get { return waitingPlayers; }
     }
 }

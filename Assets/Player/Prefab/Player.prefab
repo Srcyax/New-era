@@ -916,6 +916,7 @@ GameObject:
   - component: {fileID: 1445762460512427151}
   - component: {fileID: 1868459563269005737}
   - component: {fileID: 2290824173825872044}
+  - component: {fileID: 12717795320830222}
   - component: {fileID: 1445762460512427150}
   - component: {fileID: 1445762460512427184}
   - component: {fileID: 4737464526268504171}
@@ -942,6 +943,7 @@ Transform:
   - {fileID: 2377819085445091004}
   - {fileID: 6640320752194886717}
   - {fileID: 2704313208235153176}
+  - {fileID: 3636630759797917153}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -962,8 +964,9 @@ MonoBehaviour:
   syncInterval: 0
   animator: {fileID: 776594263730734663}
   playerCamera: {fileID: 1445762459437069788}
-  playerTeam: -1
   playerHealth: 100
+  playerTeam: -1
+  localPlayer: 0
   playerBody:
   - {fileID: 3960988543822856322}
   - {fileID: 4265056692061498541}
@@ -971,6 +974,7 @@ MonoBehaviour:
   - {fileID: 6682462902832745964}
   - {fileID: 1169982011158937233}
   - {fileID: 4707402130812238974}
+  footPos: {fileID: 3636630759797917153}
   healthTextPro: {fileID: 2627565762498395846}
   waitingPlayers: {fileID: 4614390604613965701}
   playerDeadUI: {fileID: 9209471539669569371}
@@ -1017,6 +1021,18 @@ MonoBehaviour:
   playerMain: {fileID: 1445762460512427151}
   healthSlider: {fileID: 4436282490085009148}
   healthUI: {fileID: 2627565762498395846}
+--- !u!114 &12717795320830222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445762460512427189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ced46d5ad862fd343b98cbdaf7fb11c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1445762460512427150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1990,6 +2006,37 @@ Transform:
   m_Father: {fileID: 1708365944700873904}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2453789672175179079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3636630759797917153}
+  m_Layer: 0
+  m_Name: footPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3636630759797917153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2453789672175179079}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.947, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1445762460512427188}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &2548410462269317302
 GameObject:
   m_ObjectHideFlags: 0
@@ -4292,10 +4339,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneShape: 1
   drawBones: 1
-  drawTripods: 0
-  boneSize: 1
-  tripodSize: 1
-  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  drawTripods: 1
+  boneSize: 0.62
+  tripodSize: 0.37
+  boneColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 0.5}
   m_Transforms:
   - {fileID: 1179723639759167907}
   - {fileID: 6680805917893603944}
@@ -4529,10 +4576,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amount: 0.02
-  maxAmonut: 0.06
-  smoothAmount: 6
-  rotationAmount: 4
-  maxRotationAmount: 5
+  maxAmonut: 0.03
+  smoothAmount: 4
+  rotationAmount: 8
+  maxRotationAmount: 6
   smoothRotation: 12
   rotationX: 1
   rotationY: 1
@@ -4562,8 +4609,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6752428044261430914}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.681, z: 0.1241}
+  m_LocalRotation: {x: -0, y: -0.0000000018626443, z: -0.0000000065483587, w: 1}
+  m_LocalPosition: {x: 0, y: 0.6809999, z: 0.12409973}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5345,10 +5392,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.10117024
-  m_Height: 0.2757519
+  m_Radius: 0.11317878
+  m_Height: 0.28439635
   m_Direction: 1
-  m_Center: {x: 5.03295e-10, y: 0.088144034, z: 0.030000005}
+  m_Center: {x: -0.00020539707, y: 0.087912135, z: 0.026014937}
 --- !u!1 &7430558264309135958
 GameObject:
   m_ObjectHideFlags: 0
