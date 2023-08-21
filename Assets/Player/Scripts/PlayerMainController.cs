@@ -24,7 +24,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     [SerializeField] private Transform footPos;
 
     [SerializeField] private TextMeshProUGUI healthTextPro;
-    [SerializeField] private GameObject waitingPlayers;
+    private GameObject waitingPlayers;
     [SerializeField] private GameObject playerDeadUI;
     [SerializeField] private GameObject playerRagdoll;
 
@@ -42,6 +42,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     void Start() {
 
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
+        waitingPlayers = GameObject.FindGameObjectWithTag("WaitingPlayersCanvas");
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         Destroy(lobby);
         localPlayer = isLocalPlayer;
@@ -65,7 +66,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
             return;
 
         if ( lobbyManager.canStart && waitingPlayers )
-            Destroy(waitingPlayers, 4f);
+            Destroy(waitingPlayers);
 
         if ( isWaitingForPlayers )
             return;
@@ -116,6 +117,16 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         playerHealth = 100;
         playerDeadUI.SetActive(false);
         playerDied?.Invoke();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdSetPlayerTeam(int team) {
+        RpcSetPlayerTeam(team);
+    }
+
+    [ClientRpc]
+    void RpcSetPlayerTeam(int team) {
+        playerTeam = team;
     }
 
     void PlayerControler() {

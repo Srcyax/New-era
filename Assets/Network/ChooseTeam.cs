@@ -6,6 +6,7 @@ using System.Collections;
 public class ChooseTeam : NetworkBehaviour {
     [SyncVar] public int ice, fire;
     GameObject[] players;
+    LobbyPlayers lobbyManager;
 
     [Header("UI settings")]
     [SerializeField] TextMeshProUGUI[] teamsPlayers;
@@ -13,12 +14,11 @@ public class ChooseTeam : NetworkBehaviour {
     void Start() {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        lobbyManager = FindObjectOfType<LobbyPlayers>();
     }
 
     void Update() {
         CmdTeamsInfo(ice, fire);
-
-       
     }
 
     [Command(requiresAuthority = false)]
@@ -34,15 +34,24 @@ public class ChooseTeam : NetworkBehaviour {
 
     [Command(requiresAuthority = false)]
     public void CmdJoinTeamIce(int team) {
+        if ( !lobbyManager.canStart )
+            return;
+
         ice++;
     }
 
     [Command(requiresAuthority = false)]
     public void CmdJoinTeamFire(int team) {
+        if ( !lobbyManager.canStart )
+            return;
+
         fire++;
     }
 
     public void JoinTeam() {
+        if ( !lobbyManager.canStart )
+            return;
+
         gameObject.SetActive(false);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -57,7 +66,7 @@ public class ChooseTeam : NetworkBehaviour {
             if ( !players[ i ].GetComponent<PlayerMainController>().localPlayer )
                 continue;
 
-            players[ i ].GetComponent<PlayerMainController>().playerTeam = team;
+            players[ i ].GetComponent<PlayerMainController>().CmdSetPlayerTeam(team);
             players[ i ].GetComponent<PlayerMainController>().CmdDamage(100);
             break;
         }

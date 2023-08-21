@@ -1,15 +1,13 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Animations.Rigging;
-using Mirror;
-using System;
+﻿using Mirror;
 using System.Collections;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class WeaponSystem : NetworkBehaviour
-{
+public class WeaponSystem : NetworkBehaviour {
     [SerializeField] GunData gunData;
-    [SerializeField] Transform muzzle; 
+
+    [SerializeField] Transform muzzle;
     [SerializeField] Animator animator;
     [SerializeField] Animator playerAnimator;
     [SerializeField] CharacterController playerController;
@@ -26,8 +24,10 @@ public class WeaponSystem : NetworkBehaviour
     [SerializeField] TextMeshProUGUI ammoUI;
 
     float timeSinceLastShot;
+    PlayerMainController playerMain;
 
     void Start() {
+        playerMain = gameObject.GetComponent<PlayerMainController>();
         PlayerMainController.shootInput += Shoot;
         PlayerMainController.reloadInput += StartReload;
         PlayerMainController.playerDied += WeaponReset;
@@ -40,12 +40,7 @@ public class WeaponSystem : NetworkBehaviour
             return;
 
         timeSinceLastShot += Time.deltaTime;
-
-        /*playerAnimator.SetBool("shooting", Input.GetMouseButton(0) && CanShoot());
-        playerAnimator.SetBool("idle", !Input.GetMouseButton(0));*/
-
         Spread();
-
         ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
@@ -57,7 +52,7 @@ public class WeaponSystem : NetworkBehaviour
         if ( gunData.reloading )
             return;
 
-        if (gunData.currentAmmo >= gunData.magSize ) 
+        if ( gunData.currentAmmo >= gunData.magSize )
             return;
 
         playerAnimator.Play("Reload");
@@ -106,7 +101,7 @@ public class WeaponSystem : NetworkBehaviour
     [ClientRpc]
     void RpcShoot(Ray ray) {
         Vector3 raycastDirection = ray.direction;
-        Vector2 randomSpread = UnityEngine.Random.insideUnitCircle * currentSpread;
+        Vector2 randomSpread = Random.insideUnitCircle * currentSpread;
         raycastDirection += Camera.main.transform.right * randomSpread.x + Camera.main.transform.up * randomSpread.y;
         playerAnimator.Play("shooting");
         if ( Physics.Raycast(ray.origin, raycastDirection.normalized, out RaycastHit hit, gunData.maxDistance) ) {
@@ -115,10 +110,13 @@ public class WeaponSystem : NetworkBehaviour
             obj.transform.parent = hit.transform;
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
             for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
-                if ( hit.collider.CompareTag(gunData.hitboxes[ i]) && hit.collider.transform.root != gameObject.transform ) {
-                    print(hit.collider.tag + " : " + gunData.damages[ i]);
-                    IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
-                    damageable?.CmdDamage(gunData.damage + gunData.damages[ i]);
+                if ( hit.collider.CompareTag(gunData.hitboxes[ i ]) && hit.collider.transform.root != gameObject.transform ) {
+                    PlayerMainController player = hit.collider.transform.root.GetComponent<PlayerMainController>();
+                    if ( playerMain.playerTeam != player.playerTeam ) {
+                        print(hit.collider.tag + " : " + gunData.damages[ i ]);
+                        IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
+                        damageable?.CmdDamage(gunData.damage + gunData.damages[ i ]);
+                    }
                 }
             }
         }
