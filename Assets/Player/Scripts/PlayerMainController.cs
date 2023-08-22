@@ -6,6 +6,7 @@ using System;
 
 public class PlayerMainController : NetworkBehaviour, IDamageable {
     private LobbyPlayers lobbyManager;
+    private MatchStatus matchStatus;
 
     [Space(10)]
 
@@ -44,6 +45,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
         waitingPlayers = GameObject.FindGameObjectWithTag("WaitingPlayersCanvas");
         lobbyManager = FindObjectOfType<LobbyPlayers>();
+        matchStatus = FindObjectOfType<MatchStatus>();
         Destroy(lobby);
         localPlayer = isLocalPlayer;
         playerCamera.enabled = isLocalPlayer && playerHasTeam;
@@ -99,6 +101,13 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     void RpcDamage(float damage) {
         playerHealth -= damage;
         if ( isLocalPlayerDead ) {
+            if ( playerTeam == 0 ) {
+                matchStatus.fire_score++;
+            }
+            else {
+                matchStatus.ice_score++;
+            }
+
             StartCoroutine(Respawn());
         }
     }

@@ -15,6 +15,7 @@ TagManager:
   - WaitingPlayersCanvas
   - ICE_SpawPoints
   - FIRE_SpawPoints
+  - MatchStatus
   layers:
   - Default
   - TransparentFX
