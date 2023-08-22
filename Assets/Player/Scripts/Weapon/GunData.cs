@@ -8,7 +8,7 @@ public class GunData : ScriptableObject {
     [Header("Shooting")]
     public float damage;
     public float maxDistance;
-    public float spread;
+    public Vector3 spread = new(0.1f, 0.1f, 0.1f);
 
     [Header("Reloading")]
     public int currentAmmo;

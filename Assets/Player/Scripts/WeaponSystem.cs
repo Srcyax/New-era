@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -18,7 +19,6 @@ public class WeaponSystem : NetworkBehaviour {
     [Header("Spread System")]
     [SerializeField]  float spreadIncreaseRate;
     [SerializeField]  float spreadDecreaseRate;
-    [HideInInspector] float currentSpread = 0f;
 
     [SerializeField] Image spreadImage;
     [SerializeField] TextMeshProUGUI ammoUI;
@@ -40,7 +40,7 @@ public class WeaponSystem : NetworkBehaviour {
             return;
 
         timeSinceLastShot += Time.deltaTime;
-        Spread();
+        //Spread();
         ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
@@ -99,11 +99,9 @@ public class WeaponSystem : NetworkBehaviour {
 
     [ClientRpc]
     void RpcShoot(Ray ray) {
-        Vector3 raycastDirection = ray.direction;
-        Vector2 randomSpread = Random.insideUnitCircle * currentSpread;
-        raycastDirection += Camera.main.transform.right * randomSpread.x + Camera.main.transform.up * randomSpread.y;
+        Vector3 direction = GetSpreadDirection(ray.direction);
         playerAnimator.Play("shooting");
-        if ( Physics.Raycast(ray.origin, raycastDirection.normalized, out RaycastHit hit, gunData.maxDistance) ) {
+        if ( Physics.Raycast(ray.origin, direction, out RaycastHit hit, gunData.maxDistance) ) {
             GameObject obj = Instantiate(bulletImpact, new Vector3(hit.point.x, hit.point.y, hit.point.z + -.04f), Quaternion.identity);
             obj.transform.rotation = Camera.main.transform.localRotation;
             obj.transform.parent = hit.transform;
@@ -121,7 +119,18 @@ public class WeaponSystem : NetworkBehaviour {
         }
     }
 
-    void Spread() {
-        currentSpread = Mathf.Clamp(currentSpread + playerController.velocity.magnitude * Time.deltaTime, 0f, playerController.velocity.magnitude / gunData.spread);
+    private Vector3 GetSpreadDirection(Vector3 dir) {
+        Vector3 direction = dir;
+
+        if ( playerController.velocity.magnitude > 0 ) {
+            float value = playerController.velocity.magnitude * .005f;
+            direction += new Vector3(
+                UnityEngine.Random.Range(-gunData.spread.x + value, gunData.spread.x + value),
+                UnityEngine.Random.Range(-gunData.spread.y + value, gunData.spread.y + value),
+                UnityEngine.Random.Range(-gunData.spread.z + value, gunData.spread.z + value)
+                );
+            direction.Normalize();
+        }
+        return direction;
     }
 }
