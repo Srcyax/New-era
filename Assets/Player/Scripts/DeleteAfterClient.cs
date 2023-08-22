@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class DeleteAfterClient : MonoBehaviour
 {
+    [SerializeField] float time = 2f;
     void Start()
     {
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, time);
     }
 }

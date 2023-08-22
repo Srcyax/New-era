@@ -40,7 +40,6 @@ public class WeaponSystem : NetworkBehaviour {
             return;
 
         timeSinceLastShot += Time.deltaTime;
-        //Spread();
         ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 

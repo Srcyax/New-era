@@ -16,6 +16,7 @@ TagManager:
   - ICE_SpawPoints
   - FIRE_SpawPoints
   - MatchStatus
+  - Killfeed
   layers:
   - Default
   - TransparentFX

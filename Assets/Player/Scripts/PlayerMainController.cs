@@ -7,6 +7,7 @@ using System;
 public class PlayerMainController : NetworkBehaviour, IDamageable {
     private LobbyPlayers lobbyManager;
     private MatchStatus matchStatus;
+    private PlayerKillfeed killFeed => GetComponent<PlayerKillfeed>();
 
     [Space(10)]
 
@@ -85,6 +86,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
         if ( Input.GetMouseButton(0) ) {
             shootInput?.Invoke();
+            //CmdDamage(100);
         }
 
         if ( Input.GetKeyDown(KeyCode.R) ) {
@@ -107,7 +109,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
             else {
                 matchStatus.ice_score++;
             }
-
+            killFeed.RpcKillFeed("player", "player");
             StartCoroutine(Respawn());
         }
     }
@@ -117,7 +119,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         animator.enabled = false;
         playerDeadUI.SetActive(true);
         characterController.enabled = false;
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(3.0f);
         int r = UnityEngine.Random.Range(0, spawnPoints.Length);
         transform.position = spawnPoints[ r ].transform.position;
         yield return new WaitForSeconds(.5f);
