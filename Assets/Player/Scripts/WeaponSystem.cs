@@ -44,7 +44,6 @@ public class WeaponSystem : NetworkBehaviour {
         ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
-
     void StartReload() {
         if ( !isLocalPlayer )
             return;
