@@ -9,6 +9,8 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     private MatchStatus matchStatus;
     private PlayerKillfeed killFeed => GetComponent<PlayerKillfeed>();
 
+    [SerializeField] PlayerData playerData;
+
     [Space(10)]
 
     [SerializeField] public static Action shootInput;
@@ -17,6 +19,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     [SerializeField] private Animator animator;
     [SerializeField] private Camera playerCamera;
     [SyncVar] public float playerHealth = 100;
+    [SyncVar] public string playerName;
     [SyncVar] public int playerTeam = -1;
     [SyncVar] public bool localPlayer;
 
@@ -83,6 +86,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         PlayerControler();
         Animations();
         healthTextPro.text = playerHealth.ToString();
+        CmdSetPlayerName(playerData.name);
 
         if ( Input.GetMouseButton(0) ) {
             shootInput?.Invoke();
@@ -95,12 +99,12 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdDamage(float damage) {
-        RpcDamage(damage);
+    public void CmdDamage(float damage, string killer_name, string killed_name) {
+        RpcDamage(damage, killer_name, killed_name);
     }
 
     [ClientRpc]
-    void RpcDamage(float damage) {
+    void RpcDamage(float damage, string killer_name, string killed_name) {
         playerHealth -= damage;
         if ( isLocalPlayerDead ) {
             if ( playerTeam == 0 ) {
@@ -109,7 +113,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
             else {
                 matchStatus.ice_score++;
             }
-            killFeed.RpcKillFeed("player", "player");
+            killFeed.RpcKillFeed(killer_name, killed_name);
             StartCoroutine(Respawn());
         }
     }
@@ -140,6 +144,16 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         playerTeam = team;
     }
 
+    [Command(requiresAuthority =false)]
+    void CmdSetPlayerName(string name) {
+        RpcSetPlayerName(name);
+    }
+
+    [ClientRpc]
+    void RpcSetPlayerName(string name) {
+        playerName = name;
+    }
+
     void PlayerControler() {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -161,7 +175,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * 3f, 0);
 
         if ( transform.localPosition.y <= -10 )
-            CmdDamage(100);
+            CmdDamage(100, "", "");
     }
 
     float smoothing = 0.2f;

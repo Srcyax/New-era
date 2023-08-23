@@ -885,9 +885,11 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
   animator: {fileID: 776594263730734663}
   playerCamera: {fileID: 1445762459437069788}
   playerHealth: 100
+  playerName: 
   playerTeam: -1
   localPlayer: 0
   playerBody:
@@ -917,6 +919,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   gunData: {fileID: 11400000, guid: f9d93f3498d997d48b0c01fac9ef5940, type: 2}
+  playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
   muzzle: {fileID: 401962355353233862}
   animator: {fileID: 7630024276525573107}
   playerAnimator: {fileID: 776594263730734663}

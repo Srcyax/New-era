@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class WeaponSystem : NetworkBehaviour {
     [SerializeField] GunData gunData;
-
+    [SerializeField] public PlayerData playerData;
+    [Space(10)]
     [SerializeField] Transform muzzle;
     [SerializeField] Animator animator;
     [SerializeField] Animator playerAnimator;
@@ -111,7 +112,7 @@ public class WeaponSystem : NetworkBehaviour {
                     if ( playerMain.playerTeam != player.playerTeam ) {
                         print(hit.collider.tag + " : " + gunData.damages[ i ]);
                         IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
-                        damageable?.CmdDamage(gunData.damage + gunData.damages[ i ]);
+                        damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName);
                     }
                 }
             }

@@ -67,7 +67,7 @@ public class ChooseTeam : NetworkBehaviour {
                 continue;
 
             players[ i ].GetComponent<PlayerMainController>().CmdSetPlayerTeam(team);
-            players[ i ].GetComponent<PlayerMainController>().CmdDamage(100);
+            players[ i ].GetComponent<PlayerMainController>().CmdDamage(100, "", "");
             break;
         }
     }
