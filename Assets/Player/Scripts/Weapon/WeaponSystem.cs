@@ -8,7 +8,8 @@ public class WeaponSystem : NetworkBehaviour {
 
     [Header("Player components")]
     [SerializeField] PlayerAnimations playerAnimations;
-    [SerializeField] PlayerMainController mainController;
+    [SerializeField] PlayerComponents components;
+    [SerializeField] CharacterController characterController;
     [SerializeField] public PlayerData playerData;
 
     [Header("Weapon components")]
@@ -102,8 +103,8 @@ public class WeaponSystem : NetworkBehaviour {
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
             for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
                 if ( hit.collider.CompareTag(gunData.hitboxes[ i ]) && hit.collider.transform.root != gameObject.transform ) {
-                    PlayerMainController player = hit.collider.transform.root.GetComponent<PlayerMainController>();
-                    if ( mainController.playerTeam != player.playerTeam ) {
+                    PlayerComponents player = hit.collider.transform.root.GetComponent<PlayerComponents>();
+                    if ( components.playerTeam != player.playerTeam ) {
                         print(hit.collider.tag + " : " + gunData.damages[ i ]);
                         IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
                         damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName);
@@ -116,8 +117,8 @@ public class WeaponSystem : NetworkBehaviour {
     private Vector3 GetSpreadDirection(Vector3 dir) {
         Vector3 direction = dir;
 
-        if ( mainController.characterController.velocity.magnitude > 0 ) {
-            float value =  mainController.characterController.velocity.magnitude * .005f;
+        if ( characterController.velocity.magnitude > 0 ) {
+            float value =  characterController.velocity.magnitude * .005f;
             direction += new Vector3(
                 Random.Range(-gunData.spread.x + value, gunData.spread.x + value),
                 Random.Range(-gunData.spread.y + value, gunData.spread.y + value),

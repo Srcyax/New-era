@@ -63,7 +63,7 @@ public class ChooseTeam : NetworkBehaviour {
             if ( !players[ i ] )
                 continue;
             
-            if ( !players[ i ].GetComponent<PlayerMainController>().localPlayer )
+            if ( !players[ i ].GetComponent<PlayerComponents>().localPlayer )
                 continue;
 
             players[ i ].GetComponent<PlayerSetTeam>().CmdSetPlayerTeam(team);

@@ -2057,7 +2057,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -853.14435, y: -533.8145}
+  m_AnchoredPosition: {x: -853.14435, y: -533.3672}
   m_SizeDelta: {x: 106.997, y: 103.231}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!81 &609636947
@@ -9004,7 +9004,7 @@ MonoBehaviour:
   networkAddress: localhost
   maxConnections: 100
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 5134791045469996330, guid: 42bbd4e699820e9418592cc15cc48ab3, type: 3}
+  playerPrefab: {fileID: 4195712889526297310, guid: 20878fb7524bbc4439ddbdaae72cc633, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:

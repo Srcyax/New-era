@@ -1,34 +1,21 @@
-using Cinemachine;
-using Mirror;
 using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerMainController : NetworkBehaviour {
+public class PlayerMainController : MonoBehaviour {
     public static Action shootInput;
     public static Action reloadInput;
     public static Action playerDied;
 
     [Header("Player components")]
     [SerializeField] PlayerData playerData;
+    [SerializeField] PlayerComponents components;
     [SerializeField] PlayerAnimations playerAnimations;
     [SerializeField] PlayerDamage playerDamage;
     [SerializeField] HealthUI playerHealthUI;
     [SerializeField] NameUI playerNameUI;
     [SerializeField] public Camera playerCamera;
-    [SerializeField] CinemachineVirtualCamera virtualCamera;
 
-    [Header("Player variables")]
-    [SyncVar] public float  playerHealth = 100;
-    [SyncVar] public string playerName;
-    [SyncVar] public int    playerTeam = -1;
-    public float playerRunSpeed = 8f;
-    public float playerWalkSpeed = 3.5f;
-    [SyncVar] public bool   localPlayer;
-
-    [Header("Components to disable")]
-    [SerializeField] GameObject[] playerBody;
-    [SerializeField] GameObject[] playerObjs;
 
     private GameObject[] spawnPoints;
     private Vector3 moveDirection = Vector3.zero;
@@ -46,23 +33,12 @@ public class PlayerMainController : NetworkBehaviour {
         waitingPlayers = GameObject.FindGameObjectWithTag("WaitingPlayersCanvas");
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         characterController = GetComponent<CharacterController>();
-        
-        playerCamera.enabled = isLocalPlayer && playerHasTeam;
-        playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
         Destroy(lobby);
-        localPlayer = isLocalPlayer;
-        for ( int i = 0; i < playerObjs.Length; i++ ) {
-            playerObjs[ i ].SetActive(isLocalPlayer);
-        }
-
-        for ( int i = 0; i < playerBody.Length; i++ ) {
-            playerBody[ i ].SetActive(!isLocalPlayer);
-        }
     }
 
     void Update() {
-        if ( !isLocalPlayer )
-            return;
+       // if ( !isLocalPlayer )
+           // return;
 
         if ( isLocalPlayerDead )
             return;
@@ -90,7 +66,7 @@ public class PlayerMainController : NetworkBehaviour {
     }
 
     public IEnumerator Respawn() {
-        spawnPoints = playerTeam == 1 ? GameObject.FindGameObjectsWithTag("FIRE_SpawPoints") : GameObject.FindGameObjectsWithTag("ICE_SpawPoints");
+        spawnPoints = components.playerTeam == 1 ? GameObject.FindGameObjectsWithTag("FIRE_SpawPoints") : GameObject.FindGameObjectsWithTag("ICE_SpawPoints");
         playerAnimations.animator.enabled = false;
         playerHealthUI.deadScreenUI.SetActive(true);
         characterController.enabled = false;
@@ -100,7 +76,7 @@ public class PlayerMainController : NetworkBehaviour {
         yield return new WaitForSeconds(.5f);
         characterController.enabled = true;
         playerAnimations.animator.enabled = true;
-        playerHealth = 100;
+        components.playerHealth = 100;
         playerHealthUI.deadScreenUI.SetActive(false);
         playerDied?.Invoke();
     }
@@ -109,8 +85,8 @@ public class PlayerMainController : NetworkBehaviour {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        float curSpeedX = (isPlayerRunning ? playerRunSpeed : playerWalkSpeed) * Input.GetAxis("Vertical");
-        float curSpeedY = (isPlayerRunning ? playerRunSpeed - Input.GetAxis("Horizontal") : playerWalkSpeed) * Input.GetAxis("Horizontal");
+        float curSpeedX = (isPlayerRunning ? components.playerRunSpeed : components.playerWalkSpeed) * Input.GetAxis("Vertical");
+        float curSpeedY = (isPlayerRunning ? components.playerRunSpeed - Input.GetAxis("Horizontal") : components.playerWalkSpeed) * Input.GetAxis("Horizontal");
         moveDirection = ( ( forward * Mathf.Clamp(curSpeedX, -8, 8) ) + ( right * Mathf.Clamp(curSpeedY, -5, 5) ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
@@ -120,18 +96,18 @@ public class PlayerMainController : NetworkBehaviour {
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
-        transform.eulerAngles = new Vector3(0, virtualCamera.State.RawOrientation.eulerAngles.y, 0);
+        transform.rotation = Quaternion.Euler(0, playerCamera.transform.eulerAngles.y, 0);
 
         if ( transform.localPosition.y <= -10 )
             playerDamage.CmdDamage(100, "", "");
     }
 
     public bool playerHasTeam {
-        get { return playerTeam is 0 or 1; }
+        get { return components.playerTeam is 0 or 1; }
     }
 
     public bool isLocalPlayerDead {
-        get { return playerHealth <= 0; }
+        get { return components.playerHealth <= 0; }
     }
 
     public bool isWaitingForPlayers {

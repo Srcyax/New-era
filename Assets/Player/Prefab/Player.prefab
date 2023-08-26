@@ -662,7 +662,7 @@ RectTransform:
   - {fileID: 4117714336993081962}
   - {fileID: 8758877833284531423}
   m_Father: {fileID: 8542663802551883122}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3258,13 +3258,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2924342818485228532}
-  m_LocalRotation: {x: -0.036284816, y: 0.96051496, z: -0.23079602, w: -0.15108836}
-  m_LocalPosition: {x: 0, y: 0.65699995, z: 0.10699844}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3014058491885955498}
-  m_Father: {fileID: 8542663802551883122}
+  m_Father: {fileID: 3900050027472572602}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5585033106907842762
@@ -3285,7 +3285,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
+  m_LookAt: {fileID: 8542663802551883122}
   m_Follow: {fileID: 3900050027472572602}
   m_Lens:
     FieldOfView: 60
@@ -4172,7 +4172,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8542663802551883122}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &3821950242574972245
 GameObject:
@@ -4959,7 +4959,7 @@ Transform:
   - {fileID: 4351219373216719388}
   - {fileID: 486194611751092133}
   m_Father: {fileID: 8542663802551883122}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2028716963070400577
 Animator:
@@ -5813,7 +5813,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3900050027472572602}
-  - {fileID: 3245187241809700063}
   - {fileID: 5388380485902860859}
   - {fileID: 3704159578831243550}
   - {fileID: 2636751352467528679}
@@ -5858,7 +5857,6 @@ MonoBehaviour:
   playerHealthUI: {fileID: 9146129970653052618}
   playerNameUI: {fileID: 7135813546265224117}
   playerCamera: {fileID: 211693672483220442}
-  virtualCamera: {fileID: 5585033106907842762}
   playerHealth: 100
   playerName: 
   playerTeam: -1
@@ -6502,6 +6500,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 211693672483220445}
+  - {fileID: 3245187241809700063}
   m_Father: {fileID: 8542663802551883122}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10664,8 +10663,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3014058491885955498}
   - component: {fileID: 8838414120977130045}
-  - component: {fileID: 3895003933774311157}
   - component: {fileID: 1629755734187661468}
+  - component: {fileID: 3920966173748337907}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -10700,19 +10699,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3895003933774311157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9139484399699399362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Damping: 0
 --- !u!114 &1629755734187661468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10775,6 +10761,19 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_ApplyBeforeBody: 0
+--- !u!114 &3920966173748337907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9139484399699399362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Damping: 0
 --- !u!1 &9159199225143856526
 GameObject:
   m_ObjectHideFlags: 0

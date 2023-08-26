@@ -1,8 +1,10 @@
 using Mirror;
+using UnityEngine;
 
 public class PlayerSetTeam : NetworkBehaviour
 {
-    PlayerMainController mainController => GetComponent<PlayerMainController>();
+    [SerializeField] PlayerComponents components;
+    [SerializeField] PlayerMainController mainController;
 
     [Command(requiresAuthority = false)]
     public void CmdSetPlayerTeam(int team) {
@@ -11,7 +13,7 @@ public class PlayerSetTeam : NetworkBehaviour
 
     [ClientRpc]
     void RpcSetPlayerTeam(int team) {
-        mainController.playerTeam = team;
+        components.playerTeam = team;
         mainController.playerCamera.enabled = true;
     }
 }

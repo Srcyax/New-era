@@ -4,7 +4,8 @@ using Mirror;
 
 public class PlayerDamage : NetworkBehaviour, IDamageable
 {
-    PlayerMainController player => GetComponent<PlayerMainController>();
+    [SerializeField] PlayerComponents components;
+    [SerializeField] PlayerMainController mainController;
     PlayerKillfeed killFeed => GetComponent<PlayerKillfeed>();
     MatchStatus matchStatus;
 
@@ -20,10 +21,10 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
 
     [ClientRpc]
     void RpcDamage(float damage, string killer_name, string killed_name) {
-        player.playerHealth -= damage;
-        if ( player.isLocalPlayerDead ) {
+        components.playerHealth -= damage;
+        if ( mainController.isLocalPlayerDead ) {
             if ( killer_name.Length > 0 ) {
-                if ( player.playerTeam == 0 ) {
+                if ( components.playerTeam == 0 ) {
                     matchStatus.fire_score++;
                 }
                 else {
@@ -31,7 +32,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
                 }
             }
             killFeed.RpcKillFeed(killer_name, killed_name);
-            StartCoroutine(player.Respawn());
+            StartCoroutine(mainController.Respawn());
         }
     }
 }

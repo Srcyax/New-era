@@ -7,12 +7,12 @@ public class HealthUI : MonoBehaviour {
     [SerializeField] Slider healthSlider;
     [SerializeField] TextMeshProUGUI healthUI;
     [SerializeField] public GameObject deadScreenUI;
+    [SerializeField] PlayerComponents components;
 
     float healthHolder = 0;
-    PlayerMainController mainController => GetComponent<PlayerMainController>();
 
     void Update() {
-        healthHolder = Mathf.Lerp(healthHolder, mainController.playerHealth, Time.deltaTime * 5);
+        healthHolder = Mathf.Lerp(healthHolder, components.playerHealth, Time.deltaTime * 5);
 
         healthUI.text = Mathf.RoundToInt(healthHolder).ToString();
 

@@ -1,7 +1,8 @@
 using Mirror;
+using UnityEngine;
 
 public class NameUI : NetworkBehaviour {
-    PlayerMainController mainController => GetComponent<PlayerMainController>();
+    [SerializeField] PlayerComponents components;
 
     [Command(requiresAuthority = false)]
     public void CmdSetPlayerName(string name) {
@@ -10,6 +11,6 @@ public class NameUI : NetworkBehaviour {
 
     [ClientRpc]
     void RpcSetPlayerName(string name) {
-        mainController.playerName = name;
+        components.playerName = name;
     }
 }

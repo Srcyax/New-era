@@ -7,7 +7,7 @@ public class PlayerAnimations : MonoBehaviour {
     [Header("Player foot position")]
     [SerializeField] Transform footPos;
 
-    PlayerMainController mainController => GetComponent<PlayerMainController>();
+    [SerializeField] PlayerMainController mainController;
     float smoothing = 0.2f;
     float smoothInputX;
     float smoothInputY;
