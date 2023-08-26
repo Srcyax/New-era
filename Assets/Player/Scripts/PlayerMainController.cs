@@ -1,3 +1,4 @@
+using Cinemachine;
 using Mirror;
 using System;
 using System.Collections;
@@ -15,6 +16,7 @@ public class PlayerMainController : NetworkBehaviour {
     [SerializeField] HealthUI playerHealthUI;
     [SerializeField] NameUI playerNameUI;
     [SerializeField] public Camera playerCamera;
+    [SerializeField] CinemachineVirtualCamera virtualCamera;
 
     [Header("Player variables")]
     [SyncVar] public float  playerHealth = 100;
@@ -118,10 +120,7 @@ public class PlayerMainController : NetworkBehaviour {
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
-        rotationX += -Input.GetAxis("Mouse Y") * 3f;
-        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * 3f, 0);
+        transform.eulerAngles = new Vector3(0, virtualCamera.State.RawOrientation.eulerAngles.y, 0);
 
         if ( transform.localPosition.y <= -10 )
             playerDamage.CmdDamage(100, "", "");
