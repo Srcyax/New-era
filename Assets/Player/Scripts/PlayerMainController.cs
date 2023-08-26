@@ -1,60 +1,54 @@
 using Mirror;
-using System.Collections;
-using TMPro;
-using UnityEngine;
 using System;
+using System.Collections;
+using UnityEngine;
 
-public class PlayerMainController : NetworkBehaviour, IDamageable {
-    private LobbyPlayers lobbyManager;
-    private MatchStatus matchStatus;
-    private PlayerKillfeed killFeed => GetComponent<PlayerKillfeed>();
+public class PlayerMainController : NetworkBehaviour {
+    public static Action shootInput;
+    public static Action reloadInput;
+    public static Action playerDied;
 
+    [Header("Player components")]
     [SerializeField] PlayerData playerData;
+    [SerializeField] PlayerAnimations playerAnimations;
+    [SerializeField] PlayerDamage playerDamage;
+    [SerializeField] HealthUI playerHealthUI;
+    [SerializeField] NameUI playerNameUI;
+    [SerializeField] public Camera playerCamera;
 
-    [Space(10)]
-
-    [SerializeField] public static Action shootInput;
-    [SerializeField] public static Action reloadInput;
-    [SerializeField] public static Action playerDied;
-    [SerializeField] private Animator animator;
-    [SerializeField] private Camera playerCamera;
-    [SyncVar] public float playerHealth = 100;
+    [Header("Player variables")]
+    [SyncVar] public float  playerHealth = 100;
     [SyncVar] public string playerName;
-    [SyncVar] public int playerTeam = -1;
-    [SyncVar] public bool localPlayer;
+    [SyncVar] public int    playerTeam = -1;
+    public float playerRunSpeed = 8f;
+    public float playerWalkSpeed = 3.5f;
+    [SyncVar] public bool   localPlayer;
 
-    [Header("Components to hide")]
-    [SerializeField] private GameObject[] playerBody;
-    [SerializeField] private GameObject[] playerObjs;
-    [SerializeField] private Transform footPos;
-
-    [SerializeField] private TextMeshProUGUI healthTextPro;
-    private GameObject waitingPlayers;
-    [SerializeField] private GameObject playerDeadUI;
-    [SerializeField] private GameObject playerRagdoll;
+    [Header("Components to disable")]
+    [SerializeField] GameObject[] playerBody;
+    [SerializeField] GameObject[] playerObjs;
 
     private GameObject[] spawnPoints;
     private Vector3 moveDirection = Vector3.zero;
-    private CharacterController characterController;
+    [HideInInspector]
+    public CharacterController characterController;
+
+    private GameObject waitingPlayers;
+    private LobbyPlayers lobbyManager;
 
     private float lookXLimit = 80.0f;
     private float rotationX = 0;
 
-    private bool isRunning => Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
-    private float shifitingSpeed = 8f;
-    private float walkSpeed = 3.5f;
-
     void Start() {
-
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
         waitingPlayers = GameObject.FindGameObjectWithTag("WaitingPlayersCanvas");
         lobbyManager = FindObjectOfType<LobbyPlayers>();
-        matchStatus = FindObjectOfType<MatchStatus>();
-        Destroy(lobby);
-        localPlayer = isLocalPlayer;
+        characterController = GetComponent<CharacterController>();
+        
         playerCamera.enabled = isLocalPlayer && playerHasTeam;
         playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
-        characterController = GetComponent<CharacterController>();
+        Destroy(lobby);
+        localPlayer = isLocalPlayer;
         for ( int i = 0; i < playerObjs.Length; i++ ) {
             playerObjs[ i ].SetActive(isLocalPlayer);
         }
@@ -80,17 +74,12 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         if ( !playerHasTeam )
             return;
 
-
-        playerCamera.enabled = playerHasTeam;
-
         PlayerControler();
-        Animations();
-        healthTextPro.text = playerHealth.ToString();
-        CmdSetPlayerName(playerData.name);
+        playerAnimations.Animations();
+        playerNameUI.CmdSetPlayerName(playerData.name);
 
         if ( Input.GetMouseButton(0) ) {
             shootInput?.Invoke();
-            //CmdDamage(100);
         }
 
         if ( Input.GetKeyDown(KeyCode.R) ) {
@@ -98,68 +87,28 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         }
     }
 
-    [Command(requiresAuthority = false)]
-    public void CmdDamage(float damage, string killer_name, string killed_name) {
-        RpcDamage(damage, killer_name, killed_name);
-    }
-
-    [ClientRpc]
-    void RpcDamage(float damage, string killer_name, string killed_name) {
-        playerHealth -= damage;
-        if ( isLocalPlayerDead ) {
-            if ( playerTeam == 0 ) {
-                matchStatus.fire_score++;
-            }
-            else {
-                matchStatus.ice_score++;
-            }
-            killFeed.RpcKillFeed(killer_name, killed_name);
-            StartCoroutine(Respawn());
-        }
-    }
-
-    IEnumerator Respawn() {
+    public IEnumerator Respawn() {
         spawnPoints = playerTeam == 1 ? GameObject.FindGameObjectsWithTag("FIRE_SpawPoints") : GameObject.FindGameObjectsWithTag("ICE_SpawPoints");
-        animator.enabled = false;
-        playerDeadUI.SetActive(true);
+        playerAnimations.animator.enabled = false;
+        playerHealthUI.deadScreenUI.SetActive(true);
         characterController.enabled = false;
         yield return new WaitForSeconds(3.0f);
         int r = UnityEngine.Random.Range(0, spawnPoints.Length);
         transform.position = spawnPoints[ r ].transform.position;
         yield return new WaitForSeconds(.5f);
         characterController.enabled = true;
-        animator.enabled = true;
+        playerAnimations.animator.enabled = true;
         playerHealth = 100;
-        playerDeadUI.SetActive(false);
+        playerHealthUI.deadScreenUI.SetActive(false);
         playerDied?.Invoke();
-    }
-
-    [Command(requiresAuthority = false)]
-    public void CmdSetPlayerTeam(int team) {
-        RpcSetPlayerTeam(team);
-    }
-
-    [ClientRpc]
-    void RpcSetPlayerTeam(int team) {
-        playerTeam = team;
-    }
-
-    [Command(requiresAuthority =false)]
-    void CmdSetPlayerName(string name) {
-        RpcSetPlayerName(name);
-    }
-
-    [ClientRpc]
-    void RpcSetPlayerName(string name) {
-        playerName = name;
     }
 
     void PlayerControler() {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        float curSpeedX = (isRunning ? shifitingSpeed : walkSpeed) * Input.GetAxis("Vertical");
-        float curSpeedY = (isRunning ? shifitingSpeed - Input.GetAxis("Horizontal") : walkSpeed) * Input.GetAxis("Horizontal");
+        float curSpeedX = (isPlayerRunning ? playerRunSpeed : playerWalkSpeed) * Input.GetAxis("Vertical");
+        float curSpeedY = (isPlayerRunning ? playerRunSpeed - Input.GetAxis("Horizontal") : playerWalkSpeed) * Input.GetAxis("Horizontal");
         moveDirection = ( ( forward * Mathf.Clamp(curSpeedX, -8, 8) ) + ( right * Mathf.Clamp(curSpeedY, -5, 5) ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
@@ -175,35 +124,7 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * 3f, 0);
 
         if ( transform.localPosition.y <= -10 )
-            CmdDamage(100, "", "");
-    }
-
-    float smoothing = 0.2f;
-    float smoothInputX;
-    float smoothInputY;
-    void Animations() {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        smoothInputX = Mathf.Lerp(smoothInputX, horizontalInput, smoothing);
-        if ( isGrounded()) {
-            smoothInputY = Mathf.Lerp(smoothInputY, isRunning ? 2 : verticalInput, smoothing);
-        }
-        else {
-            smoothInputY = Mathf.Lerp(smoothInputY, -2, smoothing);
-        }
-
-        animator.SetFloat("inputX", smoothInputX);
-        animator.SetFloat("inputY", smoothInputY);
-    }
-
-    bool isGrounded() {
-        if ( Physics.Raycast(footPos.transform.position, footPos.transform.forward, out RaycastHit hit, .5f) ) {        
-            Debug.DrawLine(footPos.transform.position, hit.point, Color.red, 1);
-            if (hit.collider.gameObject.layer == 6)
-                return true;
-        }
-        return false;
+            playerDamage.CmdDamage(100, "", "");
     }
 
     public bool playerHasTeam {
@@ -216,5 +137,11 @@ public class PlayerMainController : NetworkBehaviour, IDamageable {
 
     public bool isWaitingForPlayers {
         get { return waitingPlayers; }
+    }
+
+    public bool isPlayerRunning {
+        get {
+            return Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift);
+        }
     }
 }

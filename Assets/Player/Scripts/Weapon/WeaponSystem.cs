@@ -1,34 +1,28 @@
 ﻿using Mirror;
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WeaponSystem : NetworkBehaviour {
     [SerializeField] GunData gunData;
+
+    [Header("Player components")]
+    [SerializeField] PlayerAnimations playerAnimations;
+    [SerializeField] PlayerMainController mainController;
     [SerializeField] public PlayerData playerData;
-    [Space(10)]
-    [SerializeField] Transform muzzle;
-    [SerializeField] Animator animator;
-    [SerializeField] Animator playerAnimator;
-    [SerializeField] CharacterController playerController;
+
+    [Header("Weapon components")]
     [SerializeField] GameObject muzzleFlash;
     [SerializeField] GameObject bulletImpact;
     [SerializeField] GameObject soundEffect;
+    [SerializeField] Transform muzzle;
+    [SerializeField] Animator animator;
 
-    [Header("Spread System")]
-    [SerializeField]  float spreadIncreaseRate;
-    [SerializeField]  float spreadDecreaseRate;
-
-    [SerializeField] Image spreadImage;
     [SerializeField] TextMeshProUGUI ammoUI;
 
     float timeSinceLastShot;
-    PlayerMainController playerMain;
 
     void Start() {
-        playerMain = gameObject.GetComponent<PlayerMainController>();
         PlayerMainController.shootInput += Shoot;
         PlayerMainController.reloadInput += StartReload;
         PlayerMainController.playerDied += WeaponReset;
@@ -54,7 +48,7 @@ public class WeaponSystem : NetworkBehaviour {
         if ( gunData.currentAmmo >= gunData.magSize )
             return;
 
-        playerAnimator.Play("Reload");
+        playerAnimations.animator.Play("Reload");
         animator.Play("Reload");
         StartCoroutine(Reload());
     }
@@ -100,7 +94,7 @@ public class WeaponSystem : NetworkBehaviour {
     [ClientRpc]
     void RpcShoot(Ray ray) {
         Vector3 direction = GetSpreadDirection(ray.direction);
-        playerAnimator.Play("shooting");
+        playerAnimations.animator.Play("shooting");
         if ( Physics.Raycast(ray.origin, direction, out RaycastHit hit, gunData.maxDistance) ) {
             GameObject obj = Instantiate(bulletImpact, new Vector3(hit.point.x, hit.point.y, hit.point.z + -.04f), Quaternion.identity);
             obj.transform.rotation = Camera.main.transform.localRotation;
@@ -109,7 +103,7 @@ public class WeaponSystem : NetworkBehaviour {
             for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
                 if ( hit.collider.CompareTag(gunData.hitboxes[ i ]) && hit.collider.transform.root != gameObject.transform ) {
                     PlayerMainController player = hit.collider.transform.root.GetComponent<PlayerMainController>();
-                    if ( playerMain.playerTeam != player.playerTeam ) {
+                    if ( mainController.playerTeam != player.playerTeam ) {
                         print(hit.collider.tag + " : " + gunData.damages[ i ]);
                         IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
                         damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName);
@@ -122,12 +116,12 @@ public class WeaponSystem : NetworkBehaviour {
     private Vector3 GetSpreadDirection(Vector3 dir) {
         Vector3 direction = dir;
 
-        if ( playerController.velocity.magnitude > 0 ) {
-            float value = playerController.velocity.magnitude * .005f;
+        if ( mainController.characterController.velocity.magnitude > 0 ) {
+            float value =  mainController.characterController.velocity.magnitude * .005f;
             direction += new Vector3(
-                UnityEngine.Random.Range(-gunData.spread.x + value, gunData.spread.x + value),
-                UnityEngine.Random.Range(-gunData.spread.y + value, gunData.spread.y + value),
-                UnityEngine.Random.Range(-gunData.spread.z + value, gunData.spread.z + value)
+                Random.Range(-gunData.spread.x + value, gunData.spread.x + value),
+                Random.Range(-gunData.spread.y + value, gunData.spread.y + value),
+                Random.Range(-gunData.spread.z + value, gunData.spread.z + value)
                 );
             direction.Normalize();
         }

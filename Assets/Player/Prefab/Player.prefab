@@ -722,7 +722,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 300
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -836,10 +836,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1445762460512427188}
   - component: {fileID: 1445762460512427151}
+  - component: {fileID: 3218334530630131152}
   - component: {fileID: 1868459563269005737}
+  - component: {fileID: 2985728969429372769}
+  - component: {fileID: 2035096534885592988}
   - component: {fileID: 2290824173825872044}
   - component: {fileID: 3089848953243444303}
   - component: {fileID: 12717795320830222}
+  - component: {fileID: 4458332026441195289}
   - component: {fileID: 1445762460512427150}
   - component: {fileID: 1445762460512427184}
   - component: {fileID: 4737464526268504171}
@@ -886,11 +890,16 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
-  animator: {fileID: 776594263730734663}
+  playerAnimations: {fileID: 3218334530630131152}
+  playerDamage: {fileID: 4458332026441195289}
+  playerHealthUI: {fileID: 2290824173825872044}
+  playerNameUI: {fileID: 2035096534885592988}
   playerCamera: {fileID: 1445762459437069788}
   playerHealth: 100
   playerName: 
   playerTeam: -1
+  playerRunSpeed: 8
+  playerWalkSpeed: 3.5
   localPlayer: 0
   playerBody:
   - {fileID: 3960988543822856322}
@@ -899,10 +908,21 @@ MonoBehaviour:
   - {fileID: 6682462902832745964}
   - {fileID: 1169982011158937233}
   - {fileID: 4707402130812238974}
+  characterController: {fileID: 0}
+--- !u!114 &3218334530630131152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445762460512427189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51844a7dc55ac14e9bbf462b207f525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 776594263730734663}
   footPos: {fileID: 3636630759797917153}
-  healthTextPro: {fileID: 2627565762498395846}
-  playerDeadUI: {fileID: 9209471539669569371}
-  playerRagdoll: {fileID: 6059368228052825863, guid: b8e76ea3b20cd254dbd274d85df37f12, type: 3}
 --- !u!114 &1868459563269005737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -919,18 +939,45 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   gunData: {fileID: 11400000, guid: f9d93f3498d997d48b0c01fac9ef5940, type: 2}
+  playerAnimations: {fileID: 3218334530630131152}
+  mainController: {fileID: 1445762460512427151}
   playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
-  muzzle: {fileID: 401962355353233862}
-  animator: {fileID: 7630024276525573107}
-  playerAnimator: {fileID: 776594263730734663}
-  playerController: {fileID: 1445762460512427184}
   muzzleFlash: {fileID: 2493514122087063217, guid: 704ff12eb934cba4c86587dc8178bd00, type: 3}
   bulletImpact: {fileID: 1247445437146270970, guid: 699172f94369f2948a594cfc40974ffb, type: 3}
   soundEffect: {fileID: 2247494191393872209, guid: 8d3f125a6d5bf72468a10236584c696a, type: 3}
-  spreadIncreaseRate: 1
-  spreadDecreaseRate: 15
-  spreadImage: {fileID: 0}
+  muzzle: {fileID: 401962355353233862}
+  animator: {fileID: 7630024276525573107}
   ammoUI: {fileID: 8568927090100470140}
+--- !u!114 &2985728969429372769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445762460512427189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad9cf9353a1c3047b58e25a092a0478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &2035096534885592988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445762460512427189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a99c8008a6a0154d940a7c69c60d99b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!114 &2290824173825872044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -943,9 +990,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125fe864ca544fd4d9f028fe1c3ebeee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMain: {fileID: 1445762460512427151}
   healthSlider: {fileID: 4436282490085009148}
   healthUI: {fileID: 2627565762498395846}
+  deadScreenUI: {fileID: 9209471539669569371}
 --- !u!114 &3089848953243444303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -974,6 +1021,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced46d5ad862fd343b98cbdaf7fb11c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4458332026441195289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445762460512427189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa036a9a18bb16499d0d52bf5de6d77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!114 &1445762460512427150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3213,8 +3275,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
-  field of view: 60
+  far clip plane: 2
+  field of view: 64.91408
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -6663,6 +6725,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 908954362315729484, guid: 0a2f7719aff564f4cb9e25189c81f9e7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb541f4bdd2755344a6f45a1a921c714, type: 2}
     - target: {fileID: 953811632852149254, guid: 0a2f7719aff564f4cb9e25189c81f9e7, type: 3}
       propertyPath: m_Layer
       value: 8
