@@ -124,7 +124,7 @@ public class WeaponSystem : NetworkBehaviour {
         Vector3 direction = dir;
 
         if ( characterController.velocity.magnitude > 0 ) {
-            float value =  characterController.velocity.magnitude * .005f;
+            float value = playerAnimations.isGrounded() ? 0 : gunData.spread.x + gunData.spread.y + gunData.spread.z;
             direction += new Vector3(
                 Random.Range(-gunData.spread.x + value, gunData.spread.x + value),
                 Random.Range(-gunData.spread.y + value, gunData.spread.y + value),

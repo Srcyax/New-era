@@ -15,12 +15,12 @@ MonoBehaviour:
   name: AR
   damage: 20
   maxDistance: 200
-  spread: {x: 0.1, y: 0.1, z: 0.1}
-  currentAmmo: 31
+  spread: {x: 0.04, y: 0.04, z: 0.03}
+  currentAmmo: 19
   magSize: 31
   fireRate: 700
   reloadTime: 1.6
-  reloading: 0
+  reloading: 1
   hitboxes:
   - Head
   - Chest

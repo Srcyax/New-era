@@ -28,10 +28,10 @@ public class PlayerAnimations : MonoBehaviour {
         animator.SetFloat("inputY", smoothInputY);
     }
 
-    bool isGrounded() {
+    public bool isGrounded() {
         if ( Physics.Raycast(footPos.transform.position, footPos.transform.forward, out RaycastHit hit, .5f) ) {
             Debug.DrawLine(footPos.transform.position, hit.point, Color.red, 1);
-            if ( hit.collider.gameObject.layer == 6 )
+            if ( hit.collider.gameObject.layer == 8 )
                 return true;
         }
         return false;
