@@ -55,6 +55,7 @@ public class WeaponSystem : NetworkBehaviour {
 
         playerAnimations.animator.Play("Reload");
         animator.Play("Reload");
+        cameraShake.GenerateImpulse();
         StartCoroutine(Reload());
     }
 

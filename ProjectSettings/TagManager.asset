@@ -17,6 +17,7 @@ TagManager:
   - FIRE_SpawPoints
   - MatchStatus
   - Killfeed
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -24,9 +25,9 @@ TagManager:
   - Ragdoll
   - Water
   - UI
-  - World
-  - PostProcess
   - Weapon
+  - PostProcess
+  - World
   - 
   - 
   - 

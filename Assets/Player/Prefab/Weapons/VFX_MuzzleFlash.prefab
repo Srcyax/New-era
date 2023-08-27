@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5091103285238204814}
   - component: {fileID: 4450230241034390730}
   - component: {fileID: -6410735491250415242}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: VFX_MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2493514122087063217}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: -0, z: -0.0224}
-  m_LocalScale: {x: 0.11666698, y: 0.11666698, z: 0.11666698}
+  m_LocalScale: {x: 0.21256724, y: 0.21256724, z: 0.21256724}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4913,3 +4913,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 480c982b116b3d8459e93cecfdebfc27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  time: 2
