@@ -1437,6 +1437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1371007810270801938}
   - component: {fileID: 8326578234380622855}
+  - component: {fileID: 2477815942479835158}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -1498,6 +1499,29 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1719217229227425127}
+--- !u!114 &2477815942479835158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628806080355010361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 2
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 0
+  m_UseCameraSpace: 1
+  m_ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1688271741981333129
 GameObject:
   m_ObjectHideFlags: 0
@@ -4334,6 +4358,7 @@ GameObject:
   - component: {fileID: 4195712889526297307}
   - component: {fileID: 4195712889526297308}
   - component: {fileID: 4195712889526297309}
+  - component: {fileID: 5837150735931685881}
   m_Layer: 0
   m_Name: PlayerRoot
   m_TagString: Player
@@ -4437,6 +4462,7 @@ MonoBehaviour:
   components: {fileID: 3038935329612329506}
   characterController: {fileID: 1829390208173041642}
   playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
+  cameraShake: {fileID: 5988524409834828524}
   muzzleFlash: {fileID: 2493514122087063217, guid: 704ff12eb934cba4c86587dc8178bd00, type: 3}
   bulletImpact: {fileID: 1247445437146270970, guid: 699172f94369f2948a594cfc40974ffb, type: 3}
   soundEffect: {fileID: 2247494191393872209, guid: 8d3f125a6d5bf72468a10236584c696a, type: 3}
@@ -4586,6 +4612,21 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
   timelineOffset: 0
+--- !u!114 &5837150735931685881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4195712889526297310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7133490d78e5ccd4e9f68a94f1421ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 8326578234380622855}
+  verticalRecoil: 10
+  duration: 0
 --- !u!1 &4249846965862489075
 GameObject:
   m_ObjectHideFlags: 0
@@ -9096,6 +9137,7 @@ GameObject:
   - component: {fileID: 8118793183300372724}
   - component: {fileID: 4687342733905996088}
   - component: {fileID: 4585481670774075314}
+  - component: {fileID: 5988524409834828524}
   m_Layer: 8
   m_Name: AR-15
   m_TagString: Untagged
@@ -9156,6 +9198,95 @@ MonoBehaviour:
   twoBoneIKConstraintDatas: {fileID: 739234040068918585}
   realodClipGrip: {fileID: 662478810335122690}
   leftRifleGrip: {fileID: 6156257733082323956}
+--- !u!114 &5988524409834828524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8118793183300372725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 4
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 3
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.06
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: 0, z: -1}
 --- !u!1 &8153713811567299537
 GameObject:
   m_ObjectHideFlags: 0
@@ -9363,7 +9494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 0.02
   maxAmonut: 0.03
-  smoothAmount: 4
+  smoothAmount: 6
   rotationAmount: 5
   maxRotationAmount: 6
   smoothRotation: 12

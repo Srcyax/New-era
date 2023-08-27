@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using Cinemachine;
+using Mirror;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class WeaponSystem : NetworkBehaviour {
     [SerializeField] PlayerComponents components;
     [SerializeField] CharacterController characterController;
     [SerializeField] public PlayerData playerData;
+
+    [Header("Recoil components")]
+    [SerializeField] CinemachineImpulseSource cameraShake;
 
     [Header("Weapon components")]
     [SerializeField] GameObject muzzleFlash;
@@ -75,6 +79,7 @@ public class WeaponSystem : NetworkBehaviour {
 
     void OnGunShot() {
         animator.Play("Fire");
+        cameraShake.GenerateImpulse();
     }
 
     void WeaponReset() {
