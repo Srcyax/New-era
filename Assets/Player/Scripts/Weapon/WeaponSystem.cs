@@ -17,6 +17,7 @@ public class WeaponSystem : NetworkBehaviour {
     [SerializeField] CinemachineImpulseSource cameraShake;
 
     [Header("Weapon components")]
+    [SerializeField] RecoilSystem recoilSystem;
     [SerializeField] GameObject muzzleFlash;
     [SerializeField] GameObject bulletImpact;
     [SerializeField] GameObject soundEffect;
@@ -24,6 +25,8 @@ public class WeaponSystem : NetworkBehaviour {
     [SerializeField] Animator animator;
 
     [SerializeField] TextMeshProUGUI ammoUI;
+
+    [HideInInspector] public Vector2 cameraAxis;
 
     float timeSinceLastShot;
 
@@ -80,12 +83,16 @@ public class WeaponSystem : NetworkBehaviour {
 
     void OnGunShot() {
         animator.Play("Fire");
-        cameraShake.GenerateImpulse();
+        recoilSystem.GenerateRecoil();
     }
 
     void WeaponReset() {
+        if (!isLocalPlayer)
+            return;
+
         gunData.reloading = false;
         gunData.currentAmmo = gunData.magSize;
+        recoilSystem.Reset();
     }
 
 
@@ -103,18 +110,19 @@ public class WeaponSystem : NetworkBehaviour {
         Vector3 direction = GetSpreadDirection(ray.direction);
         playerAnimations.animator.Play("shooting");
         if ( Physics.Raycast(ray.origin, direction, out RaycastHit hit, gunData.maxDistance) ) {
-            GameObject obj = Instantiate(bulletImpact, new Vector3(hit.point.x, hit.point.y, hit.point.z + -.04f), Quaternion.identity);
-            obj.transform.rotation = Camera.main.transform.localRotation;
-            obj.transform.parent = hit.transform;
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
             for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
-                if ( hit.collider.CompareTag(gunData.hitboxes[ i ]) && hit.collider.transform.root != gameObject.transform ) {
-                    PlayerComponents player = hit.collider.transform.root.GetComponent<PlayerComponents>();
-                    if ( components.playerTeam != player.playerTeam && player.playerHealth > 0) {
+                PlayerComponents player = hit.collider.transform.root.GetComponent<PlayerComponents>();
+                if ( player && components.playerTeam != player.playerTeam && player.playerHealth > 0 ) {
+                    if ( hit.collider.transform.root != gameObject.transform && hit.collider.CompareTag(gunData.hitboxes[ i ]) ) {
                         print(hit.collider.tag + " : " + gunData.damages[ i ]);
                         IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
                         damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName);
                     }
+                }
+                else {
+                    GameObject obj = Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+                    obj.transform.parent = hit.transform;
                 }
             }
         }

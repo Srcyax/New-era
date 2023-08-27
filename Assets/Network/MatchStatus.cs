@@ -1,4 +1,5 @@
 using Mirror;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,11 @@ public class MatchStatus : NetworkBehaviour {
     [SerializeField] TextMeshProUGUI tFire;
     [SerializeField] TextMeshProUGUI tTime;
 
+    [Header("Winner settings")]
+    [SerializeField] GameObject ice;
+    [SerializeField] GameObject fire;
+    [SerializeField] GameObject draw;
+
     [SyncVar] public int ice_score;
     [SyncVar] public int fire_score;
     [SyncVar] public float matchTime;
@@ -18,7 +24,7 @@ public class MatchStatus : NetworkBehaviour {
     [HideInInspector]
     [SyncVar] public float minutes, seconds;
 
-    void Update() {
+    void FixedUpdate() {
         PlayerMainController[] players = FindObjectsOfType<PlayerMainController>();
 
         foreach (PlayerMainController player in players) {
@@ -28,7 +34,7 @@ public class MatchStatus : NetworkBehaviour {
             CmdUISettings(ice_score, fire_score);
 
             if ( matchTime > 0 ) {
-                matchTime -= Time.fixedDeltaTime * .5f;
+                matchTime -= Time.fixedDeltaTime;
 
                 minutes = Mathf.FloorToInt(Mathf.Round(matchTime) / 60);
                 seconds = Mathf.FloorToInt(Mathf.Round(matchTime) % 60);
@@ -36,7 +42,27 @@ public class MatchStatus : NetworkBehaviour {
                 string timerText = string.Format("{0:0}:{1:00}", Mathf.Round(minutes), Mathf.Round(seconds));
                 tTime.text = timerText;
             }
+            else {
+                if ( ice_score > fire_score ) {
+                    StartCoroutine(Winner(ice));
+                }
+                else if ( fire_score > ice_score ) {
+                    StartCoroutine(Winner(fire));
+                }
+                else {
+                    StartCoroutine(Winner(draw));
+                }
+            }
         }
+    }
+
+    IEnumerator Winner(GameObject winner) {
+        winner.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        winner.SetActive(false);
+        ice_score = 0;
+        fire_score = 0;
+        matchTime = 160;
     }
 
     [Command(requiresAuthority = false)]

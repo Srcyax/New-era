@@ -16,6 +16,9 @@ public class PlayerMainController : MonoBehaviour {
     [SerializeField] NameUI playerNameUI;
     [SerializeField] public Camera playerCamera;
 
+    [Header("Weapon settings")]
+    [SerializeField] RecoilSystem recoilSystem;
+
 
     private GameObject[] spawnPoints;
     private Vector3 moveDirection = Vector3.zero;
@@ -39,8 +42,10 @@ public class PlayerMainController : MonoBehaviour {
         if ( !components.localPlayer )
             return;
 
-        if ( isLocalPlayerDead )
+        if ( isLocalPlayerDead ) {
+            playerDied?.Invoke();
             return;
+        }
 
         if ( lobbyManager.canStart && waitingPlayers )
             Destroy(waitingPlayers);
@@ -57,6 +62,9 @@ public class PlayerMainController : MonoBehaviour {
 
         if ( Input.GetMouseButton(0) ) {
             shootInput?.Invoke();
+        }
+        else {
+            recoilSystem.Reset();
         }
 
         if ( Input.GetKeyDown(KeyCode.R) ) {
@@ -77,7 +85,6 @@ public class PlayerMainController : MonoBehaviour {
         playerAnimations.animator.enabled = true;
         components.playerHealth = 100;
         playerHealthUI.deadScreenUI.SetActive(false);
-        playerDied?.Invoke();
     }
 
     void PlayerControler() {
@@ -91,7 +98,7 @@ public class PlayerMainController : MonoBehaviour {
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
 
         if ( !characterController.isGrounded ) {
-            moveDirection.y -= 8f; // gravity
+            moveDirection.y -= 10f; // gravity
         }
 
         characterController.Move(moveDirection * Time.deltaTime);

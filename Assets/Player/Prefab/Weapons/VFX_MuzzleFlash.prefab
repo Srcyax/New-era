@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5091103285238204814}
   - component: {fileID: 4450230241034390730}
   - component: {fileID: -6410735491250415242}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: VFX_MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
