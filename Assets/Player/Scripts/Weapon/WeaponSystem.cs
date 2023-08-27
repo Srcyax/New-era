@@ -117,7 +117,7 @@ public class WeaponSystem : NetworkBehaviour {
                     if ( hit.collider.transform.root != gameObject.transform && hit.collider.CompareTag(gunData.hitboxes[ i ]) ) {
                         print(hit.collider.tag + " : " + gunData.damages[ i ]);
                         IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
-                        damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName);
+                        damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName, "killed");
                     }
                 }
                 else {

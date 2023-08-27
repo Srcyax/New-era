@@ -57,12 +57,18 @@ public class MatchStatus : NetworkBehaviour {
     }
 
     IEnumerator Winner(GameObject winner) {
+        Time.timeScale = .1f;
         winner.SetActive(true);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
         winner.SetActive(false);
         ice_score = 0;
         fire_score = 0;
         matchTime = 160;
+        Time.timeScale = 1;
+        PlayerDamage[] players = FindObjectsOfType<PlayerDamage>();
+        foreach(PlayerDamage player in players) {
+            player.CmdDamage(100, "", "", "");
+        }
     }
 
     [Command(requiresAuthority = false)]

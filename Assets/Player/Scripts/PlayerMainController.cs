@@ -105,7 +105,7 @@ public class PlayerMainController : MonoBehaviour {
         transform.rotation = Quaternion.Euler(0, playerCamera.transform.eulerAngles.y, 0);
 
         if ( transform.localPosition.y <= -10 )
-            playerDamage.CmdDamage(100, "", "");
+            playerDamage.CmdDamage(100, "", "", "");
     }
 
     public bool playerHasTeam {

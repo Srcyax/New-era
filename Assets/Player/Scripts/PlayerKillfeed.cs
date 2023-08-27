@@ -10,10 +10,10 @@ public class PlayerKillfeed : MonoBehaviour {
         killfeed = GameObject.FindGameObjectWithTag("Killfeed").transform;
     }
 
-    public void RpcKillFeed(string killer_name, string killed_name) {
+    public void RpcKillFeed(string killer_name, string killed_name, string reason) {
         TextMeshProUGUI kill = killFeedPrefab.GetComponent<TextMeshProUGUI>();
 
-        kill.text = killer_name + " killed " + killed_name;
+        kill.text = killer_name + " " + reason + " " + killed_name;
 
         if ( killfeed.childCount > 0 ) {
             Transform lastChild = killfeed.GetChild(killfeed.childCount - 1);

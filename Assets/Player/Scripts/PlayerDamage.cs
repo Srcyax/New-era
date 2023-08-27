@@ -16,12 +16,12 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdDamage(float damage, string killer_name, string killed_name) {
-        RpcDamage(damage, killer_name, killed_name);
+    public void CmdDamage(float damage, string killer_name, string killed_name, string reason) {
+        RpcDamage(damage, killer_name, killed_name, reason);
     }
 
     [ClientRpc]
-    void RpcDamage(float damage, string killer_name, string killed_name) {
+    void RpcDamage(float damage, string killer_name, string killed_name, string reason) {
         components.playerHealth -= damage;
         if ( mainController.isLocalPlayerDead ) {
             if ( killer_name.Length > 0 ) {
@@ -32,7 +32,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
                     matchStatus.ice_score++;
                 }
             }
-            killFeed.RpcKillFeed(killer_name, killed_name);
+            killFeed.RpcKillFeed(killer_name, killed_name, reason);
             StartCoroutine(mainController.Respawn());
         }
     }
