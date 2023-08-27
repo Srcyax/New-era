@@ -97,7 +97,7 @@ public class PlayerMainController : MonoBehaviour {
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
 
-        if ( !playerAnimations.isGrounded() ) {
+        if ( !characterController.isGrounded ) {
             moveDirection.y -= 10; // gravity
         }
         print(moveDirection);
