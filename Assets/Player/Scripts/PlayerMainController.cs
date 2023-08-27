@@ -97,9 +97,10 @@ public class PlayerMainController : MonoBehaviour {
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
 
-        if ( !characterController.isGrounded ) {
-            moveDirection.y -= 10f; // gravity
+        if ( !playerAnimations.isGrounded() ) {
+            moveDirection.y -= 10; // gravity
         }
+        print(moveDirection);
 
         characterController.Move(moveDirection * Time.deltaTime);
         transform.rotation = Quaternion.Euler(0, playerCamera.transform.eulerAngles.y, 0);
