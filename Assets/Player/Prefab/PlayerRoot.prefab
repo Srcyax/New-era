@@ -4409,6 +4409,7 @@ MonoBehaviour:
   - {fileID: 1431869461914855014}
   playerObjs:
   - {fileID: 8456337612981328969}
+  - {fileID: 4094651353285653594}
   mainController: {fileID: 5224834978515845566}
 --- !u!114 &4195712889526297315
 MonoBehaviour:

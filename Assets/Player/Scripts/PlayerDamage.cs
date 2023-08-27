@@ -6,6 +6,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
 {
     [SerializeField] PlayerComponents components;
     [SerializeField] PlayerMainController mainController;
+
     PlayerKillfeed killFeed => GetComponent<PlayerKillfeed>();
     MatchStatus matchStatus;
 

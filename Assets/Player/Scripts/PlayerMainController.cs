@@ -25,20 +25,19 @@ public class PlayerMainController : MonoBehaviour {
     private GameObject waitingPlayers;
     private LobbyPlayers lobbyManager;
 
-    private float lookXLimit = 80.0f;
-    private float rotationX = 0;
-
     void Start() {
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
         waitingPlayers = GameObject.FindGameObjectWithTag("WaitingPlayersCanvas");
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         characterController = GetComponent<CharacterController>();
         Destroy(lobby);
+
+        playerCamera.GetComponent<AudioListener>().enabled = components.localPlayer;
     }
 
     void Update() {
-       // if ( !isLocalPlayer )
-           // return;
+        if ( !components.localPlayer )
+            return;
 
         if ( isLocalPlayerDead )
             return;

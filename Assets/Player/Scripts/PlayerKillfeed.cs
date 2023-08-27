@@ -2,7 +2,7 @@ using UnityEngine;
 using Mirror;
 using TMPro;
 
-public class PlayerKillfeed : NetworkBehaviour {
+public class PlayerKillfeed : MonoBehaviour {
     [SerializeField] GameObject killFeedPrefab;
 
     Transform killfeed;
@@ -10,12 +10,6 @@ public class PlayerKillfeed : NetworkBehaviour {
         killfeed = GameObject.FindGameObjectWithTag("Killfeed").transform;
     }
 
-    // Update is called once per frame
-    void Update() {
-
-    }
-
-    [ClientRpc]
     public void RpcKillFeed(string killer_name, string killed_name) {
         TextMeshProUGUI kill = killFeedPrefab.GetComponent<TextMeshProUGUI>();
 

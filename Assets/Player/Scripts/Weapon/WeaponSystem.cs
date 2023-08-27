@@ -109,7 +109,7 @@ public class WeaponSystem : NetworkBehaviour {
             for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
                 if ( hit.collider.CompareTag(gunData.hitboxes[ i ]) && hit.collider.transform.root != gameObject.transform ) {
                     PlayerComponents player = hit.collider.transform.root.GetComponent<PlayerComponents>();
-                    if ( components.playerTeam != player.playerTeam ) {
+                    if ( components.playerTeam != player.playerTeam && player.playerHealth > 0) {
                         print(hit.collider.tag + " : " + gunData.damages[ i ]);
                         IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
                         damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName);
