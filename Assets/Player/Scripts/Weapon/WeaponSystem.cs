@@ -3,6 +3,8 @@ using Mirror;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Timeline;
+using UnityEngine.UI;
 
 public class WeaponSystem : NetworkBehaviour {
     [SerializeField] GunData gunData;
@@ -12,6 +14,7 @@ public class WeaponSystem : NetworkBehaviour {
     [SerializeField] PlayerComponents components;
     [SerializeField] CharacterController characterController;
     [SerializeField] public PlayerData playerData;
+    [SerializeField] AudioSource playerAudioSource;
 
     [Header("Recoil components")]
     [SerializeField] CinemachineImpulseSource cameraShake;
@@ -25,6 +28,8 @@ public class WeaponSystem : NetworkBehaviour {
     [SerializeField] Animator animator;
 
     [SerializeField] TextMeshProUGUI ammoUI;
+    [SerializeField] Transform canvas;
+    [SerializeField] GameObject hitMarker;
 
     [HideInInspector] public Vector2 cameraAxis;
 
@@ -115,6 +120,8 @@ public class WeaponSystem : NetworkBehaviour {
                 PlayerComponents player = hit.collider.transform.root.GetComponent<PlayerComponents>();
                 if ( player && components.playerTeam != player.playerTeam && player.playerHealth > 0 ) {
                     if ( hit.collider.transform.root != gameObject.transform && hit.collider.CompareTag(gunData.hitboxes[ i ]) ) {
+                        Instantiate(hitMarker, canvas);
+                        playerAudioSource.Play();
                         print(hit.collider.tag + " : " + gunData.damages[ i ]);
                         IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
                         damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName, "killed");

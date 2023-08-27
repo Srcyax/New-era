@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using Mirror;
 
 public class PlayerDamage : NetworkBehaviour, IDamageable
@@ -7,12 +8,39 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
     [SerializeField] PlayerComponents components;
     [SerializeField] PlayerMainController mainController;
 
+    [Header("UI settings")]
+    [SerializeField] Transform canvas;
+    [SerializeField] GameObject blood;
+
+    [Header("Camera Post Process")]
+    [SerializeField] PostProcessVolume processVolume;
+
+    Vignette vignette;
+
     PlayerKillfeed killFeed => GetComponent<PlayerKillfeed>();
     MatchStatus matchStatus;
 
     void Start()
     {
         matchStatus = FindObjectOfType<MatchStatus>();
+
+        vignette = processVolume.profile.GetSetting<Vignette>();
+    }
+
+    void Update() {
+        if ( !isLocalPlayer )
+            return;
+
+        CameraDamageEffect();
+    }
+
+    void CameraDamageEffect() {
+        if ( components.playerHealth < 40 ) {
+            vignette.intensity.value = Mathf.Lerp( vignette.intensity, 0.4f, Time.deltaTime * 3f);
+        }
+        else {
+            vignette.intensity.value = Mathf.Lerp(vignette.intensity, 0.15f, Time.deltaTime * 3f);
+        }
     }
 
     [Command(requiresAuthority = false)]
@@ -34,6 +62,9 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
             }
             killFeed.RpcKillFeed(killer_name, killed_name, reason);
             StartCoroutine(mainController.Respawn());
+        }
+        else {
+            Instantiate(blood, canvas);
         }
     }
 }

@@ -63,7 +63,7 @@ public class MatchStatus : NetworkBehaviour {
         winner.SetActive(false);
         ice_score = 0;
         fire_score = 0;
-        matchTime = 160;
+        matchTime = 600;
         Time.timeScale = 1;
         PlayerDamage[] players = FindObjectsOfType<PlayerDamage>();
         foreach(PlayerDamage player in players) {
