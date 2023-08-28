@@ -14,12 +14,11 @@ public class PlayerMainController : MonoBehaviour {
     [SerializeField] PlayerDamage playerDamage;
     [SerializeField] HealthUI playerHealthUI;
     [SerializeField] NameUI playerNameUI;
-    [SerializeField] Transform playerCharacter;
+    [SerializeField] Transform playerHeadLookAt;
     [SerializeField] public Camera playerCamera;
 
     [Header("Weapon settings")]
     [SerializeField] RecoilSystem recoilSystem;
-
 
     private GameObject[] spawnPoints;
     private Vector3 moveDirection = Vector3.zero;
@@ -35,8 +34,6 @@ public class PlayerMainController : MonoBehaviour {
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         characterController = GetComponent<CharacterController>();
         Destroy(lobby);
-
-        playerCamera.GetComponent<AudioListener>().enabled = components.localPlayer;
     }
 
     void Update() {
@@ -60,14 +57,11 @@ public class PlayerMainController : MonoBehaviour {
         PlayerControler();
         playerAnimations.Animations();
         playerNameUI.CmdSetPlayerName(playerData.name);
-
         if ( Input.GetMouseButton(0) ) {
             shootInput?.Invoke();
-            //playerCharacter.eulerAngles = new Vector3(0, playerCamera.transform.eulerAngles.y + 35f, 0);
         }
         else {
             recoilSystem.Reset();
-            //playerCharacter.eulerAngles = new Vector3(0, playerCamera.transform.eulerAngles.y, 0);
         }
 
         if ( Input.GetKeyDown(KeyCode.R) ) {
@@ -88,6 +82,7 @@ public class PlayerMainController : MonoBehaviour {
         playerAnimations.animator.enabled = true;
         components.playerHealth = 100;
         playerHealthUI.deadScreenUI.SetActive(false);
+        playerDamage.playerWeapon.SetActive(true);
     }
 
     void PlayerControler() {

@@ -7,6 +7,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
 {
     [SerializeField] PlayerComponents components;
     [SerializeField] PlayerMainController mainController;
+    [SerializeField] public GameObject playerWeapon;
 
     [Header("UI settings")]
     [SerializeField] Transform canvas;
@@ -62,6 +63,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
             }
             killFeed.RpcKillFeed(killer_name, killed_name, reason);
             StartCoroutine(mainController.Respawn());
+            playerWeapon.SetActive(false);
         }
         else {
             Instantiate(blood, canvas);

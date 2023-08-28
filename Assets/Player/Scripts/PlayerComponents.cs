@@ -1,5 +1,6 @@
 using Mirror;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerComponents : NetworkBehaviour {
     [Header("Player variables")]
@@ -20,6 +21,7 @@ public class PlayerComponents : NetworkBehaviour {
     private void Start() {
         mainController.playerCamera.enabled = isLocalPlayer && mainController.playerHasTeam;
         mainController.playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
+        mainController.playerCamera.GetComponent<PostProcessVolume>().enabled = isLocalPlayer;
 
         localPlayer = isLocalPlayer;
         for ( int i = 0; i < playerObjs.Length; i++ ) {
