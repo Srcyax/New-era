@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 16fb9732317113b4e8ab181602d1f52e, type: 2}
+  m_Motion: {fileID: 7400000, guid: 3e16563a7b6f45d428e01e2ec91b24dd, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -277,7 +277,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: b1099de8ded4af94d87b77891433b6f6, type: 2}
     m_Threshold: 0.56
-    m_Position: {x: -0.56, y: -0.59}
+    m_Position: {x: -2.08, y: -1.64}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: inputX
@@ -285,7 +285,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: bcbbf190e76eb4d40bf4ce79c6eac84a, type: 2}
     m_Threshold: 0.64000005
-    m_Position: {x: 0.7, y: -0.59}
+    m_Position: {x: 1.96, y: -1.6}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: inputX
@@ -322,7 +322,7 @@ AnimatorState:
   m_PrefabAsset: {fileID: 0}
   m_Name: idle rifle
   m_Speed: 1
-  m_CycleOffset: 0
+  m_CycleOffset: 1
   m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
@@ -337,7 +337,7 @@ AnimatorState:
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
-  m_CycleOffsetParameter: 
+  m_CycleOffsetParameter: inputX
   m_TimeParameter: 
 --- !u!1107 &5016192816283971881
 AnimatorStateMachine:

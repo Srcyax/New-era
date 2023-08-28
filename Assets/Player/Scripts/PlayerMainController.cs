@@ -14,6 +14,7 @@ public class PlayerMainController : MonoBehaviour {
     [SerializeField] PlayerDamage playerDamage;
     [SerializeField] HealthUI playerHealthUI;
     [SerializeField] NameUI playerNameUI;
+    [SerializeField] Transform playerCharacter;
     [SerializeField] public Camera playerCamera;
 
     [Header("Weapon settings")]
@@ -62,9 +63,11 @@ public class PlayerMainController : MonoBehaviour {
 
         if ( Input.GetMouseButton(0) ) {
             shootInput?.Invoke();
+            //playerCharacter.eulerAngles = new Vector3(0, playerCamera.transform.eulerAngles.y + 35f, 0);
         }
         else {
             recoilSystem.Reset();
+            //playerCharacter.eulerAngles = new Vector3(0, playerCamera.transform.eulerAngles.y, 0);
         }
 
         if ( Input.GetKeyDown(KeyCode.R) ) {
@@ -93,7 +96,7 @@ public class PlayerMainController : MonoBehaviour {
 
         float curSpeedX = (isPlayerRunning ? components.playerRunSpeed : components.playerWalkSpeed) * Input.GetAxis("Vertical");
         float curSpeedY = (isPlayerRunning ? components.playerRunSpeed - Input.GetAxis("Horizontal") : components.playerWalkSpeed) * Input.GetAxis("Horizontal");
-        moveDirection = ( ( forward * Mathf.Clamp(curSpeedX, -8, 8) ) + ( right * Mathf.Clamp(curSpeedY, -5, 5) ) );
+        moveDirection = ( ( forward * Mathf.Clamp(curSpeedX, -components.playerRunSpeed, components.playerRunSpeed) ) + ( right * Mathf.Clamp(curSpeedY, -components.playerWalkSpeed, components.playerWalkSpeed) ) );
 
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
 

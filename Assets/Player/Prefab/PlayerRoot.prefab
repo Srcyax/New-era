@@ -10626,6 +10626,7 @@ MonoBehaviour:
   playerDamage: {fileID: 4195712889526297307}
   playerHealthUI: {fileID: 4195712889526297304}
   playerNameUI: {fileID: 4195712889526297319}
+  playerCharacter: {fileID: 8415164248428861174}
   playerCamera: {fileID: 4395480846476721943}
   recoilSystem: {fileID: 8015645656044095960}
   characterController: {fileID: 0}
@@ -11289,7 +11290,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9188323870805527628}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.067, z: 0}
+  m_LocalPosition: {x: 0, y: -1.038, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
