@@ -18,6 +18,7 @@ TagManager:
   - MatchStatus
   - Killfeed
   - Ground
+  - StartMatchButton
   layers:
   - Default
   - TransparentFX

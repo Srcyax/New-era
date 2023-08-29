@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMainController : MonoBehaviour {
     public static Action shootInput;
@@ -35,7 +36,8 @@ public class PlayerMainController : MonoBehaviour {
         characterController = GetComponent<CharacterController>();
         Destroy(lobby);
 
-        playerNameUI.CmdSetPlayerName(playerData.name);
+        if (components.localPlayer )
+            playerNameUI.CmdSetPlayerName(playerData.name);
     }
 
     void Update() {

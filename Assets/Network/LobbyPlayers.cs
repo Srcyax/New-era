@@ -1,5 +1,7 @@
 using UnityEngine;
 using Mirror;
+using System.Collections;
+
 public class LobbyPlayers : NetworkBehaviour
 {
     [SyncVar] public int playersLogged;
@@ -17,10 +19,17 @@ public class LobbyPlayers : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    void CmdLobbyStart() {
+    public void CmdLobbyStart() {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         playersLogged = players.Length;
 
-        canStart = playersLogged >= networkManager.maxConnections;
+        if ( playersLogged >= networkManager.maxConnections ) {
+            StartCoroutine(CanStart());
+        }
+    }
+
+    IEnumerator CanStart() {
+        yield return new WaitForSeconds(5f);
+        canStart = true;
     }
 }
