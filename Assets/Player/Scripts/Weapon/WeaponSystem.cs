@@ -2,6 +2,7 @@
 using Mirror;
 using System.Collections;
 using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
@@ -114,9 +115,26 @@ public class WeaponSystem : NetworkBehaviour {
     void RpcShoot(Ray ray) {
         Vector3 direction = GetSpreadDirection(ray.direction);
         playerAnimations.animator.Play("shooting");
-        if ( Physics.Raycast(ray.origin, direction, out RaycastHit hit, gunData.maxDistance) ) {
+        int hitBoxLayer = LayerMask.GetMask("Hitboxes");
+        int worldLayer = LayerMask.GetMask("World");
+        if ( Physics.Raycast(ray.origin, direction, out RaycastHit hit, gunData.maxDistance, hitBoxLayer) ) {
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
-            for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
+            switch( hit.collider.tag ) {
+                case "Head":
+                    GiveHit(0, hit);
+                    break;
+                case "Chest":
+                    GiveHit(1, hit);
+                    break;
+                case "Arms":
+                    GiveHit(2, hit);
+                    break;
+                case "Legs":
+                    GiveHit(3, hit);
+                    break;
+            }
+
+            /*for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
                 PlayerComponents player = hit.collider.transform.root.GetComponent<PlayerComponents>();
                 if ( player && components.playerTeam != player.playerTeam && player.playerHealth > 0 ) {
                     if ( hit.collider.transform.root != gameObject.transform && hit.collider.CompareTag(gunData.hitboxes[ i ]) ) {
@@ -127,12 +145,33 @@ public class WeaponSystem : NetworkBehaviour {
                         damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName, "killed");
                     }
                 }
-                else {
+                if ( !hit.collider.CompareTag(gunData.hitboxes[ i ]) ) {
                     GameObject obj = Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
                     obj.transform.parent = hit.transform;
                 }
-            }
+            }*/
         }
+
+        if ( Physics.Raycast(ray.origin, direction, out RaycastHit hitInfo, gunData.maxDistance, worldLayer) ) {
+            GameObject obj = Instantiate(bulletImpact, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            obj.transform.parent = hitInfo.transform;
+        }
+    }
+
+    void GiveHit(int i, RaycastHit hit) {
+        PlayerComponents player = hit.collider.transform.root.GetComponent<PlayerComponents>();
+
+        if ( player.playerHealth <= 0 )
+            return;
+
+        if ( hit.collider.transform.root == gameObject.transform )
+            return;
+
+        Instantiate(hitMarker, canvas);
+        playerAudioSource.Play();
+        print(hit.collider.tag + " : " + gunData.damages[ i ]);
+        IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
+        damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName, "killed");
     }
 
     private Vector3 GetSpreadDirection(Vector3 dir) {
