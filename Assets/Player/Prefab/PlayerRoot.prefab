@@ -11274,6 +11274,7 @@ GameObject:
   - component: {fileID: 5224834978515845567}
   - component: {fileID: 1829390208173041642}
   - component: {fileID: 5224834978515845566}
+  - component: {fileID: 661885777203318511}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -11341,6 +11342,21 @@ MonoBehaviour:
   playerCamera: {fileID: 4395480846476721943}
   recoilSystem: {fileID: 8015645656044095960}
   characterController: {fileID: 0}
+--- !u!114 &661885777203318511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8740789290416525799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54e884aa162bc104c9c7af08a15248a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
+  camera: {fileID: 8326578234380622855}
+  postProcess: {fileID: 4120148761150774365}
 --- !u!1 &8871796746859655059
 GameObject:
   m_ObjectHideFlags: 0
