@@ -10,7 +10,7 @@ public class LobbyPlayers : NetworkBehaviour
 
     void Update()
     {
-        if ( !isServer )
+        if ( !isServer && canStart )
             return;
 
         CmdLobbyStart();

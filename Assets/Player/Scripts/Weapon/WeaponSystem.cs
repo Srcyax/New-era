@@ -49,7 +49,6 @@ public class WeaponSystem : NetworkBehaviour {
             return;
 
         timeSinceLastShot += Time.deltaTime;
-        ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
     void StartReload() {
@@ -90,6 +89,7 @@ public class WeaponSystem : NetworkBehaviour {
     void OnGunShot() {
         animator.Play("Fire");
         recoilSystem.GenerateRecoil();
+        ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
     void WeaponReset() {

@@ -14,6 +14,11 @@ public class PlayerFootsteps : MonoBehaviour
         audioSource.volume = components.localPlayer ? 0.05f : 0.8f;
     }
 
+    private void Update() {
+        if ( !audioSource.isPlaying && audioSource.clip )
+            audioSource.clip = null;
+    }
+
     public void WalkFootStep() {
         if ( audioSource.isPlaying )
             return;

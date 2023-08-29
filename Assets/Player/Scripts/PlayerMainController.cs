@@ -34,6 +34,8 @@ public class PlayerMainController : MonoBehaviour {
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         characterController = GetComponent<CharacterController>();
         Destroy(lobby);
+
+        playerNameUI.CmdSetPlayerName(playerData.name);
     }
 
     void Update() {
@@ -56,7 +58,6 @@ public class PlayerMainController : MonoBehaviour {
 
         PlayerControler();
         playerAnimations.Animations();
-        playerNameUI.CmdSetPlayerName(playerData.name);
         if ( Input.GetMouseButton(0) ) {
             shootInput?.Invoke();
         }
