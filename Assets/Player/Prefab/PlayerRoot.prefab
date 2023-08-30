@@ -10186,7 +10186,7 @@ MonoBehaviour:
     m_ImpulseDuration: 0.2
     m_ImpulseType: 3
     m_DissipationRate: 0.25
-    m_RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+    m_RawSignal: {fileID: 11400000, guid: 8913155735726b54288ca27cf9dabadc, type: 2}
     m_AmplitudeGain: 1
     m_FrequencyGain: 1
     m_RepeatMode: 0
@@ -10268,22 +10268,17 @@ MonoBehaviour:
   cameraShake: {fileID: 0}
   extension: {fileID: 3800216748901720878}
   recoilPatern:
-  - {x: -1, y: 300}
-  - {x: 1, y: 300}
-  - {x: -1, y: 300}
-  - {x: 1, y: 300}
-  - {x: -1, y: 300}
-  - {x: 1, y: 300}
-  - {x: -1, y: 300}
-  - {x: 1, y: 300}
-  - {x: -1, y: 300}
-  - {x: 1, y: 300}
-  - {x: -1, y: 300}
-  - {x: 4, y: 300}
-  - {x: 4, y: 300}
-  - {x: -3, y: 300}
-  - {x: -3, y: 300}
-  - {x: -3, y: 300}
+  - {x: -1, y: 450}
+  - {x: -2, y: 450}
+  - {x: -3, y: 450}
+  - {x: 2, y: 450}
+  - {x: 2, y: 450}
+  - {x: 2, y: 450}
+  - {x: 2, y: 450}
+  - {x: 2, y: 450}
+  - {x: 2, y: 450}
+  - {x: 2, y: 450}
+  - {x: 2, y: 450}
   duration: 0.1
 --- !u!1 &8153713811567299537
 GameObject:

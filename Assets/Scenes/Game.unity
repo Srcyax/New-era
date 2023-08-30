@@ -1243,6 +1243,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 278708824}
+  - component: {fileID: 278708825}
+  - component: {fileID: 278708826}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Lobby
@@ -1271,6 +1273,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &278708825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278708823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 109f7abb923c1af42a49dd5d4e822032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 1337
+--- !u!114 &278708826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278708823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62a12fd91df5d03498efcd64da180a8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
+  jsonSystem: {fileID: 278708825}
+  sensibility: {fileID: 1972668064}
+  graphics: {fileID: 416381484}
 --- !u!1 &279454080
 GameObject:
   m_ObjectHideFlags: 0
@@ -4985,7 +5016,6 @@ GameObject:
   - component: {fileID: 835550423}
   - component: {fileID: 835550422}
   - component: {fileID: 835550421}
-  - component: {fileID: 835550425}
   m_Layer: 5
   m_Name: back
   m_TagString: Untagged
@@ -5083,7 +5113,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 835550425}
+      - m_Target: {fileID: 278708826}
         m_TargetAssemblyTypeName: SetPlayerSettings, Assembly-CSharp
         m_MethodName: SetSettings
         m_Mode: 1
@@ -5133,21 +5163,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835550419}
   m_CullTransparentMesh: 1
---- !u!114 &835550425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835550419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62a12fd91df5d03498efcd64da180a8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
-  sensibility: {fileID: 1972668064}
-  graphics: {fileID: 416381484}
 --- !u!1 &857858773
 GameObject:
   m_ObjectHideFlags: 0
@@ -7061,7 +7076,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1110782416}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 278708826}
+        m_TargetAssemblyTypeName: SetPlayerSettings, Assembly-CSharp
+        m_MethodName: SetSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1110782416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7963,7 +7990,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1337326238}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 278708826}
+        m_TargetAssemblyTypeName: SetPlayerSettings, Assembly-CSharp
+        m_MethodName: SetSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1337326238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8477,14 +8516,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
+  jsonSystem: {fileID: 278708825}
   HostButton: {fileID: 1337326237}
   ClientButton: {fileID: 1110782415}
   maxClient: {fileID: 1513993851}
   transport: {fileID: 2096606006}
   ipAdress: {fileID: 1719181432}
-  playerName: {fileID: 1538726176}
+  playerName: {fileID: 523011269}
   connectionStatus: {fileID: 5379797029495459099, guid: 4e14030343db88646af811498034bd1a, type: 3}
   connectionTransform: {fileID: 1389458556}
+  sensibility: {fileID: 1972668064}
+  graphics: {fileID: 416381484}
 --- !u!1 &1444045890
 GameObject:
   m_ObjectHideFlags: 0
@@ -12701,7 +12743,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1885687249}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 1
   m_MaxValue: 8
   m_WholeNumbers: 0
   m_Value: 1

@@ -2,6 +2,7 @@ using UnityEngine;
 using Mirror;
 
 [CreateAssetMenu(fileName = "PlayerData", menuName = "Player/NewPlayerData")]
+[System.Serializable]
 public class PlayerData : ScriptableObject {
     public new string name;
 

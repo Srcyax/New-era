@@ -72,6 +72,7 @@ public class WeaponSystem : NetworkBehaviour {
         yield return new WaitForSeconds(gunData.reloadTime);
         gunData.currentAmmo = gunData.magSize;
         gunData.reloading = false;
+        UpdateUI();
     }
 
     bool CanShoot() => !gunData.reloading && gunData.currentAmmo > 0 && timeSinceLastShot > 1f / ( gunData.fireRate / 60.0f );
@@ -89,7 +90,7 @@ public class WeaponSystem : NetworkBehaviour {
     void OnGunShot() {
         animator.Play("Fire");
         recoilSystem.GenerateRecoil();
-        ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
+        UpdateUI();
     }
 
     void WeaponReset() {
@@ -99,6 +100,10 @@ public class WeaponSystem : NetworkBehaviour {
         gunData.reloading = false;
         gunData.currentAmmo = gunData.magSize;
         recoilSystem.Reset();
+    }
+
+    void UpdateUI() {
+        ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
 

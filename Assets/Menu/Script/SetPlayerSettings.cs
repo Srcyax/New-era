@@ -7,6 +7,7 @@ using TMPro;
 public class SetPlayerSettings : MonoBehaviour
 {
     [SerializeField] PlayerData playerData;
+    [SerializeField] JsonSaveSystem jsonSystem;
 
     [Header("UI components")]
     [SerializeField] Slider sensibility;
@@ -15,5 +16,6 @@ public class SetPlayerSettings : MonoBehaviour
     public void SetSettings() {
         playerData.sensibility = sensibility.value;
         playerData.graphics = graphics.value;
+        jsonSystem.SettingsDataSaveToJson(sensibility.value, graphics.value, playerData.name);
     }
 }

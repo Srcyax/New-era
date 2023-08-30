@@ -16,11 +16,11 @@ MonoBehaviour:
   damage: 20
   maxDistance: 200
   spread: {x: 0.04, y: 0.04, z: 0.03}
-  currentAmmo: 31
+  currentAmmo: 23
   magSize: 31
   fireRate: 700
-  reloadTime: 1.6
-  reloading: 0
+  reloadTime: 2.1
+  reloading: 1
   hitboxes:
   - Head
   - Chest
