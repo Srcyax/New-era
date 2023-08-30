@@ -106,7 +106,6 @@ public class WeaponSystem : NetworkBehaviour {
         ammoUI.text = gunData.currentAmmo.ToString() + "/∞";
     }
 
-
     [Command(requiresAuthority = true)]
     void CmdShoot(Ray ray) {
         Instantiate(muzzleFlash, muzzle);
@@ -166,10 +165,16 @@ public class WeaponSystem : NetworkBehaviour {
     void GiveHit(int i, RaycastHit hit) {
         PlayerComponents player = hit.collider.transform.root.GetComponent<PlayerComponents>();
 
+        if ( hit.collider.transform.root == gameObject.transform )
+            return;
+
+        if ( player.spawning )
+            return;
+
         if ( player.playerHealth <= 0 )
             return;
 
-        if ( hit.collider.transform.root == gameObject.transform )
+        if ( components.playerTeam == player.playerTeam )
             return;
 
         Instantiate(hitMarker, canvas);

@@ -15,6 +15,7 @@ public class PlayerMainController : MonoBehaviour {
     [SerializeField] PlayerDamage playerDamage;
     [SerializeField] HealthUI playerHealthUI;
     [SerializeField] NameUI playerNameUI;
+    [SerializeField] TeamArrowSpawn teamArrow;
     [SerializeField] Transform playerHeadLookAt;
     [SerializeField] public Camera playerCamera;
 
@@ -58,6 +59,7 @@ public class PlayerMainController : MonoBehaviour {
         if ( !playerHasTeam )
             return;
 
+        teamArrow.SetTeamArrow(components.playerTeam);
         PlayerControler();
         playerAnimations.Animations();
         if ( Input.GetMouseButton(0) ) {
@@ -86,6 +88,7 @@ public class PlayerMainController : MonoBehaviour {
         components.playerHealth = 100;
         playerHealthUI.deadScreenUI.SetActive(false);
         playerDamage.playerWeapon.SetActive(true);
+        components.CmdSpawning();
     }
 
     void PlayerControler() {

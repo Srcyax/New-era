@@ -12,6 +12,7 @@ public class PlayerAnimations : MonoBehaviour {
     float smoothInputX;
     float smoothInputY;
 
+
     public void Animations() {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");

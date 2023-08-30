@@ -4958,6 +4958,7 @@ MonoBehaviour:
   playerRunSpeed: 8
   playerWalkSpeed: 3.5
   localPlayer: 0
+  spawning: 0
   playerBody:
   - {fileID: 2168414907226409545}
   - {fileID: 1431869461914855014}
@@ -11270,6 +11271,7 @@ GameObject:
   - component: {fileID: 1829390208173041642}
   - component: {fileID: 5224834978515845566}
   - component: {fileID: 661885777203318511}
+  - component: {fileID: 370068096913072135}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -11333,6 +11335,7 @@ MonoBehaviour:
   playerDamage: {fileID: 4195712889526297307}
   playerHealthUI: {fileID: 4195712889526297304}
   playerNameUI: {fileID: 4195712889526297319}
+  teamArrow: {fileID: 370068096913072135}
   playerHeadLookAt: {fileID: 4726151355229717281}
   playerCamera: {fileID: 4395480846476721943}
   recoilSystem: {fileID: 8015645656044095960}
@@ -11352,6 +11355,19 @@ MonoBehaviour:
   playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
   camera: {fileID: 8326578234380622855}
   postProcess: {fileID: 4120148761150774365}
+--- !u!114 &370068096913072135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8740789290416525799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a1cb37bbd6c6b408f608fd009e78d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabTeamArrow: {fileID: 242001828590761677, guid: fc353cfbad0477949baf8cd9683e4a38, type: 3}
 --- !u!1 &8871796746859655059
 GameObject:
   m_ObjectHideFlags: 0
@@ -12044,8 +12060,9 @@ Animator:
   m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
     are already bound by a Humanoid avatar. These transforms can only be changed
     by Humanoid clips.\n\tTransform 'mixamorig1:LeftHandThumb2'\n\tTransform 'mixamorig1:LeftHandThumb1'\n\tTransform
-    'mixamorig1:Neck'\n\tFrom animation clip 'rifle_idle'\n\tFrom animation clip
-    'rifle_fire'\n\tFrom animation clip 'reload'"
+    'mixamorig1:Neck'\n\tTransform 'mixamorig1:Spine'\n\tFrom animation clip 'rifle_idle'\n\tFrom
+    animation clip 'rifle_fire'\n\tFrom animation clip 'reload'\n\tFrom animation
+    clip 'lean_center'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0

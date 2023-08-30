@@ -1,4 +1,5 @@
 using Mirror;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
@@ -10,6 +11,7 @@ public class PlayerComponents : NetworkBehaviour {
     public float playerRunSpeed = 8f;
     public float playerWalkSpeed = 3.5f;
     [SyncVar] public bool   localPlayer;
+    [SyncVar] public bool   spawning;
 
     [Header("Components to disable")]
     [SerializeField] GameObject[] playerBody;
@@ -31,5 +33,21 @@ public class PlayerComponents : NetworkBehaviour {
         for ( int i = 0; i < playerBody.Length; i++ ) {
             playerBody[ i ].SetActive(!isLocalPlayer);
         }
+    }
+
+    [Command(requiresAuthority =false)]
+    public void CmdSpawning() {
+        RpcSpawning();
+    }
+
+    [ClientRpc]
+    void RpcSpawning() {
+        StartCoroutine(Spawning());
+    }
+
+    IEnumerator Spawning() {
+        spawning = true;
+        yield return new WaitForSeconds(3f);
+        spawning = false;
     }
 }

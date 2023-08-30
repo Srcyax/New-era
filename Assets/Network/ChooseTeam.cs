@@ -23,11 +23,17 @@ public class ChooseTeam : NetworkBehaviour {
         if ( !isServer )
             return;
 
-        TeamsInfo();
+        CmdTeamsInfo();
         CmdWaitingPlayers();
     }
 
-    void TeamsInfo() {
+    [Command(requiresAuthority =false)]
+    void CmdTeamsInfo() {
+        RpcTeamsInfo();
+    }
+
+    [ClientRpc]
+    void RpcTeamsInfo() {
         teamsPlayers[ 0 ].text = ice.ToString();
         teamsPlayers[ 1 ].text = fire.ToString();
     }
@@ -43,7 +49,7 @@ public class ChooseTeam : NetworkBehaviour {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if ( index != players.Length ) {
             TextMeshProUGUI name = playerName.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            name.text = players[ players.Length - 1 ].GetComponent<PlayerComponents>().playerName;
+            //name.text = players[ players.Length - 1 ].GetComponent<PlayerComponents>().playerName;
             if ( waitingPlayers.childCount > 0 ) {
                 Transform lastChild = waitingPlayers.GetChild(waitingPlayers.childCount - 1);
                 Vector3 newPosition = new Vector3(0f, lastChild.localPosition.y - 60f, 0f);
