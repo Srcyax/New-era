@@ -36,6 +36,7 @@ public class PlayerMainController : MonoBehaviour {
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         characterController = GetComponent<CharacterController>();
         Destroy(lobby);
+        StartCoroutine(chooseTeam());
 
         if (components.localPlayer )
             playerNameUI.CmdSetPlayerName(playerData.name);
@@ -72,6 +73,14 @@ public class PlayerMainController : MonoBehaviour {
         if ( Input.GetKeyDown(KeyCode.R) ) {
             reloadInput?.Invoke();
         }
+    }
+
+    IEnumerator chooseTeam() {
+        GameObject chooseTeam = GameObject.FindGameObjectWithTag("ChooseTeam");
+        yield return new WaitForSeconds(.3f);
+        chooseTeam.SetActive(false);
+        yield return new WaitForSeconds(.1f);
+        chooseTeam.SetActive(true);
     }
 
     public IEnumerator Respawn() {

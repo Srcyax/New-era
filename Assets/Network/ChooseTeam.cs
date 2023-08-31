@@ -67,18 +67,19 @@ public class ChooseTeam : NetworkBehaviour {
 
 
     [Command(requiresAuthority = false)]
-    public void CmdJoinTeamIce(int team) {
+    public void CmdJoinTeamIce(string team) {
         if ( !lobbyManager.canStart)
             return;
 
+        RpcChatFeed(team);
         ice++;
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdJoinTeamFire(int team) {
+    public void CmdJoinTeamFire(string team) {
         if ( !lobbyManager.canStart)
             return;
-
+        RpcChatFeed(team);
         fire++;
     }
 
@@ -89,6 +90,23 @@ public class ChooseTeam : NetworkBehaviour {
         gameObject.SetActive(false);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    [ClientRpc]
+    void RpcChatFeed(string team) {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        for ( int i = 0; i < players.Length; i++ ) {
+            if ( !players[ i ] )
+                continue;
+
+            if ( !players[ i ].GetComponent<PlayerComponents>().localPlayer )
+                continue;
+
+            string name = players[ i ].GetComponent<PlayerComponents>().playerName;
+
+            players[ i ].GetComponent<Feed>().FeedPlayerTeamJoined(name, team);
+            break;
+        }
     }
 
     public void SetPlayerTeam(int team) {

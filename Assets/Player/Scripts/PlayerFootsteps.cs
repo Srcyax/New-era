@@ -10,11 +10,9 @@ public class PlayerFootsteps : MonoBehaviour
     [SerializeField] AudioClip[] walkSounds;
     [SerializeField] AudioClip[] runSounds;
 
-    private void Start() {
-        audioSource.volume = components.localPlayer ? 0.05f : 0.8f;
-    }
-
     private void Update() {
+        audioSource.volume = components.localPlayer ? 0.05f : 0.8f;
+
         if ( !audioSource.isPlaying && audioSource.clip )
             audioSource.clip = null;
     }

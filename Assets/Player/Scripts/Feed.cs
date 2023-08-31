@@ -2,12 +2,15 @@ using UnityEngine;
 using Mirror;
 using TMPro;
 
-public class PlayerKillfeed : MonoBehaviour {
+public class Feed : MonoBehaviour {
     [SerializeField] GameObject killFeedPrefab;
+    [SerializeField] GameObject chatFeedPrefab;
 
     Transform killfeed;
+    Transform chatFeed;
     void Start() {
         killfeed = GameObject.FindGameObjectWithTag("Killfeed").transform;
+        chatFeed = GameObject.FindGameObjectWithTag("ChatFeed").transform;
     }
 
     public void RpcKillFeed(string killer_name, string killed_name, string reason) {
@@ -24,6 +27,23 @@ public class PlayerKillfeed : MonoBehaviour {
         }
         else {
             Instantiate(killFeedPrefab, killfeed);
+        }
+    }
+
+    public void FeedPlayerTeamJoined(string player, string team) {
+        TextMeshProUGUI chat = chatFeedPrefab.GetComponent<TextMeshProUGUI>();
+
+        chat.text = player + " joined team " + team;
+
+        if ( chatFeed.childCount > 0 ) {
+            Transform lastChild = chatFeed.GetChild(chatFeed.childCount - 1);
+            Vector3 newPosition = new Vector3(0f, lastChild.localPosition.y + 25f, 0f);
+
+            GameObject obj = Instantiate(chatFeedPrefab, chatFeed);
+            obj.transform.localPosition = newPosition;
+        }
+        else {
+            Instantiate(chatFeedPrefab, chatFeed);
         }
     }
 }

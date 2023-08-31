@@ -20,6 +20,8 @@ TagManager:
   - Ground
   - StartMatchButton
   - ChooseTeam
+  - ChatFeed
+  - TeamArrow
   layers:
   - Default
   - TransparentFX

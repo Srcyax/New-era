@@ -1667,7 +1667,7 @@ RectTransform:
   - {fileID: 1753261106}
   - {fileID: 1994886684}
   m_Father: {fileID: 993682748}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6214,6 +6214,7 @@ RectTransform:
   - {fileID: 1966502880}
   - {fileID: 71586774}
   - {fileID: 1850493448}
+  - {fileID: 1555741819}
   - {fileID: 388889871}
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -7392,7 +7393,7 @@ MonoBehaviour:
   teamsPlayers:
   - {fileID: 1266611064}
   - {fileID: 63775028}
-  playerName: {fileID: 6266455793442658500, guid: e2c1b89bca896c145a8f3443b51d3ede, type: 3}
+  playerName: {fileID: 1237245636641282496, guid: e2c1b89bca896c145a8f3443b51d3ede, type: 3}
   waitingPlayers: {fileID: 199104690}
 --- !u!114 &1146829363
 MonoBehaviour:
@@ -9657,6 +9658,42 @@ Transform:
   m_Father: {fileID: 219610432}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 57.298, y: 0, z: 0}
+--- !u!1 &1555741818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1555741819}
+  m_Layer: 5
+  m_Name: Chat
+  m_TagString: ChatFeed
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1555741819
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555741818}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 993682748}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -474.99, y: -260}
+  m_SizeDelta: {x: 949.98, y: 339.712}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1561639790
 GameObject:
   m_ObjectHideFlags: 0
@@ -10116,13 +10153,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1146829362}
         m_TargetAssemblyTypeName: ChooseTeam, Assembly-CSharp
         m_MethodName: CmdJoinTeamFire
-        m_Mode: 3
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: FIRE
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1146829362}
@@ -13450,13 +13487,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1146829362}
         m_TargetAssemblyTypeName: ChooseTeam, Assembly-CSharp
         m_MethodName: CmdJoinTeamIce
-        m_Mode: 3
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: ICE
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1146829362}

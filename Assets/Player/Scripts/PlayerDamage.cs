@@ -18,7 +18,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
 
     Vignette vignette;
 
-    PlayerKillfeed killFeed => GetComponent<PlayerKillfeed>();
+    Feed killFeed => GetComponent<Feed>();
     MatchStatus matchStatus;
 
     void Start()

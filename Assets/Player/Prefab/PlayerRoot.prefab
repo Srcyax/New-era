@@ -5232,6 +5232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killFeedPrefab: {fileID: 1801014386905019007, guid: 3d22264815d475f4392f16a34611bd27, type: 3}
+  chatFeedPrefab: {fileID: 670409976840232387, guid: cedd823a3d312674c811c2a86b76a3c5, type: 3}
 --- !u!114 &4195712889526297306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5281,6 +5282,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   components: {fileID: 3038935329612329506}
+  teamArrow: {fileID: 370068096913072135}
 --- !u!114 &4195712889526297308
 MonoBehaviour:
   m_ObjectHideFlags: 0

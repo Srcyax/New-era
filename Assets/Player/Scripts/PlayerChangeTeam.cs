@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerChangeTeam : NetworkBehaviour {
     [SerializeField] PlayerComponents components;
+    [SerializeField] TeamArrowSpawn teamArrow;
     GameObject chooseTeam;
     ChooseTeam team;
     void Start() {
@@ -18,7 +19,14 @@ public class PlayerChangeTeam : NetworkBehaviour {
         if ( components.spawning )
             return;
 
+        if ( chooseTeam.activeSelf ) {
+            teamArrow.ResetTeamArrow();
+            return;
+        }
+
         if ( Input.GetKeyDown(KeyCode.M) ) {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             ChangeTeam();
             CmdChangeTeam();
         }
@@ -37,12 +45,7 @@ public class PlayerChangeTeam : NetworkBehaviour {
 
     [ClientRpc]
     void RpcChangeTeam() {
-        if ( !chooseTeam.activeSelf )
-            return;
-
         components.playerTeam = -1;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     void ChangeTeam() {
