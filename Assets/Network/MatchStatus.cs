@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MatchStatus : NetworkBehaviour {
     [Header("UI settings")]
+    [SerializeField] Canvas canvas;
     [SerializeField] Slider sliderIce;
     [SerializeField] Slider sliderFire;
     [SerializeField] TextMeshProUGUI tIce;
@@ -28,9 +29,11 @@ public class MatchStatus : NetworkBehaviour {
         PlayerMainController[] players = FindObjectsOfType<PlayerMainController>();
 
         foreach (PlayerMainController player in players) {
-            if ( !player.playerHasTeam )
+            if ( !player.playerHasTeam ) {
+                canvas.enabled = false;
                 return;
-
+            }
+            canvas.enabled = true;
             CmdUISettings(ice_score, fire_score);
 
             if ( matchTime > 0 ) {

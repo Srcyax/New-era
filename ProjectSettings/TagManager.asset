@@ -19,6 +19,7 @@ TagManager:
   - Killfeed
   - Ground
   - StartMatchButton
+  - ChooseTeam
   layers:
   - Default
   - TransparentFX
