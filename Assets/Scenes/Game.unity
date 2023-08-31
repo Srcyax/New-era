@@ -1981,8 +1981,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 442016998}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.0918045, y: -46.957794, z: -24.270008}
-  m_LocalScale: {x: 197.01851, y: 33.427586, z: 149.44945}
+  m_LocalPosition: {x: -5.5, y: -47, z: 14.5}
+  m_LocalScale: {x: 320.62027, y: 33.427586, z: 299.06607}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 219610432}
@@ -15043,10 +15043,9 @@ Animator:
   m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
     are already bound by a Humanoid avatar. These transforms can only be changed
     by Humanoid clips.\n\tTransform 'mixamorig1:LeftHandThumb2'\n\tTransform 'mixamorig1:LeftHandThumb1'\n\tTransform
-    'mixamorig1:Neck'\n\tTransform 'mixamorig1:Spine'\n\tFrom animation clip 'rifle_idle'\n\tFrom
-    animation clip 'rifle_fire'\n\tFrom animation clip 'reload'\n\tFrom animation
-    clip 'lean_left'\n\tFrom animation clip 'lean_right'\n\tFrom animation clip 'lean_left'\n\tFrom
-    animation clip 'lean_right'"
+    'mixamorig1:Neck'\n\tFrom animation clip 'rifle_fire'\n\tFrom animation clip
+    'reload'\n\tFrom animation clip 'rifle_idle'\n\tFrom animation clip 'rifle_walk'\n\tFrom
+    animation clip 'rifle_walk'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0

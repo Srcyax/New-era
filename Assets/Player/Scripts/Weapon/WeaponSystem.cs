@@ -137,23 +137,6 @@ public class WeaponSystem : NetworkBehaviour {
                     GiveHit(3, hit);
                     break;
             }
-
-            /*for ( int i = 0; i < gunData.hitboxes.Length; i++ ) {
-                PlayerComponents player = hit.collider.transform.root.GetComponent<PlayerComponents>();
-                if ( player && components.playerTeam != player.playerTeam && player.playerHealth > 0 ) {
-                    if ( hit.collider.transform.root != gameObject.transform && hit.collider.CompareTag(gunData.hitboxes[ i ]) ) {
-                        Instantiate(hitMarker, canvas);
-                        playerAudioSource.Play();
-                        print(hit.collider.tag + " : " + gunData.damages[ i ]);
-                        IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
-                        damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName, "killed");
-                    }
-                }
-                if ( !hit.collider.CompareTag(gunData.hitboxes[ i ]) ) {
-                    GameObject obj = Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
-                    obj.transform.parent = hit.transform;
-                }
-            }*/
         }
 
         if ( Physics.Raycast(ray.origin, direction, out RaycastHit hitInfo, gunData.maxDistance, worldLayer) ) {

@@ -29,6 +29,8 @@ public class UIManager : MonoBehaviour
     {
         jsonSystem.SettingsDataLoadFromJson(sensibility, graphics, playerName);
 
+        QualitySettings.SetQualityLevel(graphics.value);
+
         HostButton?.onClick.AddListener( () => {
             if ( ( maxClient.value + 1 ) > 1 ) {
                 try {

@@ -16,6 +16,7 @@ public class SetPlayerSettings : MonoBehaviour
     public void SetSettings() {
         playerData.sensibility = sensibility.value;
         playerData.graphics = graphics.value;
+        QualitySettings.SetQualityLevel(graphics.value);
         jsonSystem.SettingsDataSaveToJson(sensibility.value, graphics.value, playerData.name);
     }
 }

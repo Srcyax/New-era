@@ -11,6 +11,7 @@ public class PlayerAnimations : MonoBehaviour {
     float smoothing = 0.2f;
     float smoothInputX;
     float smoothInputY;
+    float smoothRifleState;
 
 
     public void Animations() {
@@ -25,8 +26,17 @@ public class PlayerAnimations : MonoBehaviour {
             smoothInputY = Mathf.Lerp(smoothInputY, -2, smoothing);
         }
 
+        if ( mainController.characterController.velocity.magnitude > 0 ) {
+            smoothRifleState = Mathf.Lerp(smoothRifleState, 1, smoothing);
+        }
+        else {
+            smoothRifleState = Mathf.Lerp(smoothRifleState, 0, smoothing);
+        }
+
+
         animator.SetFloat("inputX", smoothInputX);
         animator.SetFloat("inputY", smoothInputY);
+        animator.SetFloat("rifle_state", smoothRifleState);
     }
 
     public bool isGrounded() {
