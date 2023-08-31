@@ -15,9 +15,16 @@ MonoBehaviour:
   name: Berreta
   damage: 5
   maxDistance: 100
-  spread: 7
+  spread: {x: 0.1, y: 0.1, z: 0.1}
   currentAmmo: 0
   magSize: 9
   fireRate: 250
   reloadTime: 2
   reloading: 1
+  hitboxes:
+  - Head
+  - Chest
+  - LowerChest
+  - Arms
+  - Legs
+  damages: 5000000028000000190000000f0000000a000000

@@ -5115,7 +5115,7 @@ MonoBehaviour:
   animator: {fileID: 4687342733905996088}
   ammoUI: {fileID: 6774946624955829175}
   canvas: {fileID: 966063138305777107}
-  hitMarker: {fileID: 1034109551557685366, guid: 9f96c1bc99dd9b445930ecb0208ada64, type: 3}
+  hitMarker: {fileID: 4114542641018296811, guid: 9f96c1bc99dd9b445930ecb0208ada64, type: 3}
   cameraAxis: {x: 0, y: 0}
 --- !u!114 &4195712889526297318
 MonoBehaviour:
@@ -8309,7 +8309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5152747131546624018
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9732,7 +9732,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 200
-  field of view: 64.91408
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
