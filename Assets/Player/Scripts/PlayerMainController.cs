@@ -80,7 +80,7 @@ public class PlayerMainController : MonoBehaviour {
 
     IEnumerator chooseTeam() {
         GameObject chooseTeam = GameObject.FindGameObjectWithTag("ChooseTeam");
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.1f);
         chooseTeam.SetActive(false);
         yield return new WaitForSeconds(.1f);
         chooseTeam.SetActive(true);
@@ -132,6 +132,7 @@ public class PlayerMainController : MonoBehaviour {
         get { return components.playerHealth <= 0; }
     }
 
+    [HideInInspector]
     public bool isPlayerInSettingsMenu;
 
     public bool isWaitingForPlayers {

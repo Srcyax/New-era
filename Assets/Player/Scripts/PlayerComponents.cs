@@ -8,10 +8,14 @@ public class PlayerComponents : NetworkBehaviour {
     [SyncVar] public float  playerHealth = 100;
     [SyncVar] public string playerName;
     [SyncVar] public int    playerTeam = -1;
-    public float playerRunSpeed = 8f;
-    public float playerWalkSpeed = 3.5f;
     [SyncVar] public bool   localPlayer;
     [SyncVar] public bool   spawning;
+    [SyncVar] public float spawnTime = 3;
+
+    [Space(15)]
+
+    public float playerRunSpeed = 8f;
+    public float playerWalkSpeed = 3.5f;
 
     [Header("Components to disable")]
     [SerializeField] GameObject[] playerBody;
@@ -47,7 +51,7 @@ public class PlayerComponents : NetworkBehaviour {
 
     IEnumerator Spawning() {
         spawning = true;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(spawnTime);
         spawning = false;
     }
 }

@@ -7,7 +7,12 @@ public class PlayerAnimations : MonoBehaviour {
     [Header("Player foot position")]
     [SerializeField] Transform footPos;
 
+    [Header("Ground layer")]
+    [SerializeField] int layerMask;
+
+    [Header("Player main controller")]
     [SerializeField] PlayerMainController mainController;
+
     float smoothing = 0.2f;
     float smoothInputX;
     float smoothInputY;
@@ -42,7 +47,7 @@ public class PlayerAnimations : MonoBehaviour {
     public bool isGrounded() {
         if ( Physics.Raycast(footPos.transform.position, footPos.transform.forward, out RaycastHit hit, .5f) ) {
             Debug.DrawLine(footPos.transform.position, hit.point, Color.red, 1);
-            if ( hit.collider.gameObject.layer == 8 )
+            if ( hit.collider.gameObject.layer == layerMask )
                 return true;
         }
         return false;

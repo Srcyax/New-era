@@ -25,16 +25,15 @@ public class MatchStatus : NetworkBehaviour {
     [HideInInspector]
     [SyncVar] public float minutes, seconds;
 
+    private string timerFormat = "{0:0}:{1:00}";
+    private string timerText;
+
     void FixedUpdate() {
         PlayerMainController[] players = FindObjectsOfType<PlayerMainController>();
 
         foreach (PlayerMainController player in players) {
-            if ( !player.playerHasTeam ) {
-                canvas.enabled = false;
+            if ( !player.playerHasTeam )
                 return;
-            }
-            canvas.enabled = true;
-            CmdUISettings(ice_score, fire_score);
 
             if ( matchTime > 0 ) {
                 matchTime -= Time.fixedDeltaTime;
@@ -42,7 +41,7 @@ public class MatchStatus : NetworkBehaviour {
                 minutes = Mathf.FloorToInt(Mathf.Round(matchTime) / 60);
                 seconds = Mathf.FloorToInt(Mathf.Round(matchTime) % 60);
 
-                string timerText = string.Format("{0:0}:{1:00}", Mathf.Round(minutes), Mathf.Round(seconds));
+                timerText = string.Format(timerFormat, Mathf.Round(minutes), Mathf.Round(seconds));
                 tTime.text = timerText;
             }
             else {
@@ -56,6 +55,20 @@ public class MatchStatus : NetworkBehaviour {
                     StartCoroutine(Winner(draw));
                 }
             }
+        }
+    }
+
+    int index_ice = 0;
+    int index_fire = 0;
+
+    private void Update() {
+        if ( index_ice != ice_score ) {
+            CmdUISettings(ice_score, fire_score);
+            index_ice = ice_score;
+        }
+        else if ( index_fire != fire_score ) {
+            CmdUISettings(ice_score, fire_score);
+            index_ice = ice_score;
         }
     }
 

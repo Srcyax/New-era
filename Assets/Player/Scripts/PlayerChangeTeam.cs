@@ -4,11 +4,14 @@ using UnityEngine;
 public class PlayerChangeTeam : NetworkBehaviour {
     [SerializeField] PlayerComponents components;
     [SerializeField] TeamArrowSpawn teamArrow;
+
     GameObject chooseTeam;
     ChooseTeam team;
+    Canvas matchStatusCanvas;
     void Start() {
         chooseTeam = GameObject.FindGameObjectWithTag("ChooseTeam");
         team = chooseTeam.GetComponent<ChooseTeam>();
+        matchStatusCanvas = GameObject.FindGameObjectWithTag("MatchStatus").GetComponent<Canvas>();
     }
 
     void Update() {
@@ -27,6 +30,7 @@ public class PlayerChangeTeam : NetworkBehaviour {
         if ( Input.GetKeyDown(KeyCode.M) ) {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            matchStatusCanvas.enabled = false;
             ChangeTeam();
             CmdChangeTeam();
         }

@@ -13,29 +13,23 @@ public class ChooseTeam : NetworkBehaviour {
     [SerializeField] GameObject playerName;
     [SerializeField] Transform waitingPlayers;
 
+    Canvas matchStatusCanvas;
+
     void Start() {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         lobbyManager = FindObjectOfType<LobbyPlayers>();
+        matchStatusCanvas = GameObject.FindGameObjectWithTag("MatchStatus").GetComponent<Canvas>();
     }
 
     void Update() {
+        teamsPlayers[ 0 ].text = ice.ToString();
+        teamsPlayers[ 1 ].text = fire.ToString();
+
         if ( !isServer )
             return;
 
-        CmdTeamsInfo();
         CmdWaitingPlayers();
-    }
-
-    [Command(requiresAuthority =false)]
-    void CmdTeamsInfo() {
-        RpcTeamsInfo();
-    }
-
-    [ClientRpc]
-    void RpcTeamsInfo() {
-        teamsPlayers[ 0 ].text = ice.ToString();
-        teamsPlayers[ 1 ].text = fire.ToString();
     }
 
     int index = -1;
@@ -88,6 +82,7 @@ public class ChooseTeam : NetworkBehaviour {
             return;
 
         gameObject.SetActive(false);
+        matchStatusCanvas.enabled = true;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }

@@ -12,6 +12,7 @@ public class PlayerSettingsMenu : MonoBehaviour
     [SerializeField] PlayerSettings playerSettings;
     [SerializeField] PlayerData playerData;
     JsonSaveSystem json;
+    Canvas matchStatusCanvas;
 
     [SerializeField] GameObject playerUI;
     [SerializeField] GameObject settingsUI;
@@ -23,6 +24,7 @@ public class PlayerSettingsMenu : MonoBehaviour
     void Start()
     {
         json = GameObject.FindObjectOfType<JsonSaveSystem>();
+        matchStatusCanvas = GameObject.FindGameObjectWithTag("MatchStatus").GetComponent<Canvas>();
 
         sensibility.value = playerData.sensibility;
         graphics.value = playerData.graphics;
@@ -39,6 +41,7 @@ public class PlayerSettingsMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape)) {
             playerUI.SetActive(!playerUI.activeSelf);
             settingsUI.SetActive(!settingsUI.activeSelf);
+            matchStatusCanvas.enabled = !matchStatusCanvas.enabled;
             if ( settingsUI.activeSelf ) {
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
