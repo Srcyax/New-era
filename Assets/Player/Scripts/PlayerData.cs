@@ -9,4 +9,8 @@ public class PlayerData : ScriptableObject {
     [Header("Settings")]
     public float sensibility;
     public int graphics;
+
+    [Header("Player Status")]
+    public int kills;
+    public int deaths;
 }

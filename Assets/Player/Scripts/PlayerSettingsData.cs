@@ -7,3 +7,9 @@ public class PlayerSettingsData
     public float sensibility;
     public int graphics;
 }
+
+[System.Serializable]
+public class PlayerStatusData {
+    public int kills;
+    public int deaths;
+}

@@ -11,6 +11,8 @@ public class PlayerComponents : NetworkBehaviour {
     [SyncVar] public bool   localPlayer;
     [SyncVar] public bool   spawning;
     [SyncVar] public float spawnTime = 3;
+    [SyncVar] public int kills = 0;
+    [SyncVar] public int deaths = 0;
 
     [Space(15)]
 
@@ -23,6 +25,7 @@ public class PlayerComponents : NetworkBehaviour {
 
     [Space(10)]
     [SerializeField] PlayerMainController mainController;
+    [SerializeField] PlayerData playerData;
 
     private void Start() {
         mainController.playerCamera.enabled = isLocalPlayer && mainController.playerHasTeam;
@@ -30,6 +33,11 @@ public class PlayerComponents : NetworkBehaviour {
         mainController.playerCamera.GetComponent<PostProcessVolume>().enabled = isLocalPlayer;
 
         localPlayer = isLocalPlayer;
+        if ( localPlayer ) {
+            kills = playerData.kills;
+            deaths = playerData.deaths;
+        }
+
         for ( int i = 0; i < playerObjs.Length; i++ ) {
             playerObjs[ i ].SetActive(isLocalPlayer);
         }

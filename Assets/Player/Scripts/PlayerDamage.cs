@@ -20,12 +20,15 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
 
     Feed killFeed => GetComponent<Feed>();
     MatchStatus matchStatus;
+    JsonSaveSystem json;
 
     void Start()
     {
         matchStatus = FindObjectOfType<MatchStatus>();
 
         vignette = processVolume.profile.GetSetting<Vignette>();
+
+        json = FindObjectOfType<JsonSaveSystem>();
     }
 
     void Update() {
@@ -64,6 +67,10 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
             killFeed.RpcKillFeed(killer_name, killed_name, reason);
             StartCoroutine(mainController.Respawn());
             playerWeapon.SetActive(false);
+            if ( reason != "" ) {
+                components.deaths++;
+                json.StatusDataSaveToJson(components.kills, components.deaths);
+            }
         }
         else {
             Instantiate(blood, canvas);

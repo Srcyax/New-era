@@ -99,7 +99,7 @@ public class ChooseTeam : NetworkBehaviour {
 
             string name = players[ i ].GetComponent<PlayerComponents>().playerName;
 
-            players[ i ].GetComponent<Feed>().FeedPlayerTeamJoined(name, team);
+            players[ i ].GetComponent<Feed>().RpcFeedPlayerTeamJoined(name, team);
             break;
         }
     }

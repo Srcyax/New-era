@@ -30,6 +30,27 @@ public class JsonSaveSystem : MonoBehaviour {
         name.text = data.name;
     }
 
+    public void StatusDataSaveToJson(int kills, int deaths) {
+        PlayerStatusData data = new PlayerStatusData();
+        data.kills = kills;
+        data.deaths = deaths;
+
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText("C:/userdata/statusData.json", EncryptDecrypt(json, key));
+    }
+
+    public void StatusDataLoadFromJson(PlayerData pData) {
+        if ( !File.Exists("C:/userdata/statusData.json") ) {
+            StatusDataSaveToJson(0, 0);
+            return;
+        }
+
+        string json = File.ReadAllText("C:/userdata/statusData.json");
+        PlayerStatusData data = JsonUtility.FromJson<PlayerStatusData>(EncryptDecrypt(json, key));
+        pData.kills = data.kills;
+        pData.deaths = data.deaths;
+    }
+
     public string EncryptDecrypt(string data, int key) {
         StringBuilder input = new StringBuilder(data);
         StringBuilder output = new StringBuilder(data.Length);

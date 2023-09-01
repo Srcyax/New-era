@@ -154,8 +154,10 @@ public class WeaponSystem : NetworkBehaviour {
         if ( player.spawning )
             return;
 
-        if ( player.playerHealth <= 0 )
+        if ( player.playerHealth <= 0 ) {
+            components.kills++;
             return;
+        }
 
         if ( components.playerTeam == player.playerTeam )
             return;

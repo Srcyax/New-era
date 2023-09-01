@@ -3,6 +3,8 @@ using Mirror;
 using TMPro;
 
 public class Feed : MonoBehaviour {
+    PlayerComponents components => GetComponent<PlayerComponents>();
+
     [SerializeField] GameObject killFeedPrefab;
     [SerializeField] GameObject chatFeedPrefab;
 
@@ -30,7 +32,7 @@ public class Feed : MonoBehaviour {
         }
     }
 
-    public void FeedPlayerTeamJoined(string player, string team) {
+    public void RpcFeedPlayerTeamJoined(string player, string team) {
         TextMeshProUGUI chat = chatFeedPrefab.GetComponent<TextMeshProUGUI>();
 
         chat.text = player + " joined team " + team;

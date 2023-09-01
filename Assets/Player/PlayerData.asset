@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659f876cdfbe7944ca957f8f821b3d76, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  name: 
+  name: cya1
+  sensibility: 1.5794209
+  graphics: 4
+  kills: 0
+  deaths: 0

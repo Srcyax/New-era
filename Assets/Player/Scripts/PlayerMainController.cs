@@ -37,14 +37,13 @@ public class PlayerMainController : MonoBehaviour {
         characterController = GetComponent<CharacterController>();
         Destroy(lobby);
         StartCoroutine(chooseTeam());
-
-        if (components.localPlayer )
-            playerNameUI.CmdSetPlayerName(playerData.name);
     }
 
     void Update() {
         if ( !components.localPlayer )
             return;
+
+        playerNameUI.CmdSetPlayerName(playerData.name);
 
         if ( isLocalPlayerDead ) {
             playerDied?.Invoke();
