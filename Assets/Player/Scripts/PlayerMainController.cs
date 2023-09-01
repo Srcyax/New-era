@@ -60,6 +60,9 @@ public class PlayerMainController : MonoBehaviour {
         if ( !playerHasTeam )
             return;
 
+        if ( isPlayerInSettingsMenu )
+            return;
+
         teamArrow.SetTeamArrow(components.playerTeam);
         PlayerControler();
         playerAnimations.Animations();
@@ -128,6 +131,8 @@ public class PlayerMainController : MonoBehaviour {
     public bool isLocalPlayerDead {
         get { return components.playerHealth <= 0; }
     }
+
+    public bool isPlayerInSettingsMenu;
 
     public bool isWaitingForPlayers {
         get { return waitingPlayers; }

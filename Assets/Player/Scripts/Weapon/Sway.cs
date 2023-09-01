@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Sway : MonoBehaviour
 {
+    [SerializeField] PlayerMainController mainController;
+
     [Header("Position")]
     public float amount = 0.02f;
     public float maxAmonut = 0.06f;
@@ -35,6 +37,9 @@ public class Sway : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if ( mainController.isPlayerInSettingsMenu )
+            return;
+
         CalculateSway();
 
         MoveSway();
