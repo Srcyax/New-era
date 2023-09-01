@@ -13913,7 +13913,7 @@ MonoBehaviour:
   runInBackground: 1
   autoStartServerBuild: 1
   autoConnectClientBuild: 0
-  sendRate: 30
+  sendRate: 64
   offlineScene: Assets/Scenes/Game.unity
   onlineScene: Assets/Scenes/Game.unity
   transport: {fileID: 2096606008}
