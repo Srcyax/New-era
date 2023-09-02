@@ -69,7 +69,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
             playerWeapon.SetActive(false);
             if ( reason != "" ) {
                 components.deaths++;
-                json.StatusDataSaveToJson(components.kills, components.deaths);
+                //json.StatusDataSaveToJson(components.kills, components.deaths);
             }
         }
         else {

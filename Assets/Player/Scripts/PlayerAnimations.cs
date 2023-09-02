@@ -39,6 +39,8 @@ public class PlayerAnimations : MonoBehaviour {
         }
 
 
+        //animator.SetBool("crounch", Input.GetKey(KeyCode.LeftControl) && isGrounded() && !mainController.isPlayerRunning);
+
         animator.SetFloat("inputX", smoothInputX);
         animator.SetFloat("inputY", smoothInputY);
         animator.SetFloat("rifle_state", smoothRifleState);

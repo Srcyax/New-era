@@ -30,7 +30,7 @@ public class JsonSaveSystem : MonoBehaviour {
         name.text = data.name;
     }
 
-    public void StatusDataSaveToJson(int kills, int deaths) {
+    /*public void StatusDataSaveToJson(int kills, int deaths) {
         PlayerStatusData data = new PlayerStatusData();
         data.kills = kills;
         data.deaths = deaths;
@@ -49,7 +49,7 @@ public class JsonSaveSystem : MonoBehaviour {
         PlayerStatusData data = JsonUtility.FromJson<PlayerStatusData>(EncryptDecrypt(json, key));
         pData.kills = data.kills;
         pData.deaths = data.deaths;
-    }
+    }*/
 
     public string EncryptDecrypt(string data, int key) {
         StringBuilder input = new StringBuilder(data);

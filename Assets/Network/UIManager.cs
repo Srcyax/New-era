@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour {
 
     private void Start() {
         jsonSystem.SettingsDataLoadFromJson(sensibility, graphics, playerName);
-        jsonSystem.StatusDataLoadFromJson(playerData);
+        //jsonSystem.StatusDataLoadFromJson(playerData);
 
         QualitySettings.SetQualityLevel(graphics.value);
 
