@@ -39,7 +39,6 @@ public class TeamArrowSpawn : MonoBehaviour {
                 continue;
 
             Destroy(arrows[ i ]);
-            print(arrows.Length);
         }
     }
 

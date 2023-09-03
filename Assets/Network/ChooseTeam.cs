@@ -3,16 +3,19 @@ using UnityEngine;
 using Mirror;
 using System.Collections;
 using System.Runtime.InteropServices;
+using UnityEngine.UI;
 
 public class ChooseTeam : NetworkBehaviour {
     [SyncVar] public int ice, fire;
     LobbyPlayers lobbyManager;
     Feed feed;
 
+    [SerializeField] NetworkManager networkManager;
+
     [Header("UI settings")]
     [SerializeField] TextMeshProUGUI[] teamsPlayers;
-    [SerializeField] GameObject playerName;
-    [SerializeField] Transform waitingPlayers;
+    [SerializeField] TextMeshProUGUI playersUI;
+    [SerializeField] GameObject startButton;
 
     Canvas matchStatusCanvas;
 
@@ -31,34 +34,15 @@ public class ChooseTeam : NetworkBehaviour {
         if ( !isServer )
             return;
 
-        //CmdWaitingPlayers();
+        WaitingPlayers();
     }
 
-    int index = -1;
-    [Command(requiresAuthority =false)]
-    void CmdWaitingPlayers() {
-        RpcWaitingPlayuers();
-    }
+    void WaitingPlayers() {
+        if ( !startButton )
+            return;
 
-    [ClientRpc]
-    void RpcWaitingPlayuers() {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        if ( index != players.Length ) {
-            TextMeshProUGUI name = playerName.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            //name.text = players[ players.Length - 1 ].GetComponent<PlayerComponents>().playerName;
-            if ( waitingPlayers.childCount > 0 ) {
-                Transform lastChild = waitingPlayers.GetChild(waitingPlayers.childCount - 1);
-                Vector3 newPosition = new Vector3(0f, lastChild.localPosition.y - 60f, 0f);
-                GameObject pl = Instantiate(playerName, waitingPlayers);
-                pl.transform.localPosition = newPosition;
-            }
-            else {
-                Instantiate(playerName, waitingPlayers);
-                print(players[ players.Length - 1 ].GetComponent<PlayerComponents>().playerName);
-            }
-
-            index = players.Length;
-        }
+        startButton.SetActive(lobbyManager.playersLogged >= networkManager.maxConnections);
+        playersUI.text = lobbyManager.playersLogged.ToString() + "/" + networkManager.maxConnections.ToString();
     }
 
 

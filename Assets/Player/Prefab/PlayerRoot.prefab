@@ -5774,6 +5774,7 @@ GameObject:
   - component: {fileID: 4195712889526297308}
   - component: {fileID: 4195712889526297309}
   - component: {fileID: 5081544148172271387}
+  - component: {fileID: 8221166330193366404}
   m_Layer: 0
   m_Name: PlayerRoot
   m_TagString: Player
@@ -6086,6 +6087,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b0353e5e7f87184e8a743349f9dea58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &8221166330193366404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4195712889526297310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99eee41905581924c88f05507c1444d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0
@@ -14096,13 +14112,10 @@ Animator:
   m_StabilizeFeet: 0
   m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
     are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'mixamorig1:RightHand'\n\tTransform 'mixamorig1:RightArm'\n\tTransform
-    'mixamorig1:LeftHand'\n\tTransform 'mixamorig1:RightForeArm'\n\tTransform 'mixamorig1:Neck'\n\tTransform
-    'mixamorig1:LeftArm'\n\tTransform 'mixamorig1:Head'\n\tTransform 'mixamorig1:LeftForeArm'\n\tTransform
-    'mixamorig1:RightHand'\n\tTransform 'mixamorig1:RightArm'\n\tand more ...\n\tFrom
-    animation clip 'rifle_fire'\n\tFrom animation clip 'reload'\n\tFrom animation
-    clip 'rifle_idle'\n\tFrom animation clip 'rifle_walk'\n\tFrom animation clip
-    'rifle_walk'"
+    by Humanoid clips.\n\tTransform 'mixamorig1:LeftHandThumb2'\n\tTransform 'mixamorig1:LeftHandThumb1'\n\tTransform
+    'mixamorig1:Neck'\n\tFrom animation clip 'rifle_fire'\n\tFrom animation clip
+    'reload'\n\tFrom animation clip 'rifle_idle'\n\tFrom animation clip 'rifle_walk'\n\tFrom
+    animation clip 'rifle_walk'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0

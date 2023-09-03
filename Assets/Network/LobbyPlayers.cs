@@ -15,21 +15,21 @@ public class LobbyPlayers : NetworkBehaviour
         if ( !isServer && canStart )
             return;
 
-        CmdLobbyStart();
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        playersLogged = players.Length;
+
+        //CmdLobbyStart();
     }
 
     [Command(requiresAuthority = false)]
     public void CmdLobbyStart() {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        playersLogged = players.Length;
-
         if ( playersLogged >= networkManager.maxConnections ) {
             StartCoroutine(CanStart());
         }
     }
 
     IEnumerator CanStart() {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(.2f);
         canStart = true;
     }
 }

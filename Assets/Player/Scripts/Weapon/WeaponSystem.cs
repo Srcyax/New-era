@@ -61,8 +61,8 @@ public class WeaponSystem : NetworkBehaviour {
         if ( gunData.currentAmmo >= gunData.magSize )
             return;
 
-        playerAnimations.animator.Play("Reload");
-        animator.Play("Reload");
+        playerAnimations?.animator.Play("Reload");
+        animator?.Play("Reload");
         cameraShake.GenerateImpulse();
         StartCoroutine(Reload());
     }
@@ -88,7 +88,7 @@ public class WeaponSystem : NetworkBehaviour {
     }
 
     void OnGunShot() {
-        animator.Play("Fire");
+        animator?.Play("Fire");
         recoilSystem.GenerateRecoil();
         UpdateUI();
     }
@@ -119,7 +119,7 @@ public class WeaponSystem : NetworkBehaviour {
     [ClientRpc]
     void RpcShoot(Ray ray) {
         Vector3 direction = GetSpreadDirection(ray.direction);
-        playerAnimations.animator.Play("shooting");
+        playerAnimations?.animator.Play("shooting");
         int hitBoxLayer = LayerMask.GetMask("Hitboxes");
         int worldLayer = LayerMask.GetMask("World");
         if ( Physics.Raycast(ray.origin, direction, out RaycastHit hit, gunData.maxDistance, hitBoxLayer) ) {

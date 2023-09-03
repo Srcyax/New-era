@@ -1279,7 +1279,7 @@ namespace Mirror
             // can be overwritten for cases like delayed logouts in MMOs to
             // avoid players escaping from PvP situations by logging out.
             NetworkServer.DestroyPlayerForConnection(conn);
-            //Debug.Log("OnServerDisconnect: Client disconnected.");
+            Debug.Log("OnServerDisconnect: Client disconnected.");
         }
 
         /// <summary>Called on the server when a client is ready (= loaded the scene)</summary>
@@ -1336,7 +1336,10 @@ namespace Mirror
         }
 
         /// <summary>Called on clients when disconnected from a server.</summary>
-        public virtual void OnClientDisconnect() { }
+        public virtual void OnClientDisconnect() {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
+        }
 
         /// <summary>Called on client when transport raises an exception.</summary>
         public virtual void OnClientError(TransportError error, string reason) { }

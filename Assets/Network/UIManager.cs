@@ -30,6 +30,9 @@ public class UIManager : MonoBehaviour {
 
 
     private void Start() {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
         jsonSystem.SettingsDataLoadFromJson(sensibility, graphics, playerName);
         //jsonSystem.StatusDataLoadFromJson(playerData);
 
