@@ -5891,7 +5891,7 @@ MonoBehaviour:
   cameraShake: {fileID: 5988524409834828524}
   recoilSystem: {fileID: 8015645656044095960}
   muzzleFlash: {fileID: 2493514122087063217, guid: 704ff12eb934cba4c86587dc8178bd00, type: 3}
-  bulletImpact: {fileID: 1247445437146270970, guid: 699172f94369f2948a594cfc40974ffb, type: 3}
+  bulletImpact: {fileID: 8475834250000592361, guid: 699172f94369f2948a594cfc40974ffb, type: 3}
   soundEffect: {fileID: 2247494191393872209, guid: 8d3f125a6d5bf72468a10236584c696a, type: 3}
   muzzle: {fileID: 3277368628654695181}
   animator: {fileID: 4687342733905996088}
