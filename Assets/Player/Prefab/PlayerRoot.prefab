@@ -12449,7 +12449,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5152803738072264985
 Transform:
   m_ObjectHideFlags: 0
@@ -14096,10 +14096,13 @@ Animator:
   m_StabilizeFeet: 0
   m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
     are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'mixamorig1:LeftHandThumb2'\n\tTransform 'mixamorig1:LeftHandThumb1'\n\tTransform
-    'mixamorig1:Neck'\n\tFrom animation clip 'rifle_fire'\n\tFrom animation clip
-    'reload'\n\tFrom animation clip 'rifle_idle'\n\tFrom animation clip 'rifle_walk'\n\tFrom
-    animation clip 'rifle_walk'"
+    by Humanoid clips.\n\tTransform 'mixamorig1:RightHand'\n\tTransform 'mixamorig1:RightArm'\n\tTransform
+    'mixamorig1:LeftHand'\n\tTransform 'mixamorig1:RightForeArm'\n\tTransform 'mixamorig1:Neck'\n\tTransform
+    'mixamorig1:LeftArm'\n\tTransform 'mixamorig1:Head'\n\tTransform 'mixamorig1:LeftForeArm'\n\tTransform
+    'mixamorig1:RightHand'\n\tTransform 'mixamorig1:RightArm'\n\tand more ...\n\tFrom
+    animation clip 'rifle_fire'\n\tFrom animation clip 'reload'\n\tFrom animation
+    clip 'rifle_idle'\n\tFrom animation clip 'rifle_walk'\n\tFrom animation clip
+    'rifle_walk'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
