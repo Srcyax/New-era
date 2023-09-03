@@ -1,14 +1,12 @@
-using TMPro;
 using Mirror;
+using TMPro;
 using UnityEngine;
 
-public class IPAddress : MonoBehaviour
-{
+public class IPAddress : MonoBehaviour {
     [SerializeField] TMP_InputField ipText;
     [SerializeField] NetworkManager transport;
 
-    void Update()
-    {
+    void Update() {
         transport.networkAddress = ipText.text;
     }
 }

@@ -2,6 +2,7 @@ using Mirror;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Net;
 
 public class UIManager : MonoBehaviour {
     [SerializeField] PlayerData playerData;
