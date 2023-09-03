@@ -31,7 +31,6 @@ public class PlayerComponents : NetworkBehaviour {
         mainController.playerCamera.enabled = isLocalPlayer && mainController.playerHasTeam;
         mainController.playerCamera.GetComponent<AudioListener>().enabled = isLocalPlayer;
         mainController.playerCamera.GetComponent<PostProcessVolume>().enabled = isLocalPlayer;
-
         localPlayer = isLocalPlayer;
         if ( localPlayer ) {
             kills = playerData.kills;
@@ -43,9 +42,15 @@ public class PlayerComponents : NetworkBehaviour {
         }
 
         for ( int i = 0; i < playerBody.Length; i++ ) {
-            playerBody[ i ].SetActive(!isLocalPlayer);
+            if ( !isLocalPlayer ) {
+                playerBody[ i ].layer = 8;
+            }
+            else {
+                playerBody[ i ].layer = 11;
+            }
         }
     }
+
 
     [Command(requiresAuthority =false)]
     public void CmdSpawning() {

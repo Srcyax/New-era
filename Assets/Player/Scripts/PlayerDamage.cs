@@ -1,13 +1,10 @@
-using System.Collections;
+using Mirror;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
-using Mirror;
 
-public class PlayerDamage : NetworkBehaviour, IDamageable
-{
+public class PlayerDamage : NetworkBehaviour, IDamageable {
     [SerializeField] PlayerComponents components;
     [SerializeField] PlayerMainController mainController;
-    [SerializeField] public GameObject playerWeapon;
 
     [Header("UI settings")]
     [SerializeField] Transform canvas;
@@ -18,17 +15,15 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
 
     Vignette vignette;
 
-    Feed killFeed => GetComponent<Feed>();
+    Feed feed;
     MatchStatus matchStatus;
-    JsonSaveSystem json;
 
-    void Start()
-    {
+    void Start() {
         matchStatus = FindObjectOfType<MatchStatus>();
 
         vignette = processVolume.profile.GetSetting<Vignette>();
 
-        json = FindObjectOfType<JsonSaveSystem>();
+        feed = FindObjectOfType<Feed>();
     }
 
     void Update() {
@@ -40,7 +35,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
 
     void CameraDamageEffect() {
         if ( components.playerHealth < 40 ) {
-            vignette.intensity.value = Mathf.Lerp( vignette.intensity, 0.4f, Time.deltaTime * 3f);
+            vignette.intensity.value = Mathf.Lerp(vignette.intensity, 0.4f, Time.deltaTime * 3f);
         }
         else {
             vignette.intensity.value = Mathf.Lerp(vignette.intensity, 0.15f, Time.deltaTime * 3f);
@@ -63,13 +58,10 @@ public class PlayerDamage : NetworkBehaviour, IDamageable
                 else {
                     matchStatus.ice_score++;
                 }
+                feed.KillFeed(killer_name, killed_name, reason);
             }
-            killFeed.RpcKillFeed(killer_name, killed_name, reason);
-            StartCoroutine(mainController.Respawn());
-            playerWeapon.SetActive(false);
             if ( reason != "" ) {
                 components.deaths++;
-                //json.StatusDataSaveToJson(components.kills, components.deaths);
             }
         }
         else {

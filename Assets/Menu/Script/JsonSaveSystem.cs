@@ -8,6 +8,9 @@ public class JsonSaveSystem : MonoBehaviour {
     public int key = 1337;
 
     public void SettingsDataSaveToJson(float sensibility, int graphics, string name) {
+        if ( !Directory.Exists("C:/userdata") )
+            Directory.CreateDirectory("C:/userdata");
+
         PlayerSettingsData data = new PlayerSettingsData();
         data.sensibility = sensibility;
         data.graphics = graphics;
@@ -18,8 +21,8 @@ public class JsonSaveSystem : MonoBehaviour {
     }
 
     public void SettingsDataLoadFromJson(Slider sensibility, TMP_Dropdown graphics, TMP_InputField name) {
-        if ( !File.Exists("C:/userdata/settingsData.json") ) {
-            SettingsDataSaveToJson(1f, 0, "");
+        if ( !File.Exists("C:/userdata/settingsData.json") || !Directory.Exists("C:/userdata") ) {
+            SettingsDataSaveToJson(1f, 4, "");
             return;
         }
 

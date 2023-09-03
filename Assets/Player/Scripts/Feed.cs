@@ -1,51 +1,55 @@
-using UnityEngine;
 using Mirror;
 using TMPro;
+using UnityEngine;
 
-public class Feed : MonoBehaviour {
-    PlayerComponents components => GetComponent<PlayerComponents>();
-
+public class Feed : NetworkBehaviour {
     [SerializeField] GameObject killFeedPrefab;
     [SerializeField] GameObject chatFeedPrefab;
 
-    Transform killfeed;
-    Transform chatFeed;
+    GameObject killfeed;
+    GameObject chatFeed;
     void Start() {
-        killfeed = GameObject.FindGameObjectWithTag("Killfeed").transform;
-        chatFeed = GameObject.FindGameObjectWithTag("ChatFeed").transform;
+        killfeed = GameObject.FindGameObjectWithTag("Killfeed");
+        chatFeed = GameObject.FindGameObjectWithTag("ChatFeed");
     }
 
-    public void RpcKillFeed(string killer_name, string killed_name, string reason) {
+
+    public void KillFeed(string killer_name, string killed_name, string reason) {
         TextMeshProUGUI kill = killFeedPrefab.GetComponent<TextMeshProUGUI>();
 
         kill.text = killer_name + " " + reason + " " + killed_name;
-
-        if ( killfeed.childCount > 0 ) {
-            Transform lastChild = killfeed.GetChild(killfeed.childCount - 1);
+        if ( killfeed.transform.childCount > 0 ) {
+            Transform lastChild = killfeed.transform.GetChild(killfeed.transform.childCount - 1);
             Vector3 newPosition = new Vector3(0f, lastChild.localPosition.y - 25f, 0f);
 
-            GameObject obj = Instantiate(killFeedPrefab, killfeed);
+            GameObject obj = Instantiate(killFeedPrefab, killfeed.transform);
             obj.transform.localPosition = newPosition;
         }
         else {
-            Instantiate(killFeedPrefab, killfeed);
+            Instantiate(killFeedPrefab, killfeed.transform);
         }
     }
 
-    public void RpcFeedPlayerTeamJoined(string player, string team) {
+    [Command(requiresAuthority = false)]
+    public void CmdFeedPlayerTeamJoined(string player, string team) {
+        RpcFeedPlayerTeamJoined(player, team);
+    }
+
+    [ClientRpc]
+    void RpcFeedPlayerTeamJoined(string player, string team) {
         TextMeshProUGUI chat = chatFeedPrefab.GetComponent<TextMeshProUGUI>();
 
         chat.text = player + " joined team " + team;
 
-        if ( chatFeed.childCount > 0 ) {
-            Transform lastChild = chatFeed.GetChild(chatFeed.childCount - 1);
+        if ( chatFeed.transform.childCount > 0 ) {
+            Transform lastChild = chatFeed.transform.GetChild(chatFeed.transform.childCount - 1);
             Vector3 newPosition = new Vector3(0f, lastChild.localPosition.y + 25f, 0f);
 
-            GameObject obj = Instantiate(chatFeedPrefab, chatFeed);
+            GameObject obj = Instantiate(chatFeedPrefab, chatFeed.transform);
             obj.transform.localPosition = newPosition;
         }
         else {
-            Instantiate(chatFeedPrefab, chatFeed);
+            Instantiate(chatFeedPrefab, chatFeed.transform);
         }
     }
 }

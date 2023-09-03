@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 public class ChooseTeam : NetworkBehaviour {
     [SyncVar] public int ice, fire;
     LobbyPlayers lobbyManager;
+    Feed feed;
 
     [Header("UI settings")]
     [SerializeField] TextMeshProUGUI[] teamsPlayers;
@@ -20,6 +21,7 @@ public class ChooseTeam : NetworkBehaviour {
         Cursor.lockState = CursorLockMode.None;
         lobbyManager = FindObjectOfType<LobbyPlayers>();
         matchStatusCanvas = GameObject.FindGameObjectWithTag("MatchStatus").GetComponent<Canvas>();
+        feed = FindObjectOfType<Feed>();
     }
 
     void Update() {
@@ -29,7 +31,7 @@ public class ChooseTeam : NetworkBehaviour {
         if ( !isServer )
             return;
 
-        CmdWaitingPlayers();
+        //CmdWaitingPlayers();
     }
 
     int index = -1;
@@ -65,7 +67,6 @@ public class ChooseTeam : NetworkBehaviour {
         if ( !lobbyManager.canStart)
             return;
 
-        RpcChatFeed(team);
         ice++;
     }
 
@@ -73,7 +74,7 @@ public class ChooseTeam : NetworkBehaviour {
     public void CmdJoinTeamFire(string team) {
         if ( !lobbyManager.canStart)
             return;
-        RpcChatFeed(team);
+
         fire++;
     }
 
@@ -87,23 +88,6 @@ public class ChooseTeam : NetworkBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    [ClientRpc]
-    void RpcChatFeed(string team) {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        for ( int i = 0; i < players.Length; i++ ) {
-            if ( !players[ i ] )
-                continue;
-
-            if ( !players[ i ].GetComponent<PlayerComponents>().localPlayer )
-                continue;
-
-            string name = players[ i ].GetComponent<PlayerComponents>().playerName;
-
-            players[ i ].GetComponent<Feed>().RpcFeedPlayerTeamJoined(name, team);
-            break;
-        }
-    }
-
     public void SetPlayerTeam(int team) {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         for ( int i = 0; i < players.Length; i++ ) {
@@ -115,6 +99,7 @@ public class ChooseTeam : NetworkBehaviour {
 
             players[ i ].GetComponent<PlayerSetTeam>().CmdSetPlayerTeam(team);
             players[ i ].GetComponent<PlayerDamage>().CmdDamage(100, "", "", "");
+            feed.CmdFeedPlayerTeamJoined(players[ i ].GetComponent<PlayerComponents>().playerName, team == 0 ? "ICE" : "FIRE");
             break;
         }
     }

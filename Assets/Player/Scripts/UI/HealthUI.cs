@@ -12,6 +12,9 @@ public class HealthUI : MonoBehaviour {
     float healthHolder = 0;
 
     void Update() {
+        if ( !components.localPlayer )
+            return;
+
         healthHolder = Mathf.Lerp(healthHolder, components.playerHealth, Time.deltaTime * 5);
 
         healthUI.text = Mathf.RoundToInt(healthHolder).ToString();

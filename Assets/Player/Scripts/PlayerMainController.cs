@@ -87,10 +87,11 @@ public class PlayerMainController : MonoBehaviour {
 
     public IEnumerator Respawn() {
         spawnPoints = components.playerTeam == 1 ? GameObject.FindGameObjectsWithTag("FIRE_SpawPoints") : GameObject.FindGameObjectsWithTag("ICE_SpawPoints");
+        yield return new WaitForSeconds(0.1f);
         playerAnimations.animator.enabled = false;
-        playerHealthUI.deadScreenUI.SetActive(true);
         characterController.enabled = false;
         yield return new WaitForSeconds(3.0f);
+        playerHealthUI.deadScreenUI.SetActive(true);
         int r = UnityEngine.Random.Range(0, spawnPoints.Length);
         transform.position = spawnPoints[ r ].transform.position;
         yield return new WaitForSeconds(.5f);
@@ -98,7 +99,6 @@ public class PlayerMainController : MonoBehaviour {
         playerAnimations.animator.enabled = true;
         components.playerHealth = 100;
         playerHealthUI.deadScreenUI.SetActive(false);
-        playerDamage.playerWeapon.SetActive(true);
         components.CmdSpawning();
     }
 

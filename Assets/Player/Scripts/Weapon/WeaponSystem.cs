@@ -100,6 +100,7 @@ public class WeaponSystem : NetworkBehaviour {
         gunData.reloading = false;
         gunData.currentAmmo = gunData.magSize;
         recoilSystem.Reset();
+        UpdateUI();
     }
 
     void UpdateUI() {
@@ -109,7 +110,7 @@ public class WeaponSystem : NetworkBehaviour {
     [Command(requiresAuthority = true)]
     void CmdShoot(Ray ray) {
         Instantiate(muzzleFlash, muzzle);
-        GameObject obj = Instantiate(soundEffect, muzzle);
+        GameObject obj = Instantiate(soundEffect, transform.GetChild(0));
         obj.transform.parent = null;
         NetworkServer.Spawn(obj);
         RpcShoot(ray);
