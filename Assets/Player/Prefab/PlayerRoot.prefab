@@ -5889,6 +5889,7 @@ MonoBehaviour:
   playerData: {fileID: 11400000, guid: 3b76f368e167b8b44adc6c3d45a27063, type: 2}
   playerAudioSource: {fileID: 7233923785082684504}
   cameraShake: {fileID: 5988524409834828524}
+  sway: {fileID: 4920703219939958176}
   recoilSystem: {fileID: 8015645656044095960}
   muzzleFlash: {fileID: 2493514122087063217, guid: 704ff12eb934cba4c86587dc8178bd00, type: 3}
   bulletImpact: {fileID: 8475834250000592361, guid: 699172f94369f2948a594cfc40974ffb, type: 3}

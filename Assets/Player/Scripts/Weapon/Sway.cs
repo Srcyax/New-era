@@ -48,6 +48,7 @@ public class Sway : MonoBehaviour
         if ( characterController.velocity.magnitude > 0.01f ) {
             MoveBackSway();
         }
+
     }
 
     private void CalculateSway()
@@ -81,5 +82,12 @@ public class Sway : MonoBehaviour
         float moveBackZ = -moveBackAmount;
         Vector3 finalPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, moveBackZ);
         transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition + finalPosition, Time.deltaTime * (smoothAmount* 2f));
+    }
+
+    public void ShootSway(float value) {
+        float moveBackAmount = value;
+        float moveBackZ = -moveBackAmount;
+        Vector3 finalPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, moveBackZ);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition + finalPosition, Time.deltaTime * ( smoothAmount * 2f ));
     }
 }

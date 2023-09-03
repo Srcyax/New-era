@@ -19,6 +19,7 @@ public class WeaponSystem : NetworkBehaviour {
 
     [Header("Recoil components")]
     [SerializeField] CinemachineImpulseSource cameraShake;
+    [SerializeField] Sway sway;
 
     [Header("Weapon components")]
     [SerializeField] RecoilSystem recoilSystem;
@@ -91,6 +92,7 @@ public class WeaponSystem : NetworkBehaviour {
         animator?.Play("Fire");
         recoilSystem.GenerateRecoil();
         UpdateUI();
+        sway.ShootSway(.55f);
     }
 
     void WeaponReset() {
