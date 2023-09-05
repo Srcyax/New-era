@@ -8,7 +8,9 @@ using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 public class WeaponSystem : NetworkBehaviour {
+    [SerializeField] GetCurrentWeapon weapon;
     [SerializeField] GunData gunData;
+    [SerializeField] Animator animator;
 
     [Header("Player components")]
     [SerializeField] PlayerAnimations playerAnimations;
@@ -26,8 +28,8 @@ public class WeaponSystem : NetworkBehaviour {
     [SerializeField] GameObject muzzleFlash;
     [SerializeField] GameObject bulletImpact;
     [SerializeField] GameObject soundEffect;
-    [SerializeField] Transform muzzle;
-    [SerializeField] Animator animator;
+    [SerializeField] Transform bocal;
+
 
     [SerializeField] TextMeshProUGUI ammoUI;
     [SerializeField] Transform canvas;
@@ -38,6 +40,8 @@ public class WeaponSystem : NetworkBehaviour {
     float timeSinceLastShot;
 
     void Start() {
+        WeaponSet();
+
         PlayerMainController.shootInput += Shoot;
         PlayerMainController.reloadInput += StartReload;
         PlayerMainController.playerDied += WeaponReset;
@@ -89,7 +93,7 @@ public class WeaponSystem : NetworkBehaviour {
     }
 
     void OnGunShot() {
-        Instantiate(muzzleFlash, muzzle);
+        Instantiate(muzzleFlash, bocal);
         animator?.Play("Fire");
         recoilSystem.GenerateRecoil();
         UpdateUI();
@@ -103,6 +107,14 @@ public class WeaponSystem : NetworkBehaviour {
         gunData.reloading = false;
         gunData.currentAmmo = gunData.magSize;
         recoilSystem.Reset();
+        UpdateUI();
+    }
+
+    public void WeaponSet() {
+        gunData = weapon.currentWeapon.GetComponent<WeaponInfo>().gunData;
+        bocal = weapon.currentWeapon.GetComponent<WeaponInfo>().bocal;
+        animator = weapon.currentWeapon.GetComponent<Animator>();
+        gunData.reloading = false;
         UpdateUI();
     }
 
