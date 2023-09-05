@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerMainController : MonoBehaviour {
@@ -30,7 +31,13 @@ public class PlayerMainController : MonoBehaviour {
     private GameObject waitingPlayers;
     private LobbyPlayers lobbyManager;
 
+    [HideInInspector]
+    public InputSystem inputActions;
+
     void Start() {
+        inputActions = new InputSystem();
+        inputActions.Enable();
+
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
         waitingPlayers = GameObject.FindGameObjectWithTag("WaitingPlayersCanvas");
         lobbyManager = FindObjectOfType<LobbyPlayers>();
@@ -64,17 +71,8 @@ public class PlayerMainController : MonoBehaviour {
 
         teamArrow.SetTeamArrow(components.playerTeam);
         PlayerControler();
+        PlayerInput();
         playerAnimations.Animations();
-        if ( Input.GetMouseButton(0) ) {
-            shootInput?.Invoke();
-        }
-        else {
-            recoilSystem.Reset();
-        }
-
-        if ( Input.GetKeyDown(KeyCode.R) ) {
-            reloadInput?.Invoke();
-        }
     }
 
     IEnumerator chooseTeam() {
@@ -103,13 +101,15 @@ public class PlayerMainController : MonoBehaviour {
     }
 
     void PlayerControler() {
+
+        Vector2 moveDir = inputActions.Player.Movement.ReadValue<Vector2>();
+
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        float curSpeedX = (isPlayerRunning ? components.playerRunSpeed : components.playerWalkSpeed) * Input.GetAxis("Vertical");
-        float curSpeedY = (isPlayerRunning ? components.playerRunSpeed - Input.GetAxis("Horizontal") : components.playerWalkSpeed) * Input.GetAxis("Horizontal");
+        float curSpeedX = (isPlayerRunning ? components.playerRunSpeed : components.playerWalkSpeed) * moveDir.y;
+        float curSpeedY = (isPlayerRunning ? components.playerRunSpeed - moveDir.y : components.playerWalkSpeed) * moveDir.x;
         moveDirection = ( ( forward * Mathf.Clamp(curSpeedX, -components.playerRunSpeed, components.playerRunSpeed) ) + ( right * Mathf.Clamp(curSpeedY, -components.playerWalkSpeed, components.playerWalkSpeed) ) );
-
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
 
         if ( !characterController.isGrounded ) {
@@ -121,6 +121,22 @@ public class PlayerMainController : MonoBehaviour {
 
         if ( transform.localPosition.y <= -10 )
             playerDamage.CmdDamage(100, "", "", "");
+    }
+
+
+    void PlayerInput() {
+        if ( inputActions.Player.Shoot.IsPressed() ) {
+            shootInput?.Invoke();
+        }
+        else {
+            recoilSystem.Reset();
+        }
+
+        inputActions.Player.Reload.performed += Realod;
+    }
+
+    void Realod(InputAction.CallbackContext context) {
+        reloadInput?.Invoke();
     }
 
     public bool playerHasTeam {

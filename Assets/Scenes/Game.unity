@@ -6001,6 +6001,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   playersLogged: 0
+  maxPlayers: 0
   canStart: 0
   networkManager: {fileID: 2096606006}
 --- !u!114 &926335221

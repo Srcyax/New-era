@@ -1,10 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Mirror;
-using UnityEngine.SceneManagement;
+using UnityEngine;
 
-public class PlayerNetworkClient : NetworkBehaviour 
-{
- 
+public class PlayerNetworkClient : MonoBehaviour {
+    LobbyPlayers info;
+
+    private void Start() {
+       /* info = FindObjectOfType<LobbyPlayers>();
+
+        if ( info && info.canStart ) {
+            NetworkManager.singleton.StopClient();
+        }*/
+    }
 }

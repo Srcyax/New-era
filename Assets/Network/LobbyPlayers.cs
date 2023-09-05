@@ -5,6 +5,7 @@ using System.Collections;
 public class LobbyPlayers : NetworkBehaviour
 {
     [SyncVar] public int playersLogged;
+    [SyncVar] public int maxPlayers;
     [SyncVar] public bool canStart;
 
     [Header("Network settings")]
@@ -17,8 +18,6 @@ public class LobbyPlayers : NetworkBehaviour
 
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         playersLogged = players.Length;
-
-        //CmdLobbyStart();
     }
 
     [Command(requiresAuthority = false)]

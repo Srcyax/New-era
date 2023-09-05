@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerAnimations : MonoBehaviour {
     [Header("Player animator")]
@@ -18,14 +19,13 @@ public class PlayerAnimations : MonoBehaviour {
     float smoothInputY;
     float smoothRifleState;
 
-
     public void Animations() {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        Vector2 moveDir = mainController.inputActions.Player.Movement.ReadValue<Vector2>();
 
-        smoothInputX = Mathf.Lerp(smoothInputX, horizontalInput, smoothing);
+        smoothInputX = Mathf.Lerp(smoothInputX, moveDir.x, Time.deltaTime);
+        print(smoothInputX);
         if ( isGrounded() ) {
-            smoothInputY = Mathf.Lerp(smoothInputY, mainController.isPlayerRunning ? 2 : verticalInput, smoothing);
+            smoothInputY = Mathf.Lerp(smoothInputY, mainController.isPlayerRunning ? 2 : moveDir.y, smoothing);
         }
         else {
             smoothInputY = Mathf.Lerp(smoothInputY, -2, smoothing);

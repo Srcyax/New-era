@@ -48,24 +48,15 @@ public class ChooseTeam : NetworkBehaviour {
 
     [Command(requiresAuthority = false)]
     public void CmdJoinTeamIce(string team) {
-        if ( !lobbyManager.canStart)
-            return;
-
         ice++;
     }
 
     [Command(requiresAuthority = false)]
     public void CmdJoinTeamFire(string team) {
-        if ( !lobbyManager.canStart)
-            return;
-
         fire++;
     }
 
     public void JoinTeam() {
-        if ( !lobbyManager.canStart )
-            return;
-
         gameObject.SetActive(false);
         matchStatusCanvas.enabled = true;
         Cursor.visible = false;
