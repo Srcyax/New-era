@@ -59,7 +59,7 @@ public partial class @InputSystem : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""WASD"",
                     ""id"": ""fd4ef760-11d6-4973-9590-2cfcf8311122"",
-                    ""path"": ""2DVector(mode=1)"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -114,7 +114,7 @@ public partial class @InputSystem : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""ARROWS"",
                     ""id"": ""853df1ca-4e35-4631-9598-2827a514a843"",
-                    ""path"": ""2DVector(mode=1)"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -169,7 +169,7 @@ public partial class @InputSystem : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""JoyStick"",
                     ""id"": ""5cb7bb9a-12d7-438a-8fe2-afbba19150a6"",
-                    ""path"": ""2DVector(mode=1)"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

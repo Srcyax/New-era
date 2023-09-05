@@ -1,4 +1,5 @@
 using Mirror;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
@@ -17,6 +18,9 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
 
     Feed feed;
     MatchStatus matchStatus;
+
+    [HideInInspector]
+    public float fallDamage;
 
     void Start() {
         matchStatus = FindObjectOfType<MatchStatus>();
@@ -64,8 +68,29 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
                 components.deaths++;
             }
         }
-        else {
+        else if (!mainController.isLocalPlayerDead && damage > 1f) {
             Instantiate(blood, canvas);
+        }
+    }
+
+    float time;
+
+    public void SetFallDamage() {
+        if ( fallDamage <= 0 )
+            return;
+
+        CmdDamage(fallDamage, components.playerName, "", "fell from a high place");
+        fallDamage = 0;
+        time = 0;
+    }
+
+    public void FallDamege(bool falling) {
+        if ( falling ) {
+            time += Time.deltaTime * 3f;
+            if ( time > 1 ) {
+                fallDamage += Time.deltaTime * 20f;
+                print(fallDamage);
+            }
         }
     }
 }

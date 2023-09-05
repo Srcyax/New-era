@@ -5867,6 +5867,7 @@ MonoBehaviour:
   footPos: {fileID: 1916400037287677738}
   layerMask: 8
   mainController: {fileID: 5224834978515845566}
+  damage: {fileID: 4195712889526297307}
 --- !u!114 &4195712889526297317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5995,6 +5996,7 @@ MonoBehaviour:
   canvas: {fileID: 3331223406153701282}
   blood: {fileID: 6121411770901074152, guid: db9f75e1bb308fa4da6bbcfd7c9f615c, type: 3}
   processVolume: {fileID: 4120148761150774365}
+  fallDamage: 0
 --- !u!114 &8522373416322920282
 MonoBehaviour:
   m_ObjectHideFlags: 0

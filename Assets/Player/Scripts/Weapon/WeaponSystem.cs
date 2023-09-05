@@ -89,6 +89,7 @@ public class WeaponSystem : NetworkBehaviour {
     }
 
     void OnGunShot() {
+        Instantiate(muzzleFlash, muzzle);
         animator?.Play("Fire");
         recoilSystem.GenerateRecoil();
         UpdateUI();
@@ -111,7 +112,6 @@ public class WeaponSystem : NetworkBehaviour {
 
     [Command(requiresAuthority = true)]
     void CmdShoot(Ray ray) {
-        Instantiate(muzzleFlash, muzzle);
         GameObject obj = Instantiate(soundEffect, transform.GetChild(0));
         obj.transform.parent = null;
         NetworkServer.Spawn(obj);

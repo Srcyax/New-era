@@ -113,7 +113,7 @@ public class PlayerMainController : MonoBehaviour {
         moveDirection = Vector3.ClampMagnitude(moveDirection, 10.7f);
 
         if ( !characterController.isGrounded ) {
-            moveDirection.y -= 10; // gravity
+            moveDirection.y -= 15; // gravity
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
