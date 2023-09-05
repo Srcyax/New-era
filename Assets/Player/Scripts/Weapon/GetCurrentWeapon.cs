@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GetCurrentWeapon : MonoBehaviour
@@ -13,7 +14,6 @@ public class GetCurrentWeapon : MonoBehaviour
 
     [Header("Player Weapons")]
     [SerializeField] Transform weapons;
-
 
     void Update()
     {
@@ -43,5 +43,11 @@ public class GetCurrentWeapon : MonoBehaviour
         weapons.GetChild(weapon).gameObject.SetActive(true);    
         currentWeapon = weapons.GetChild(weapon).gameObject;
         system.WeaponSet();
+        StartCoroutine(Ready());
+    }
+
+    IEnumerator Ready() {
+        yield return new WaitForSeconds(.8f);
+        currentWeapon.GetComponent<WeaponInfo>().gunData.ready = true;
     }
 }

@@ -5771,6 +5771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunData: {fileID: 11400000, guid: 1e33e29a49ddcc9449ed4f2c8ac3776e, type: 2}
   bocal: {fileID: 8682862396481286419}
+  shotSound: {fileID: 8300000, guid: fd6a9a7442bade348b56da3baa1ec304, type: 3}
 --- !u!1 &3240718120999886518
 GameObject:
   m_ObjectHideFlags: 0
@@ -16843,6 +16844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunData: {fileID: 11400000, guid: f9d93f3498d997d48b0c01fac9ef5940, type: 2}
   bocal: {fileID: 3277368628654695181}
+  shotSound: {fileID: 8300000, guid: fd6a9a7442bade348b56da3baa1ec304, type: 3}
 --- !u!1 &8153713811567299537
 GameObject:
   m_ObjectHideFlags: 0
@@ -17456,6 +17458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 638bff11da552b740bb9f60da1a04dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  components: {fileID: 3038935329612329506}
   system: {fileID: 4195712889526297317}
   currentWeapon: {fileID: 3233401838416595683}
   weapons: {fileID: 5152803738072264985}

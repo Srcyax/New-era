@@ -41,12 +41,12 @@ public class WeaponSystem : NetworkBehaviour {
 
     void Start() {
         WeaponSet();
+        gunData.ready = true;
+        gunData.reloading = false;
 
         PlayerMainController.shootInput += Shoot;
         PlayerMainController.reloadInput += StartReload;
         PlayerMainController.playerDied += WeaponReset;
-
-        gunData.reloading = false;
     }
 
     void Update() {
@@ -80,19 +80,19 @@ public class WeaponSystem : NetworkBehaviour {
         UpdateUI();
     }
 
-    bool CanShoot() => !gunData.reloading && gunData.currentAmmo > 0 && timeSinceLastShot > 1f / ( gunData.fireRate / 60.0f );
+    bool CanShoot() => !gunData.reloading && gunData.currentAmmo > 0 && timeSinceLastShot > 1f / ( gunData.fireRate / 60.0f ) && gunData.ready;
 
     void Shoot() {
         if ( !CanShoot() )
             return;
 
         CmdShoot(Camera.main.ScreenPointToRay(Input.mousePosition));
-        gunData.currentAmmo--;
-        timeSinceLastShot = 0.0f;
         OnGunShot();
     }
 
     void OnGunShot() {
+        gunData.currentAmmo--;
+        timeSinceLastShot = 0.0f;
         Instantiate(muzzleFlash, bocal);
         animator?.Play("Fire");
         recoilSystem.GenerateRecoil();
@@ -108,14 +108,18 @@ public class WeaponSystem : NetworkBehaviour {
         gunData.currentAmmo = gunData.magSize;
         recoilSystem.Reset();
         UpdateUI();
+        sway.ShootSway(0f);
     }
 
     public void WeaponSet() {
         gunData = weapon.currentWeapon.GetComponent<WeaponInfo>().gunData;
         bocal = weapon.currentWeapon.GetComponent<WeaponInfo>().bocal;
+        soundEffect.GetComponent<AudioSource>().clip = weapon.currentWeapon.GetComponent<WeaponInfo>().shotSound;
         animator = weapon.currentWeapon.GetComponent<Animator>();
         gunData.reloading = false;
+        gunData.ready = false;
         UpdateUI();
+        sway.ShootSway(0f);
     }
 
     void UpdateUI() {

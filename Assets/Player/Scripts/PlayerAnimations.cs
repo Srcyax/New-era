@@ -49,14 +49,13 @@ public class PlayerAnimations : MonoBehaviour {
         animator.SetFloat("inputY", smoothInputY);
         animator.SetFloat("rifle_state", smoothRifleState);
     }
-    bool falling = true;
+
     public bool isGrounded() {
         if ( Physics.Raycast(footPos.transform.position, footPos.transform.forward, out RaycastHit hit, .5f) ) {
             Debug.DrawLine(footPos.transform.position, hit.point, Color.red, 1);
             if ( hit.collider.gameObject.layer == layerMask ) {
                 damage.SetFallDamage();
                 damage.FallDamege(false);
-                falling = false;
                 return true;
             }
         }
