@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public void CmdDamage(float damage, string killer_name, string killed_name, string reason);
+    public void CmdDamage(float damage, PlayerComponents killer_name, PlayerComponents killed_name, string reason);
 }

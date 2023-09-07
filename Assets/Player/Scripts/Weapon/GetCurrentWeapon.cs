@@ -1,3 +1,4 @@
+using Mirror;
 using System.Collections;
 using UnityEngine;
 
@@ -29,10 +30,13 @@ public class GetCurrentWeapon : MonoBehaviour
         else if ( Input.GetKeyDown(KeyCode.Alpha2) ) {
             SwitchWeapon(1);
         }
+        else if ( Input.GetKeyDown(KeyCode.Alpha3) ) {
+            SwitchWeapon(2);
+        }
     }
 
-    void SwitchWeapon(int weapon) {
 
+    void SwitchWeapon(int weapon) {
         for (int i = 0; i < weapons.childCount; i++ ) {
             if ( i == weapon )
                 continue;
@@ -40,7 +44,8 @@ public class GetCurrentWeapon : MonoBehaviour
             weapons.GetChild(i).gameObject.SetActive(false);
         }
 
-        weapons.GetChild(weapon).gameObject.SetActive(true);    
+        weapons.GetChild(weapon).gameObject.SetActive(true);
+        system.CmdSwitchCharacterWeapon(weapon);
         currentWeapon = weapons.GetChild(weapon).gameObject;
         system.WeaponSet();
         StartCoroutine(Ready());
@@ -48,6 +53,6 @@ public class GetCurrentWeapon : MonoBehaviour
 
     IEnumerator Ready() {
         yield return new WaitForSeconds(.8f);
-        currentWeapon.GetComponent<WeaponInfo>().gunData.ready = true;
+        system.gunReady = true;
     }
 }

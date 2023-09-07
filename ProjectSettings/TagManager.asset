@@ -22,6 +22,7 @@ TagManager:
   - ChooseTeam
   - ChatFeed
   - TeamArrow
+  - CharacterWeapon
   layers:
   - Default
   - TransparentFX

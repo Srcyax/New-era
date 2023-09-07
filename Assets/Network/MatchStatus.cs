@@ -83,7 +83,7 @@ public class MatchStatus : NetworkBehaviour {
         Time.timeScale = 1;
         PlayerDamage[] players = FindObjectsOfType<PlayerDamage>();
         foreach(PlayerDamage player in players) {
-            player.CmdDamage(100, "", "", "");
+            player.CmdDamage(100, null, null, "");
         }
     }
 

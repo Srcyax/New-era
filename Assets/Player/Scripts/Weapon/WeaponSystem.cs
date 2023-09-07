@@ -2,15 +2,15 @@
 using Mirror;
 using System.Collections;
 using TMPro;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
-using UnityEngine.Timeline;
-using UnityEngine.UI;
 
 public class WeaponSystem : NetworkBehaviour {
     [SerializeField] GetCurrentWeapon weapon;
     [SerializeField] GunData gunData;
     [SerializeField] Animator animator;
+
+    [Header("Weapon components")]
+    public bool gunReady;
 
     [Header("Player components")]
     [SerializeField] PlayerAnimations playerAnimations;
@@ -18,6 +18,7 @@ public class WeaponSystem : NetworkBehaviour {
     [SerializeField] CharacterController characterController;
     [SerializeField] public PlayerData playerData;
     [SerializeField] AudioSource playerAudioSource;
+    [SerializeField] Transform playerCharacterWeapons;
 
     [Header("Recoil components")]
     [SerializeField] CinemachineImpulseSource cameraShake;
@@ -41,7 +42,7 @@ public class WeaponSystem : NetworkBehaviour {
 
     void Start() {
         WeaponSet();
-        gunData.ready = true;
+        gunReady = true;
         gunData.reloading = false;
 
         PlayerMainController.shootInput += Shoot;
@@ -80,7 +81,7 @@ public class WeaponSystem : NetworkBehaviour {
         UpdateUI();
     }
 
-    bool CanShoot() => !gunData.reloading && gunData.currentAmmo > 0 && timeSinceLastShot > 1f / ( gunData.fireRate / 60.0f ) && gunData.ready;
+    bool CanShoot() => !gunData.reloading && gunData.currentAmmo > 0 && timeSinceLastShot > 1f / ( gunData.fireRate / 60.0f ) && gunReady;
 
     void Shoot() {
         if ( !CanShoot() )
@@ -101,7 +102,7 @@ public class WeaponSystem : NetworkBehaviour {
     }
 
     void WeaponReset() {
-        if (!isLocalPlayer)
+        if ( !isLocalPlayer )
             return;
 
         gunData.reloading = false;
@@ -114,12 +115,42 @@ public class WeaponSystem : NetworkBehaviour {
     public void WeaponSet() {
         gunData = weapon.currentWeapon.GetComponent<WeaponInfo>().gunData;
         bocal = weapon.currentWeapon.GetComponent<WeaponInfo>().bocal;
-        soundEffect.GetComponent<AudioSource>().clip = weapon.currentWeapon.GetComponent<WeaponInfo>().shotSound;
         animator = weapon.currentWeapon.GetComponent<Animator>();
+        CmdSetShootSound();
         gunData.reloading = false;
-        gunData.ready = false;
+        gunReady = false;
         UpdateUI();
         sway.ShootSway(0f);
+    }
+
+    [Command(requiresAuthority =false)]
+    void CmdSetShootSound() {
+        RpcSetShootSound();
+    }
+
+    [ClientRpc]
+    void RpcSetShootSound() {
+        soundEffect = weapon.currentWeapon.GetComponent<WeaponInfo>().shotSound;
+    }
+
+    [Command(requiresAuthority = true)]
+    public void CmdSwitchCharacterWeapon(int weapon) {
+        RpcSwitchCharacterWeapon(weapon);
+    }
+
+    [ClientRpc]
+    void RpcSwitchCharacterWeapon(int weapon) {
+        for ( int i = 0; i < playerCharacterWeapons.childCount; i++ ) {
+            if ( !playerCharacterWeapons.GetChild(i).gameObject.CompareTag("CharacterWeapon") )
+                continue;
+
+            if ( i == weapon )
+                continue;
+
+            playerCharacterWeapons.GetChild(i).gameObject.SetActive(false);
+        }
+
+        playerCharacterWeapons.GetChild(weapon).gameObject.SetActive(true);
     }
 
     void UpdateUI() {
@@ -128,21 +159,23 @@ public class WeaponSystem : NetworkBehaviour {
 
     [Command(requiresAuthority = true)]
     void CmdShoot(Ray ray) {
-        GameObject obj = Instantiate(soundEffect, transform.GetChild(0));
-        obj.transform.parent = null;
-        NetworkServer.Spawn(obj);
+        GameObject shoot = Instantiate(soundEffect, transform.GetChild(0));
+        shoot.transform.parent = null;
+        NetworkServer.Spawn(shoot);
         RpcShoot(ray);
     }
 
     [ClientRpc]
     void RpcShoot(Ray ray) {
+
+
         Vector3 direction = GetSpreadDirection(ray.direction);
         playerAnimations?.animator.Play("shooting");
         int hitBoxLayer = LayerMask.GetMask("Hitboxes");
         int worldLayer = LayerMask.GetMask("World");
         if ( Physics.Raycast(ray.origin, direction, out RaycastHit hit, gunData.maxDistance, hitBoxLayer) ) {
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1);
-            switch( hit.collider.tag ) {
+            switch ( hit.collider.tag ) {
                 case "Head":
                     GiveHit(0, hit);
                     break;
@@ -173,10 +206,8 @@ public class WeaponSystem : NetworkBehaviour {
         if ( player.spawning )
             return;
 
-        if ( player.playerHealth <= 0 ) {
-            components.kills++;
+        if ( player.playerHealth <= 0 )
             return;
-        }
 
         if ( components.playerTeam == player.playerTeam )
             return;
@@ -185,7 +216,7 @@ public class WeaponSystem : NetworkBehaviour {
         playerAudioSource.Play();
         print(hit.collider.tag + " : " + gunData.damages[ i ]);
         IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();
-        damageable?.CmdDamage(gunData.damage + gunData.damages[ i ], playerData.name, player.playerName, "killed");
+        damageable?.CmdDamage(gunData.damages[ i ], components, player, "killed");
     }
 
     private Vector3 GetSpreadDirection(Vector3 dir) {

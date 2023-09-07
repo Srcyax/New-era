@@ -73,7 +73,7 @@ public class ChooseTeam : NetworkBehaviour {
                 continue;
 
             players[ i ].GetComponent<PlayerSetTeam>().CmdSetPlayerTeam(team);
-            players[ i ].GetComponent<PlayerDamage>().CmdDamage(100, "", "", "");
+            players[ i ].GetComponent<PlayerDamage>().CmdDamage(100, null, null, "");
             feed.CmdFeedPlayerTeamJoined(players[ i ].GetComponent<PlayerComponents>().playerName, team == 0 ? "ICE" : "FIRE");
             break;
         }

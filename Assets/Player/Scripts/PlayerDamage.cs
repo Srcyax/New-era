@@ -47,25 +47,23 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdDamage(float damage, string killer_name, string killed_name, string reason) {
+    public void CmdDamage(float damage, PlayerComponents killer_name, PlayerComponents killed_name, string reason) {
         RpcDamage(damage, killer_name, killed_name, reason);
     }
 
     [ClientRpc]
-    void RpcDamage(float damage, string killer_name, string killed_name, string reason) {
+    void RpcDamage(float damage, PlayerComponents killer_name, PlayerComponents killed_name, string reason) {
         components.playerHealth -= damage;
         if ( mainController.isLocalPlayerDead ) {
-            if ( killer_name.Length > 0 ) {
+            if ( killer_name ) {
                 if ( components.playerTeam == 0 ) {
                     matchStatus.fire_score++;
                 }
                 else {
                     matchStatus.ice_score++;
                 }
-                feed.KillFeed(killer_name, killed_name, reason);
-            }
-            if ( reason != "" ) {
-                components.deaths++;
+                feed.KillFeed(killer_name.playerName, killed_name ? killed_name.playerName : "", reason);
+                killer_name.playerHealth = 100;
             }
         }
         else if (!mainController.isLocalPlayerDead && damage > 1f) {
@@ -79,7 +77,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
         if ( fallDamage <= 0 )
             return;
 
-        CmdDamage(fallDamage, components.playerName, "", "fell from a high place");
+        CmdDamage(fallDamage, components, null, "fell from a high place");
         fallDamage = 0;
         time = 0;
     }

@@ -15,6 +15,7 @@ MonoBehaviour:
   name: AR
   damage: 20
   maxDistance: 200
+  ready: 0
   spread: {x: 0.04, y: 0.04, z: 0.03}
   currentAmmo: 23
   magSize: 31
@@ -27,4 +28,4 @@ MonoBehaviour:
   - LowerChest
   - Arms
   - Legs
-  damages: 50000000140000000a0000000500000005000000
+  damages: 64000000370000002d0000000a0000000a000000
