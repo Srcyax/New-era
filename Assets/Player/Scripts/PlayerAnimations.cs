@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerAnimations : MonoBehaviour {
+    [Header("Player weapon")]
+    [SerializeField] GetCurrentWeapon getCurrentWeapon;
+
     [Header("Player animator")]
     [SerializeField] public Animator animator;
 
@@ -24,6 +27,13 @@ public class PlayerAnimations : MonoBehaviour {
     float smoothRifleState;
 
 
+    string[] weapons ={
+        "AK-103",
+        "SCAR-L",
+        "Pistol"
+    };
+
+
     public void Animations() {
         Vector2 moveDir = mainController.inputActions.Player.Movement.ReadValue<Vector2>();
 
@@ -42,8 +52,16 @@ public class PlayerAnimations : MonoBehaviour {
             smoothRifleState = Mathf.Lerp(smoothRifleState, 0, Time.deltaTime * smoothing);
         }
 
+        string weaponName = getCurrentWeapon.currentWeapon.GetComponent<WeaponInfo>().gunData.name;
 
-        //animator.SetBool("crounch", Input.GetKey(KeyCode.LeftControl) && isGrounded() && !mainController.isPlayerRunning);
+        for (int i = 0; i < weapons.Length; i++) {
+            if ( weapons[ i ] == weaponName )               
+                continue;
+
+            animator.SetBool(weapons[i], false);
+        }
+
+        animator.SetBool(weaponName, true);
 
         animator.SetFloat("inputX", smoothInputX);
         animator.SetFloat("inputY", smoothInputY);

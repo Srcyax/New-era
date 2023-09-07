@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e2c689104288d642ad72519fb2143c1, type: 3}
   m_Name: AR
   m_EditorClassIdentifier: 
-  name: AR
+  name: AK-103
   damage: 20
   maxDistance: 200
-  ready: 0
   spread: {x: 0.04, y: 0.04, z: 0.03}
   currentAmmo: 23
   magSize: 31
   fireRate: 700
   reloadTime: 2.1
-  reloading: 1
+  reloading: 0
   hitboxes:
   - Head
   - Chest

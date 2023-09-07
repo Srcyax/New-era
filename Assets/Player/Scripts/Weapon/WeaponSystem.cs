@@ -67,7 +67,7 @@ public class WeaponSystem : NetworkBehaviour {
         if ( gunData.currentAmmo >= gunData.magSize )
             return;
 
-        playerAnimations?.animator.Play("Reload");
+        playerAnimations?.animator.Play(gunData.name + "_reload");
         animator?.Play("Reload");
         cameraShake.GenerateImpulse();
         StartCoroutine(Reload());
@@ -134,23 +134,23 @@ public class WeaponSystem : NetworkBehaviour {
     }
 
     [Command(requiresAuthority = true)]
-    public void CmdSwitchCharacterWeapon(int weapon) {
-        RpcSwitchCharacterWeapon(weapon);
+    public void CmdSwitchCharacterWeapon(int current) {
+        RpcSwitchCharacterWeapon(current);
     }
 
     [ClientRpc]
-    void RpcSwitchCharacterWeapon(int weapon) {
+    void RpcSwitchCharacterWeapon(int current) {
         for ( int i = 0; i < playerCharacterWeapons.childCount; i++ ) {
             if ( !playerCharacterWeapons.GetChild(i).gameObject.CompareTag("CharacterWeapon") )
                 continue;
 
-            if ( i == weapon )
+            if ( i == current )
                 continue;
 
             playerCharacterWeapons.GetChild(i).gameObject.SetActive(false);
         }
 
-        playerCharacterWeapons.GetChild(weapon).gameObject.SetActive(true);
+        playerCharacterWeapons.GetChild(current).gameObject.SetActive(true);
     }
 
     void UpdateUI() {
@@ -170,7 +170,7 @@ public class WeaponSystem : NetworkBehaviour {
 
 
         Vector3 direction = GetSpreadDirection(ray.direction);
-        playerAnimations?.animator.Play("shooting");
+        playerAnimations?.animator.Play(gunData.name + "_shooting");
         int hitBoxLayer = LayerMask.GetMask("Hitboxes");
         int worldLayer = LayerMask.GetMask("World");
         if ( Physics.Raycast(ray.origin, direction, out RaycastHit hit, gunData.maxDistance, hitBoxLayer) ) {

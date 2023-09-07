@@ -17880,10 +17880,12 @@ Animator:
   m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
     are already bound by a Humanoid avatar. These transforms can only be changed
     by Humanoid clips.\n\tTransform 'mixamorig1:LeftHandThumb2'\n\tTransform 'mixamorig1:LeftHandThumb1'\n\tTransform
-    'mixamorig1:Neck'\n\tFrom animation clip 'rifle_fire'\n\tFrom animation clip
-    'reload'\n\tFrom animation clip 'rifle_idle'\n\tFrom animation clip 'rifle_walk'\n\tFrom
-    animation clip 'rifle_walk'\n\tFrom animation clip 'equi_ak103'\n\tFrom animation
-    clip 'unequip_ak103'"
+    'mixamorig1:Neck'\n\tTransform 'mixamorig1:RightHandThumb2'\n\tFrom animation
+    clip 'rifle_fire'\n\tFrom animation clip 'reload'\n\tFrom animation clip 'rifle_idle'\n\tFrom
+    animation clip 'rifle_walk'\n\tFrom animation clip 'scar_fire'\n\tFrom animation
+    clip 'scar_idle'\n\tFrom animation clip 'scar_walk'\n\tFrom animation clip 'reload'\n\tFrom
+    animation clip 'pistol_fire'\n\tFrom animation clip 'pistol_idle'\n\tand more
+    ..."
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
