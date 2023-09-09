@@ -4547,8 +4547,8 @@ ParentConstraint:
   m_TranslationAtRest: {x: 0, y: 0, z: 0}
   m_RotationAtRest: {x: 0, y: -90, z: 179.882}
   m_TranslationOffsets:
-  - {x: -13.561884, y: 24.302742, z: -48.80384}
-  - {x: 40.867283, y: 30.27641, z: -23.865585}
+  - {x: 0.8254566, y: 0.13767314, z: 0.850029}
+  - {x: -0.9424865, y: -0.6383209, z: -0.35656548}
   m_RotationOffsets:
   - {x: 25.934366, y: 63.93749, z: 62.322834}
   - {x: 0, y: -90.00001, z: 179.882}
@@ -12376,7 +12376,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4395480846476721941}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.959937, y: 1.7460003, z: -26.384998}
+  m_LocalPosition: {x: 33.29327, y: -0.05399996, z: 0.015001595}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

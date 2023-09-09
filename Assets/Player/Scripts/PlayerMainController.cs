@@ -32,12 +32,14 @@ public class PlayerMainController : MonoBehaviour {
     [HideInInspector]
     public InputSystem inputActions;
 
-    void Start() {
-        if (inputActions == null){
+    private void Awake() {
+        if ( inputActions == null ) {
             inputActions = new InputSystem();
             inputActions.Enable();
         }
+    }
 
+    void Start() {
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
         waitingPlayers = GameObject.FindGameObjectWithTag("WaitingPlayersCanvas");
         lobbyManager = FindObjectOfType<LobbyPlayers>();
