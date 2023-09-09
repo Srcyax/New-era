@@ -1,4 +1,5 @@
 using Mirror;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Disconnect : NetworkBehaviour {
@@ -9,6 +10,7 @@ public class Disconnect : NetworkBehaviour {
         else if ( NetworkClient.active ) {
             NetworkManager.singleton.StopClient();
         }
-        SceneManager.LoadScene("Game");
+        //Time.timeScale = 1;
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

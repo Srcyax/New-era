@@ -16,6 +16,17 @@ public class GetCurrentWeapon : MonoBehaviour
     [Header("Player Weapons")]
     [SerializeField] Transform weapons;
 
+    private void Start() {
+        for(int i = 0;  i < weapons.childCount; i++ ) {
+            if ( weapons.GetChild(i).gameObject == currentWeapon ) {
+                weapons.GetChild(i).gameObject.SetActive(true);
+                continue;
+            }
+
+            weapons.GetChild(i).gameObject.SetActive(false);
+        }
+    }
+
     void Update()
     {
         if ( !components.localPlayer )
