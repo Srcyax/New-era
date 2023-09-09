@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerMainController : MonoBehaviour {
     public static Action shootInput;
@@ -14,16 +13,15 @@ public class PlayerMainController : MonoBehaviour {
     [SerializeField] PlayerComponents components;
     [SerializeField] PlayerAnimations playerAnimations;
     [SerializeField] PlayerDamage playerDamage;
-    [SerializeField] HealthUI playerHealthUI;
     [SerializeField] NameUI playerNameUI;
     [SerializeField] TeamArrowSpawn teamArrow;
     [SerializeField] Transform playerHeadLookAt;
     [SerializeField] public Camera playerCamera;
+    
 
     [Header("Weapon settings")]
     [SerializeField] RecoilSystem recoilSystem;
 
-    private GameObject[] spawnPoints;
     private Vector3 moveDirection = Vector3.zero;
     [HideInInspector]
     public CharacterController characterController;
@@ -35,8 +33,10 @@ public class PlayerMainController : MonoBehaviour {
     public InputSystem inputActions;
 
     void Start() {
-        inputActions = new InputSystem();
-        inputActions.Enable();
+        if (inputActions == null){
+            inputActions = new InputSystem();
+            inputActions.Enable();
+        }
 
         GameObject lobby = GameObject.FindGameObjectWithTag("Lobby");
         waitingPlayers = GameObject.FindGameObjectWithTag("WaitingPlayersCanvas");
@@ -52,10 +52,8 @@ public class PlayerMainController : MonoBehaviour {
 
         playerNameUI.CmdSetPlayerName(playerData.name);
 
-        if ( isLocalPlayerDead ) {
-            playerDied?.Invoke();
+        if ( isLocalPlayerDead )   
             return;
-        }
 
         if ( lobbyManager.canStart && waitingPlayers )
             Destroy(waitingPlayers);
@@ -83,22 +81,6 @@ public class PlayerMainController : MonoBehaviour {
         chooseTeam.SetActive(true);
     }
 
-    public IEnumerator Respawn() {
-        spawnPoints = components.playerTeam == 1 ? GameObject.FindGameObjectsWithTag("FIRE_SpawPoints") : GameObject.FindGameObjectsWithTag("ICE_SpawPoints");
-        yield return new WaitForSeconds(0.1f);
-        playerAnimations.animator.enabled = false;
-        characterController.enabled = false;
-        yield return new WaitForSeconds(3.0f);
-        playerHealthUI.deadScreenUI.SetActive(true);
-        int r = UnityEngine.Random.Range(0, spawnPoints.Length);
-        transform.position = spawnPoints[ r ].transform.position;
-        yield return new WaitForSeconds(.5f);
-        characterController.enabled = true;
-        playerAnimations.animator.enabled = true;
-        components.playerHealth = 100;
-        playerHealthUI.deadScreenUI.SetActive(false);
-        components.CmdSpawning();
-    }
 
     void PlayerControler() {
 

@@ -29,8 +29,8 @@ public class GetCurrentWeapon : MonoBehaviour
 
     void Update()
     {
-        if ( !components.localPlayer )
-            return;
+       // if ( !components.localPlayer )
+           // return;
 
         if ( currentWeapon.GetComponent<WeaponInfo>().gunData.reloading )
             return;

@@ -1202,7 +1202,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -346, y: -72.10661}
+  m_AnchoredPosition: {x: -346, y: -72.1066}
   m_SizeDelta: {x: 133.24097, y: 81.27701}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &251350449
@@ -13258,7 +13258,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -126, y: -72.106735}
+  m_AnchoredPosition: {x: -126, y: -72.10672}
   m_SizeDelta: {x: 133.24097, y: 81.27701}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1659707253
@@ -16488,9 +16488,7 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
-  - {fileID: 7011792637858942555, guid: 410fe3d3b70d0aa45841cdf64a6a09ef, type: 3}
-  - {fileID: 6910854614290234777, guid: 1686e97f7ed04f44eb3610167fdd84b9, type: 3}
-  - {fileID: 3276522219445635196, guid: 606fe7d53a3b3a44e92c48720bbc5bbb, type: 3}
+  - {fileID: 2247494191393872209, guid: 8d3f125a6d5bf72468a10236584c696a, type: 3}
   snapshotSettings:
     bufferTimeMultiplier: 2
     catchupNegativeThreshold: -1

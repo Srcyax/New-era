@@ -28,7 +28,7 @@ public class WeaponSystem : NetworkBehaviour {
     [SerializeField] RecoilSystem recoilSystem;
     [SerializeField] GameObject muzzleFlash;
     [SerializeField] GameObject bulletImpact;
-    [SerializeField] GameObject soundEffect;
+    [SerializeField] AudioSource soundEffect;
     [SerializeField] Transform bocal;
 
 
@@ -116,21 +116,15 @@ public class WeaponSystem : NetworkBehaviour {
         gunData = weapon.currentWeapon.GetComponent<WeaponInfo>().gunData;
         bocal = weapon.currentWeapon.GetComponent<WeaponInfo>().bocal;
         animator = weapon.currentWeapon.GetComponent<Animator>();
-        CmdSetShootSound();
+        SetShootSound();
         gunData.reloading = false;
         gunReady = false;
         UpdateUI();
         sway.ShootSway(0f);
     }
 
-    [Command(requiresAuthority =false)]
-    void CmdSetShootSound() {
-        RpcSetShootSound();
-    }
-
-    [ClientRpc]
-    void RpcSetShootSound() {
-        soundEffect = weapon.currentWeapon.GetComponent<WeaponInfo>().shotSound;
+    void SetShootSound() {
+        soundEffect.clip = weapon.currentWeapon?.GetComponent<WeaponInfo>().shotSound;
     }
 
     [Command(requiresAuthority = true)]
@@ -159,15 +153,12 @@ public class WeaponSystem : NetworkBehaviour {
 
     [Command(requiresAuthority = true)]
     void CmdShoot(Ray ray) {
-        GameObject shoot = Instantiate(soundEffect, transform.GetChild(0));
-        shoot.transform.parent = null;
-        NetworkServer.Spawn(shoot);
         RpcShoot(ray);
     }
 
     [ClientRpc]
     void RpcShoot(Ray ray) {
-
+        soundEffect.PlayOneShot(soundEffect.clip);
 
         Vector3 direction = GetSpreadDirection(ray.direction);
         playerAnimations?.animator.Play(gunData.name + "_shooting");
