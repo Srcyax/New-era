@@ -26,7 +26,8 @@ public class PlayerDied : MonoBehaviour {
             return;
         }
 
-        PlayerMainController.playerDied?.Invoke();
+        if ( components.localPlayer )
+            PlayerMainController.playerDied?.Invoke();
 
         foreach ( var obj in objsToDisable ) {
             obj.SetActive(false);
@@ -46,7 +47,6 @@ public class PlayerDied : MonoBehaviour {
 
     public IEnumerator Respawn() {
         spawnPoints = components.playerTeam == 1 ? GameObject.FindGameObjectsWithTag("FIRE_SpawPoints") : GameObject.FindGameObjectsWithTag("ICE_SpawPoints");
-        yield return new WaitForSeconds(0.1f);
         playerAnimations.animator.enabled = false;
         mainController.characterController.enabled = false;
         yield return new WaitForSeconds(3.0f);

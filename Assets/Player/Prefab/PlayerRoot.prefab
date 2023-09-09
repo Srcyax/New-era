@@ -3500,10 +3500,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.059678495
-  m_Height: 0.28856042
+  m_Radius: 0.06924375
+  m_Height: 0.2885604
   m_Direction: 1
-  m_Center: {x: -0.0000000015867563, y: 0.11132778, z: 0.0042235013}
+  m_Center: {x: 0.009565254, y: 0.111327626, z: 0.004223504}
 --- !u!54 &9163890071543000054
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4547,8 +4547,8 @@ ParentConstraint:
   m_TranslationAtRest: {x: 0, y: 0, z: 0}
   m_RotationAtRest: {x: 0, y: -90, z: 179.882}
   m_TranslationOffsets:
-  - {x: 0.8254566, y: 0.13767314, z: 0.850029}
-  - {x: -0.9424865, y: -0.6383209, z: -0.35656548}
+  - {x: -13.561884, y: 24.302742, z: -48.80384}
+  - {x: 40.867283, y: 30.27641, z: -23.865585}
   m_RotationOffsets:
   - {x: 25.934366, y: 63.93749, z: 62.322834}
   - {x: 0, y: -90.00001, z: 179.882}
@@ -11693,6 +11693,7 @@ MonoBehaviour:
   recoilSystem: {fileID: 3109955338267098530}
   muzzleFlash: {fileID: 2493514122087063217, guid: 704ff12eb934cba4c86587dc8178bd00, type: 3}
   bulletImpact: {fileID: 8475834250000592361, guid: 699172f94369f2948a594cfc40974ffb, type: 3}
+  bulletHitImpact: {fileID: 5333229664897941191, guid: 5c8a7f8bc6e2a3349bebb2eb5e52775b, type: 3}
   soundEffect: {fileID: 3031661010697887708}
   bocal: {fileID: 0}
   ammoUI: {fileID: 6774946624955829175}
@@ -12375,7 +12376,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4395480846476721941}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 33.29327, y: -0.05399996, z: 0.015001595}
+  m_LocalPosition: {x: 5.959937, y: 1.7460003, z: -26.384998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15911,10 +15912,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.06924735
-  m_Height: 0.36095506
+  m_Radius: 0.07544095
+  m_Height: 0.360955
   m_Direction: 1
-  m_Center: {x: 0.000000608794, y: 0.18047464, z: 0.00000053653866}
+  m_Center: {x: 0.0000006652184, y: 0.18047446, z: -0.0061930576}
 --- !u!54 &4778395254643014547
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19750,10 +19751,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.057381216
+  m_Radius: 0.06353698
   m_Height: 0.29880252
   m_Direction: 1
-  m_Center: {x: 0.000000018626729, y: 0.106309146, z: 0.006546175}
+  m_Center: {x: 0.000000008150642, y: 0.106309146, z: 0.012701925}
 --- !u!54 &6199490571560378649
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -21294,8 +21295,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.27905267, y: 0.1511963, z: 0.24429587}
-  m_Center: {x: 0.0047815815, y: 0.021574406, z: -0.029942004}
+  m_Size: {x: 0.27905267, y: 0.1511963, z: 0.20085222}
+  m_Center: {x: 0.0047815843, y: 0.02157441, z: -0.008220166}
 --- !u!54 &6060810072126307699
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26372,10 +26373,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.061163247
+  m_Radius: 0.07086812
   m_Height: 0.3475546
   m_Direction: 1
-  m_Center: {x: 0.0068444945, y: 0.17377625, z: -0.0000004978801}
+  m_Center: {x: -0.0028603773, y: 0.17377605, z: -0.0000005071552}
 --- !u!54 &3733561212330434653
 Rigidbody:
   m_ObjectHideFlags: 0

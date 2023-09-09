@@ -15,7 +15,6 @@ MonoBehaviour:
   name: Pistol
   damage: 10
   maxDistance: 70
-  ready: 1
   spread: {x: 0.01, y: 0.01, z: 0.01}
   currentAmmo: 8
   magSize: 8
@@ -28,4 +27,4 @@ MonoBehaviour:
   - LowerChest
   - Arms
   - Legs
-  damages: 50000000280000001e0000000500000005000000
+  damages: 500000000f0000000f0000000500000005000000

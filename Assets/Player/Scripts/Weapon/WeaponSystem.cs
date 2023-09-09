@@ -28,6 +28,7 @@ public class WeaponSystem : NetworkBehaviour {
     [SerializeField] RecoilSystem recoilSystem;
     [SerializeField] GameObject muzzleFlash;
     [SerializeField] GameObject bulletImpact;
+    [SerializeField] GameObject bulletHitImpact;
     [SerializeField] AudioSource soundEffect;
     [SerializeField] Transform bocal;
 
@@ -169,16 +170,19 @@ public class WeaponSystem : NetworkBehaviour {
             switch ( hit.collider.tag ) {
                 case "Head":
                     GiveHit(0, hit);
-                    break;
+                    return;
                 case "Chest":
                     GiveHit(1, hit);
-                    break;
-                case "Arms":
+                    return;
+                case "LowerChest":
                     GiveHit(2, hit);
-                    break;
-                case "Legs":
+                    return;
+                case "Arms":
                     GiveHit(3, hit);
-                    break;
+                    return;
+                case "Legs":
+                    GiveHit(4, hit);
+                    return;
             }
         }
 
@@ -204,6 +208,7 @@ public class WeaponSystem : NetworkBehaviour {
             return;
 
         Instantiate(hitMarker, canvas);
+        Instantiate(bulletHitImpact, hit.collider.transform).transform.parent = null;
         playerAudioSource.Play();
         print(hit.collider.tag + " : " + gunData.damages[ i ]);
         IDamageable damageable = hit.collider.transform.root.GetComponent<IDamageable>();

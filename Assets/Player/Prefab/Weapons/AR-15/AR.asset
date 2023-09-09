@@ -16,7 +16,7 @@ MonoBehaviour:
   damage: 20
   maxDistance: 200
   spread: {x: 0.04, y: 0.04, z: 0.03}
-  currentAmmo: 23
+  currentAmmo: 31
   magSize: 31
   fireRate: 700
   reloadTime: 2.1
@@ -27,4 +27,4 @@ MonoBehaviour:
   - LowerChest
   - Arms
   - Legs
-  damages: 64000000370000002d0000000a0000000a000000
+  damages: 640000001b0000001b0000000a0000000a000000

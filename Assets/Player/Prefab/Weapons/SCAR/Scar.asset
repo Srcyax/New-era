@@ -15,7 +15,6 @@ MonoBehaviour:
   name: SCAR-L
   damage: 20
   maxDistance: 100
-  ready: 0
   spread: {x: 0.1, y: 0.1, z: 0.1}
   currentAmmo: 30
   magSize: 30
@@ -28,4 +27,4 @@ MonoBehaviour:
   - LowerChest
   - Arms
   - Legs
-  damages: 6400000032000000280000000a0000000a000000
+  damages: 640000001e0000001e0000000a0000000a000000

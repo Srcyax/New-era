@@ -54,6 +54,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
     [ClientRpc]
     void RpcDamage(float damage, PlayerComponents killer_name, PlayerComponents killed_name, string reason) {
         components.playerHealth -= damage;
+        //print("set damage");
         if ( mainController.isLocalPlayerDead ) {
             if ( killer_name ) {
                 if ( components.playerTeam == 0 ) {
