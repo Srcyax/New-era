@@ -56,6 +56,7 @@ public class WeaponSystem : NetworkBehaviour {
             return;
 
         timeSinceLastShot += Time.deltaTime;
+        print(characterController.velocity.magnitude);
     }
 
     void StartReload() {
@@ -218,7 +219,7 @@ public class WeaponSystem : NetworkBehaviour {
     private Vector3 GetSpreadDirection(Vector3 dir) {
         Vector3 direction = dir;
 
-        if ( characterController.velocity.magnitude > 0 ) {
+        if ( characterController.velocity.magnitude > 4 ) {
             float value = playerAnimations.isGrounded() ? 0 : gunData.spread.x + gunData.spread.y + gunData.spread.z;
             direction += new Vector3(
                 Random.Range(-gunData.spread.x + value, gunData.spread.x + value),

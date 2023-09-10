@@ -63,7 +63,8 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
                     matchStatus.ice_score++;
                 }
                 feed.KillFeed(killer_name.playerName, killed_name ? killed_name.playerName : "", reason);
-                killer_name.playerHealth = 100;
+                if ( killer_name.playerHealth > 0)
+                    killer_name.playerHealth = 100;
             }
         }
         else if ( !mainController.isLocalPlayerDead && damage > 1f ) {
