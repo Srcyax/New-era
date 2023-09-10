@@ -22,7 +22,7 @@ public class TeamArrowSpawn : MonoBehaviour {
             if ( players[ i ].GetComponent<PlayerComponents>().playerTeam != playerTeam )
                 continue;
 
-            if ( players[ i ].transform.GetChild(0).childCount > 5 )
+            if ( players[ i ].transform.GetChild(0).childCount > 6 )
                 continue;
 
             prefabTeamArrow.GetComponent<SpriteRenderer>().color = playerTeam == 0 ? Color.blue : Color.red;
