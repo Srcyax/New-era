@@ -11792,6 +11792,7 @@ MonoBehaviour:
   syncInterval: 0
   components: {fileID: 3038935329612329506}
   mainController: {fileID: 5224834978515845566}
+  footsteps: {fileID: 1007973917360218202}
   canvas: {fileID: 3331223406153701282}
   blood: {fileID: 6121411770901074152, guid: db9f75e1bb308fa4da6bbcfd7c9f615c, type: 3}
   processVolume: {fileID: 4120148761150774365}
@@ -29810,6 +29811,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 82354d1fee336984994fbdcc8154c89c, type: 3}
   - {fileID: 8300000, guid: 068414160a0ccf34ca0c11b55d43ffc8, type: 3}
   - {fileID: 8300000, guid: 02d4b2dff380d194fab91c0864b0c386, type: 3}
+  landSound: {fileID: 8300000, guid: 79e6e1370ee1ca747b469e68d0dcb0fe, type: 3}
 --- !u!1 &9211655232965621625
 GameObject:
   m_ObjectHideFlags: 0

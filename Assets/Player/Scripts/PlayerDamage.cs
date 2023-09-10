@@ -1,11 +1,11 @@
 using Mirror;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerDamage : NetworkBehaviour, IDamageable {
     [SerializeField] PlayerComponents components;
     [SerializeField] PlayerMainController mainController;
+    [SerializeField] PlayerFootsteps footsteps;
 
     [Header("UI settings")]
     [SerializeField] Transform canvas;
@@ -54,7 +54,6 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
     [ClientRpc]
     void RpcDamage(float damage, PlayerComponents killer_name, PlayerComponents killed_name, string reason) {
         components.playerHealth -= damage;
-        //print("set damage");
         if ( mainController.isLocalPlayerDead ) {
             if ( killer_name ) {
                 if ( components.playerTeam == 0 ) {
@@ -67,7 +66,7 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
                 killer_name.playerHealth = 100;
             }
         }
-        else if (!mainController.isLocalPlayerDead && damage > 1f) {
+        else if ( !mainController.isLocalPlayerDead && damage > 1f ) {
             Instantiate(blood, canvas);
         }
     }
@@ -79,17 +78,15 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
             return;
 
         CmdDamage(fallDamage, components, null, "fell from a high place");
+        footsteps.LandFootSound();
         fallDamage = 0;
         time = 0;
     }
 
-    public void FallDamege(bool falling) {
-        if ( falling ) {
-            time += Time.deltaTime * 3f;
-            if ( time > 1 ) {
-                fallDamage += Time.deltaTime * 20f;
-                print(fallDamage);
-            }
+    public void FallDamege() {
+        time += Time.deltaTime * 3f;
+        if ( time > 1 ) {
+            fallDamage += Time.deltaTime * 20f;
         }
     }
 }

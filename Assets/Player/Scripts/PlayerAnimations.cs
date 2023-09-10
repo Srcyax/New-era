@@ -73,11 +73,10 @@ public class PlayerAnimations : MonoBehaviour {
             Debug.DrawLine(footPos.transform.position, hit.point, Color.red, 1);
             if ( hit.collider.gameObject.layer == layerMask ) {
                 damage.SetFallDamage();
-                damage.FallDamege(false);
                 return true;
             }
         }
-        damage.FallDamege(true);
+        damage.FallDamege();
         return false;
     }
 }

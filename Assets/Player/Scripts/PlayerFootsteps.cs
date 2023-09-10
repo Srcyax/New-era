@@ -9,6 +9,7 @@ public class PlayerFootsteps : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip[] walkSounds;
     [SerializeField] AudioClip[] runSounds;
+    [SerializeField] AudioClip landSound;
 
     private void Update() {
         audioSource.volume = components.localPlayer ? 0.05f : 0.8f;
@@ -31,6 +32,11 @@ public class PlayerFootsteps : MonoBehaviour
         int i = Random.Range(0, runSounds.Length);
 
         audioSource.clip = runSounds[ i ];
+        audioSource.PlayOneShot(audioSource.clip);
+    }
+
+    public void LandFootSound() {
+        audioSource.clip = landSound;
         audioSource.PlayOneShot(audioSource.clip);
     }
 }
