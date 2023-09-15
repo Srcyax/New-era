@@ -56,15 +56,17 @@ public class PlayerDamage : NetworkBehaviour, IDamageable {
         components.playerHealth -= damage;
         if ( mainController.isLocalPlayerDead ) {
             if ( killer_name ) {
+                feed.KillFeed(killer_name.playerName, killed_name ? killed_name.playerName : "", reason);
+                if ( killer_name.playerHealth > 0 )
+                    killer_name.playerHealth = 100;
                 if ( components.playerTeam == 0 ) {
                     matchStatus.fire_score++;
+                    return;
                 }
                 else {
                     matchStatus.ice_score++;
+                    return;
                 }
-                feed.KillFeed(killer_name.playerName, killed_name ? killed_name.playerName : "", reason);
-                if ( killer_name.playerHealth > 0)
-                    killer_name.playerHealth = 100;
             }
         }
         else if ( !mainController.isLocalPlayerDead && damage > 1f ) {

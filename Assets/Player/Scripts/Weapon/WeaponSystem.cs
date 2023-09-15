@@ -56,7 +56,6 @@ public class WeaponSystem : NetworkBehaviour {
             return;
 
         timeSinceLastShot += Time.deltaTime;
-        print(characterController.velocity.magnitude);
     }
 
     void StartReload() {
