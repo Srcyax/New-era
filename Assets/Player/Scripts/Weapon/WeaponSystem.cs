@@ -71,6 +71,7 @@ public class WeaponSystem : NetworkBehaviour {
         playerAnimations?.animator.Play(gunData.name + "_reload");
         animator?.Play("Reload");
         cameraShake.GenerateImpulse();
+        sway.ShootSway(0f);
         StartCoroutine(Reload());
     }
 

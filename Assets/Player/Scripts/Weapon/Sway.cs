@@ -48,7 +48,6 @@ public class Sway : MonoBehaviour
         if ( characterController.velocity.magnitude > 0.01f ) {
             MoveBackSway();
         }
-
     }
 
     private void CalculateSway()
