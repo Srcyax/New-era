@@ -26172,6 +26172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainController: {fileID: 5224834978515845566}
+  animator: {fileID: 2461366287278181516}
   camera: {fileID: 8326578234380622855}
   cameraPos: {fileID: 3523280862752984849}
 --- !u!1 &8744263679608982660
