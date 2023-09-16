@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerCameraLean : MonoBehaviour
 {
     [Header("Player components")]
+    [SerializeField] PlayerComponents components;
     [SerializeField] PlayerMainController mainController;
     [SerializeField] Animator animator;
     [Space(10)]
@@ -18,6 +19,9 @@ public class PlayerCameraLean : MonoBehaviour
     float smoothBodyLean;
     void Update()
     {
+        if ( !components.localPlayer )
+            return;
+
         if ( mainController.isLocalPlayerDead || mainController.isPlayerRunning ) {
             Reset();
             return;

@@ -66,12 +66,24 @@ public class Sway : MonoBehaviour
         transform.localPosition = Vector3.Lerp(transform.localPosition, finalPosition + initialPosition, Time.deltaTime * smoothAmount);
     }
 
+    float tiltZ;
+
     private void TiltSway()
     {
         float tiltY = Mathf.Clamp(InputX * rotationAmount, -maxRotationAmount, maxRotationAmount);
         float tiltX = Mathf.Clamp(InputY * rotationAmount, -maxRotationAmount, maxRotationAmount);
 
-        Quaternion finalRotation = Quaternion.Euler(new Vector3(rotationX ? -tiltX : 0f, rotationY ? tiltY : 0f, rotationZ ? tiltY : 0f));
+        if ( Input.GetKey(KeyCode.Q) ) {
+            tiltZ = Mathf.Lerp(tiltZ, 5f, Time.deltaTime * smoothRotation);
+        }
+        else if ( Input.GetKey(KeyCode.E) ) {
+            tiltZ = Mathf.Lerp(tiltZ, -5f, Time.deltaTime * smoothRotation);
+        }
+        else {
+            tiltZ = Mathf.Lerp(tiltZ, 0f, Time.deltaTime * smoothRotation);
+        }
+        bool leaning = Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E);
+        Quaternion finalRotation = Quaternion.Euler(new Vector3(rotationX ? -tiltX : 0f, rotationY ? tiltY : 0f, !leaning ? tiltY : tiltZ));
 
         transform.localRotation = Quaternion.Slerp(transform.localRotation, finalRotation * initialRotation, Time.deltaTime * smoothRotation);
     }
