@@ -37,6 +37,7 @@ public class PlayerDied : MonoBehaviour {
         }
 
         smooth = Mathf.Lerp(smooth, 1f, Time.deltaTime);
+        cameraPos.constraintActive = true;
         cameraPos.weight = smooth;
 
         if ( respawn ) {
@@ -63,6 +64,7 @@ public class PlayerDied : MonoBehaviour {
 
     private void Reset() {
         respawn = true;
+        cameraPos.constraintActive = false;
         cameraPos.weight = 0f;
 
         foreach ( var obj in objsToDisable ) {

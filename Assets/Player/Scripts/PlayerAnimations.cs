@@ -25,6 +25,7 @@ public class PlayerAnimations : MonoBehaviour {
     float smoothInputX;
     float smoothInputY;
     float smoothRifleState;
+    float smoothBodyLean;
 
 
     string[] weapons ={
@@ -54,6 +55,16 @@ public class PlayerAnimations : MonoBehaviour {
 
         string weaponName = getCurrentWeapon.currentWeapon.GetComponent<WeaponInfo>().gunData.name;
 
+        if ( Input.GetKey(KeyCode.Q) ) {
+            smoothBodyLean = Mathf.Lerp(smoothBodyLean, 1, Time.deltaTime * smoothing);
+        }
+        else if ( Input.GetKey(KeyCode.E) ) {
+            smoothBodyLean = Mathf.Lerp(smoothBodyLean, -1, Time.deltaTime * smoothing);
+        }
+        else {
+            smoothBodyLean = Mathf.Lerp(smoothBodyLean, 0, Time.deltaTime * smoothing);
+        }
+
         for (int i = 0; i < weapons.Length; i++) {
             if ( weapons[ i ] == weaponName )               
                 continue;
@@ -66,6 +77,7 @@ public class PlayerAnimations : MonoBehaviour {
         animator.SetFloat("inputX", smoothInputX);
         animator.SetFloat("inputY", smoothInputY);
         animator.SetFloat("rifle_state", smoothRifleState);
+        animator.SetFloat("lean", smoothBodyLean);
     }
 
     public bool isGrounded() {
